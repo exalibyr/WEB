@@ -1,0 +1,26 @@
+div.content_wrap {
+    position: absolute;
+    left: 5%;
+    top: 10%;
+}
+div.avatar {
+    all: inherit;
+    cursor: pointer;
+    width : 400px;
+    height: 300px;
+}
+img.avatar_img {
+    all: inherit;
+}
+div#pond {
+    all: inherit;
+    display: none;
+}
+ul#menu li{
+    display: inline;
+}
+div.data_form {
+    all: inherit;
+    position: relative;
+    margin-top: 350px;
+}

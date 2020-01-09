@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>My blog</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <style>
+            ul#menu li{
+                display:inline;
+            }
+        </style>
+    </head>
+    <body>
+        <div align="right">
+            <ul id="menu">
+                <li>
+                    <button type="button" th:onclick="'location.href=\''
+                                     + @{/user/id={userId}/findUsers (userId=${userId})} + '\''">Back</button>
+                </li>
+                <li>
+                    <button type="button" th:onclick="'location.href=\''
+                                     + @{/user/id={userId} (userId=${userId})} + '\''">Home page</button>
+                </li>
+                <li>
+                    <button type="button" th:onclick="'location.href=\''
+                                     + @{/} + '\''">Log out</button>
+                </li>
+            </ul>
+        </div>
+        <h3 align="center">Found users</h3>
+        <table th:each="user : ${users}">
+            <tr>
+                <td><img th:src="${user.avatarUrl}" alt="Image not found" width="300" height="200"></td>
+            </tr>
+            <tr>
+                <td><label th:text="${user.name} + ' ' + ${user.surname}"></label></td>
+            </tr>
+            <tr>
+                <td>About: <label th:text="${user.about}"></label></td>
+            </tr>
+            <tr>
+                <td>
+                    <button type="button" th:onclick="'location.href=\''
+                     + @{/user/id={userId}/showUserPage/id={id} (userId=${userId}, id=${user.id})}
+                      + '\''">View page</button>
+                </td>
+            </tr>
+            <tr>
+                <td><br></td>
+            </tr>
+        </table>
+    </body>
+</html>

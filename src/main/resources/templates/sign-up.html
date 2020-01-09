@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>My blog</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    </head>
+    <body>
+        <form action="#" th:action = "@{/sign-up}" th:object="${registrationForm}" method="post">
+            <table>
+                <tr>
+                    <td>Your login </td>
+                    <td><input type="text" th:field="*{userLogin}"/> </td>
+                    <td th:if="${#fields.hasErrors('userLogin')}" th:errors="*{userLogin}">Login length must be from 5 to 20 symbols</td>
+                </tr>
+                <tr>
+                    <td>Your password </td>
+                    <td><input type="password" th:field="*{userPassword}"/></td>
+                    <td th:if="${#fields.hasErrors('userPassword')}" th:errors="*{userPassword}">Password length must be from 5 to 30 symbols</td>
+                </tr>
+                <tr>
+                    <td>Your name </td>
+                    <td><input type="text" th:field="*{userName}"/></td>
+                    <td th:if="${#fields.hasErrors('userName')}" th:errors="*{userName}">Name length must be from 1 to 20 symbols</td>
+                </tr>
+                <tr>
+                    <td>Your surname </td>
+                    <td><input type="text" th:field="*{userSurname}"/></td>
+                    <td th:if="${#fields.hasErrors('userSurname')}" th:errors="*{userSurname}">Surname length must be from 1 to 30 symbols</td>
+                </tr>
+                <tr>
+                    <td>You can write something about yourself here </td>
+                    <td><input type="text" th:field="*{userAbout}"/></td>
+                    <td th:if="${#fields.hasErrors('userAbout')}" th:errors="*{userAbout}">Field length must not be more than 100 symbols</td>
+                </tr>
+                <tr>
+                    <td><button type="submit">Sign up</button></td>
+                </tr>
+            </table>
+        </form>
+    </body>
+</html>

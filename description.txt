@@ -1,0 +1,7 @@
+this project demonstrates my blog. It's something like VK. (At least during developing i was taking such style as example)
+it's still raw, in first version i would say. But it can does basic thing, like save, update, read data.
+So far, you can create personal account, sign in, search for other users, view their pages and posts and, of course, make your own ones.
+Back-end: Java 8 SE, Spring boot, Spring framework (data, webmvc), hibernate.
+Front-end: html via thymeleaf
+
+0.2:added abilities - log out, edit profile and delete post.

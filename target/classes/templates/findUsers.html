@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>My blog</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <style>
+            ul#menu li{
+                display:inline;
+            }
+        </style>
+    </head>
+    <body>
+        <div align="right">
+            <ul id="menu">
+                <li>
+                    <button type="button" th:onclick="'location.href=\''
+                                 + @{/user/id={userId} (userId=${userId})} + '\''">Back</button>
+                </li>
+                <li>
+                    <button type="button" th:onclick="'location.href=\''
+                                 + @{/user/id={userId} (userId=${userId})} + '\''">Home page</button>
+                </li>
+                <li>
+                    <button type="button" th:onclick="'location.href=\''
+                                 + @{/} + '\''">Log out</button>
+                </li>
+            </ul>
+        </div>
+        <h1 align="center">Find users</h1>
+        <form action="#" th:action = "@{/user/id={id}/findUsers (id=${userId})}" method="post">
+            <p>
+                <input type="text" maxlength="20" placeholder="name" th:field="${userInfo.name}">
+            </p>
+            <p>
+                <input type="text" maxlength="30" placeholder="surname" th:field="${userInfo.surname}">
+            </p>
+            <button type="submit">Find</button>
+        </form>
+    </body>
+</html>
