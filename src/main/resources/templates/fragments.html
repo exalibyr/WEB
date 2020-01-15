@@ -28,12 +28,5 @@
                                      + @{/user/id={userId} (userId=${userId})} + '\'')">Back</button></div>
     </div>
 </div>
-<div th:fragment="guest-form-buttons (submitLabel, formId)">
-    <div class="form_buttons">
-        <div style="context_button"><button type="submit" th:form="${formId}" th:text="${submitLabel}"></button></div>
-        <div style="context_button"><button type="button" th:onclick="'location.href=\''
-                                     + @{/user/id={userId} (userId=${userId})} + '\''">Back</button></div>
-    </div>
-</div>
 </body>
 </html>
