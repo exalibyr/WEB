@@ -16,11 +16,20 @@ div#pond {
     all: inherit;
     display: none;
 }
-ul#menu li{
+ul.menu li{
+    display: inline;
+}
+div.form_buttons div {
     display: inline;
 }
 div.data_form {
     all: inherit;
     position: relative;
     margin-top: 350px;
+}
+div.context_button {
+    padding-bottom: 5px;
+    padding-top: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
 }

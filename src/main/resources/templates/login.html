@@ -3,18 +3,19 @@
 <head>
     <title>My blog</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link type="text/css" rel="stylesheet" th:href="@{css/styles.css}">
 </head>
-<body>
-<form th:action="@{/login}" method="post" th:object="${user}">
-    <div><label> User Name : <input type="text" name="username"/></label></div>
-    <div><label> Password: <input type="password" name="password"/></label></div>
-    <div><input type="submit" value="Sign In"/></div>
-</form>
-<div th:if="${param.error}">
-    Incorrect username or password!
-</div>
-<div th:if="${param.logout}">
-    You have successfully logged out
-</div>
-</body>
+    <body>
+        <form id="log-in" th:action="@{/login}" method="post" th:object="${user}">
+            <div><label> User Name : <input type="text" name="username"/></label></div>
+            <div><label> Password: <input type="password" name="password"/></label></div>
+            <div th:replace="fragments::form-buttons (null, 'Log in', 'log-in')"></div>
+        </form>
+        <div th:if="${param.error}">
+            Incorrect username or password!
+        </div>
+        <div th:if="${param.logout}">
+            You have successfully logged out
+        </div>
+    </body>
 </html>

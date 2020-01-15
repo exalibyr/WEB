@@ -21,22 +21,7 @@
         </script>
     </head>
     <body>
-        <div align="right">
-            <ul id="menu">
-                <li>
-                    <button type="button" th:onclick="'location.href=\''
-                                     + @{/user/id={userId} (userId=${userId})} + '\''">Back</button>
-                </li>
-                <li>
-                    <button type="button" th:onclick="'location.href=\''
-                                     + @{/user/id={userId} (userId=${userId})} + '\''">Home page</button>
-                </li>
-                <li>
-                    <button type="button" th:onclick="'location.href=\''
-                                     + @{/} + '\''">Log out</button>
-                </li>
-            </ul>
-        </div>
+        <div th:replace="fragments::buttons-menu (${userId})"></div>
         <h1 align="center">Here, you can update information about yourself.</h1>
         <div class="content_wrap">
             <h3>Profile picture</h3>
@@ -45,7 +30,7 @@
                 <input type="hidden" id="pond" class="pond"/>
             </div>
             <div class="data_form">
-                <form action="#" th:action = "@{/user/id={userId}/editProfile (userId=${user.id})}" th:object="${user}" method="post">
+                <form id="editProfile" action="#" th:action = "@{/user/id={userId}/editProfile (userId=${user.id})}" th:object="${user}" method="post">
                     <input type="hidden" th:field="*{id}"/>
                     <table>
                         <tr>
@@ -82,10 +67,8 @@
                         <tr>
                             <td><br></td>
                         </tr>
-                        <tr>
-                            <td><button type="submit">Save</button></td>
-                        </tr>
                     </table>
+                    <div th:replace="fragments::form-buttons (${userId}, 'Save', 'editProfile')"></div>
                 </form>
             </div>
         </div>

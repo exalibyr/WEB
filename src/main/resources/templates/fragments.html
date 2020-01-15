@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link type="text/css" rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+<div th:fragment="buttons-menu (userId)">
+    <div align="right">
+        <ul class="menu">
+            <li><div class="context_button">
+                <button type="button" th:onclick="'location.href=\''
+                                     + @{/user/id={userId} (userId=${userId})} + '\''">Home page</button>
+            </div>
+            </li>
+            <li>
+                <div class="context_button"><button type="button" th:onclick="'location.href=\''
+                                     + @{/} + '\''">Log out</button>
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>
+<div th:fragment="form-buttons (userId, submitLabel, formId)">
+    <div class="form_buttons">
+        <div style="context_button"><button type="submit" th:form="${formId}" th:text="${submitLabel}"></button></div>
+        <div style="context_button"><button type="button" th:onclick="((${userId} == null)? 'location.href=\'/\'' : 'location.href=\''
+                                     + @{/user/id={userId} (userId=${userId})} + '\'')">Back</button></div>
+    </div>
+</div>
+<div th:fragment="guest-form-buttons (submitLabel, formId)">
+    <div class="form_buttons">
+        <div style="context_button"><button type="submit" th:form="${formId}" th:text="${submitLabel}"></button></div>
+        <div style="context_button"><button type="button" th:onclick="'location.href=\''
+                                     + @{/user/id={userId} (userId=${userId})} + '\''">Back</button></div>
+    </div>
+</div>
+</body>
+</html>

@@ -3,26 +3,28 @@
     <head>
         <title>My blog</title>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-        <style>
-            ul#menu li{
-                display:inline;
-            }
-        </style>
+        <link type="text/css" rel="stylesheet" th:href="@{/css/styles.css}">
     </head>
     <body>
         <div align="right">
-            <ul id="menu">
+            <ul class="menu">
                 <li>
-                    <button type="button" th:onclick="'location.href=\''
+                    <div class="context_button">
+                        <button type="button" th:onclick="'location.href=\''
                                      + @{/user/id={userId}/findUsers (userId=${userId})} + '\''">Back</button>
+                    </div>
                 </li>
                 <li>
-                    <button type="button" th:onclick="'location.href=\''
+                    <div class="context_button">
+                        <button type="button" th:onclick="'location.href=\''
                                      + @{/user/id={userId} (userId=${userId})} + '\''">Home page</button>
+                    </div>
                 </li>
                 <li>
-                    <button type="button" th:onclick="'location.href=\''
+                    <div class="context_button">
+                        <button type="button" th:onclick="'location.href=\''
                                      + @{/} + '\''">Log out</button>
+                    </div>
                 </li>
             </ul>
         </div>
@@ -39,7 +41,7 @@
             </tr>
             <tr>
                 <td>
-                    <button type="button" th:onclick="'location.href=\''
+                    <button class="context_button" type="button" th:onclick="'location.href=\''
                      + @{/user/id={userId}/showUserPage/id={id} (userId=${userId}, id=${user.id})}
                       + '\''">View page</button>
                 </td>

@@ -3,38 +3,29 @@
     <head>
         <title>My blog</title>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-        <style>
-            ul#menu li{
-                display:inline;
-            }
-        </style>
+        <link type="text/css" rel="stylesheet" th:href="@{/css/styles.css}">
     </head>
     <body>
-        <div align="right">
-            <ul id="menu">
-                <li>
-                    <button type="button" th:onclick="'location.href=\''
-                                 + @{/user/id={userId} (userId=${userId})} + '\''">Back</button>
-                </li>
-                <li>
-                    <button type="button" th:onclick="'location.href=\''
-                                 + @{/user/id={userId} (userId=${userId})} + '\''">Home page</button>
-                </li>
-                <li>
-                    <button type="button" th:onclick="'location.href=\''
-                                 + @{/} + '\''">Log out</button>
-                </li>
-            </ul>
-        </div>
+        <div th:replace="fragments::buttons-menu (${userId})"></div>
         <h1 align="center">Find users</h1>
-        <form action="#" th:action = "@{/user/id={id}/findUsers (id=${userId})}" method="post">
-            <p>
-                <input type="text" maxlength="20" placeholder="name" th:field="${userInfo.name}">
-            </p>
-            <p>
-                <input type="text" maxlength="30" placeholder="surname" th:field="${userInfo.surname}">
-            </p>
-            <button type="submit">Find</button>
+        <form id="findUsers" action="#" th:action = "@{/user/id={id}/findUsers (id=${userId})}" method="post">
+            <table>
+                <tr>
+                    <td>
+                        <p>
+                            <input type="text" maxlength="20" placeholder="name" th:field="${userInfo.name}">
+                        </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <p>
+                            <input type="text" maxlength="30" placeholder="surname" th:field="${userInfo.surname}">
+                        </p>
+                    </td>
+                </tr>
+            </table>
+            <div th:replace="fragments::form-buttons (${userId}, 'Find', 'findUsers')"></div>
         </form>
     </body>
 </html>

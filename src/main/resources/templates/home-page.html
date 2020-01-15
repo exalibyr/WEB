@@ -3,31 +3,27 @@
     <head>
         <title>My blog</title>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-        <style>
-            ul#menu li{
-                display:inline;
-            }
-        </style>
+        <link type="text/css" rel="stylesheet" th:href="@{/css/styles.css}">
     </head>
     <body>
         <div align="right">
-            <ul id="menu">
+            <ul class="menu">
                 <li>
-                    <div>
+                    <div class="context_button">
                         <button type="button" th:onclick="'location.href=\''
                         + @{/user/id={userId}/createPublication (userId=${user.id})} + '\''">Create publication</button>
                     </div>
 
                 </li>
                 <li>
-                    <div>
+                    <div class="context_button">
                         <button type="button" th:onclick="'location.href=\''
                         + @{/user/id={userId}/editProfile (userId=${user.id})} + '\''">Edit profile</button>
                     </div>
 
                 </li>
                 <li>
-                    <div>
+                    <div class="context_button">
                         <button type="button" th:onclick="'location.href=\''
                         + @{/user/id={userId}/findUsers (userId=${user.id})} + '\''">Find users</button>
                     </div>
@@ -36,9 +32,9 @@
                 <li>
                     <!--<button type="button" th:onclick="'location.href=\''-->
                      <!--+ @{/logout} + '\''">Log out</button>-->
-                    <div>
+                    <div class="context_button">
                         <form th:action="@{/logout}" method="post">
-                            <button type="submit">Sign out</button>
+                            <button type="submit">Log out</button>
                         </form>
                     </div>
                 </li>
@@ -72,14 +68,11 @@
                 <td><label th:text="${publication.content}"></label></td>
             </tr>
             <tr>
-                <td><img th:src="${publication.pictureUrl}" alt="Image not found" width="450" height="300"></td>
-            </tr>
-            <tr>
                 <td><label th:text="${publication.dateTime}"></label></td>
             </tr>
             <tr>
                 <td>
-                    <button type="button" th:onclick="'location.href=\''
+                    <button class="context_button" type="button" th:onclick="'location.href=\''
                      + @{/user/id={userId}/deletePublication/id={pubId} (userId=${user.id}, pubId=${publication.id})}
                      + '\''">Delete this publication</button>
                 </td>

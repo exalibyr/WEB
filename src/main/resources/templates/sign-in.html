@@ -3,9 +3,10 @@
     <head>
         <title>My blog</title>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <link type="text/css" rel="stylesheet" th:href="@{css/styles.css}">
     </head>
     <body>
-        <form action="#" th:action = "@{/sign-in}" th:object="${verificationForm}" method="post">
+        <form id="sign-in" action="#" th:action = "@{/sign-in}" th:object="${verificationForm}" method="post">
             <table>
                 <tr>
                     <td>Login </td>
@@ -17,10 +18,8 @@
                     <td><input type="password" maxlength="30" th:field="*{userPassword}"/></td>
                     <td th:if="${#fields.hasErrors('userPassword')}" th:errors="*{userPassword}">Password length must be from 5 to 30 symbols</td>
                 </tr>
-                <tr>
-                    <td><button type="submit">Sign in</button></td>
-                </tr>
             </table>
+            <div th:replace="fragments::form-buttons (null, 'Sign in', 'sign-in')"></div>
         </form>
         <div th:if="${param.error}">
             Incorrect username or password!

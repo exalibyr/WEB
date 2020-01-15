@@ -3,38 +3,22 @@
     <head>
         <title>My blog</title>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-        <style>
-            ul#menu li{
-                display:inline;
-            }
-        </style>
+        <link type="text/css" rel="stylesheet" th:href="@{/css/styles.css}">
     </head>
     <body>
-        <div align="right">
-            <ul id="menu">
-                <li>
-                    <button type="button" th:onclick="'location.href=\''
-                                     + @{/user/id={userId} (userId=${userId})} + '\''">Back</button>
-                </li>
-                <li>
-                    <button type="button" th:onclick="'location.href=\''
-                                     + @{/user/id={userId} (userId=${userId})} + '\''">Home page</button>
-                </li>
-                <li>
-                    <button type="button" th:onclick="'location.href=\''
-                                     + @{/} + '\''">Log out</button>
-                </li>
-            </ul>
-        </div>
+        <div th:replace="fragments::buttons-menu (${userId}})"></div>
         <h1 align="center">Create publication</h1>
-        <form action="#" th:action = "@{/user/id={id}/createPublication(id=${userId})}" th:object="${publicationForm}" method="post">
-            <p>
-                <textarea cols="50" rows="1" maxlength="50" placeholder="Write title here" th:field="*{title}"></textarea>
-            </p>
-            <p>
-                <textarea cols="100" rows="5" maxlength="500" placeholder="Write text here" th:field="*{content}"></textarea>
-            </p>
-            <button type="submit">Save</button>
-        </form>
+        <div class="">
+            <form id= "createPublication" action="#" th:action = "@{/user/id={id}/createPublication(id=${userId})}" th:object="${publicationForm}" method="post">
+                <p>
+                    <textarea cols="50" rows="1" maxlength="50" placeholder="Write title here" th:field="*{title}"></textarea>
+                </p>
+                <p>
+                    <textarea cols="100" rows="5" maxlength="500" placeholder="Write text here" th:field="*{content}"></textarea>
+                </p>
+                <div th:replace="fragments::form-buttons (${userId}, 'Save', 'createPublication')"></div>
+            </form>
+        </div>
+
     </body>
 </html>
