@@ -4,6 +4,7 @@ import com.excalibur.myBlog.controller.service.PublicationService;
 import com.excalibur.myBlog.controller.service.UserService;
 import com.excalibur.myBlog.controller.service.VerificationDataService;
 import com.excalibur.myBlog.dao.Publication;
+import com.excalibur.myBlog.dao.Role;
 import com.excalibur.myBlog.dao.User;
 import com.excalibur.myBlog.form.EditProfileForm;
 import com.excalibur.myBlog.form.PublicationForm;
@@ -21,10 +22,11 @@ import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Controller
 //@PreAuthorize(value = "hasRole('USER')")
-public class UserController{
+public class UserController {
 
     @Autowired
     private UserService userService;
@@ -39,7 +41,7 @@ public class UserController{
     @GetMapping(value = "/user/redirect")
     public String loginSuccess(HttpServletRequest httpServletRequest){
         String login = httpServletRequest.getRemoteUser();
-        Integer id = verificationDataService.findByLogin(login).getUserId();
+        Integer id = verificationDataService.findByLogin(login).getUser().getId();
        return "redirect:/user/id="
                + id;
     }
@@ -54,9 +56,9 @@ public class UserController{
             List<Publication> publications = publicationService.findPublicationsByUser(user);
             model.addAttribute("publications", publications);
             if ( user.hasAvatar()) {
-                model.addAttribute("avatarURL", Environment.fileServerDomain + "/user/" + userId + "/avatar");
+                model.addAttribute("avatarURL", Environment.getFileServerDomain() + "/user/" + userId + "/avatar");
             } else {
-                model.addAttribute("avatarURL", Environment.fileServerDomain + Environment.defaultAvatarURI);
+                model.addAttribute("avatarURL", Environment.getFileServerDomain() + Environment.getDefaultAvatarURI());
             }
             return "home-page";
         }
@@ -69,7 +71,6 @@ public class UserController{
     public String getPublicationForm( @PathVariable(name = "userId") Integer userId,
                                     PublicationForm publicationForm,
                                     Model model){
-        model.addAttribute("userId", userId);
         return "createPublication";
     }
 
@@ -148,15 +149,14 @@ public class UserController{
     public String getEditProfilePage( @PathVariable(name = "userId") Integer userId,
 //                                      EditProfileForm editProfileForm,
                                       Model model){
-//        model.addAttribute("userId", userId);
         Optional<User> userOptional = userService.findUserById(userId);
         if (userOptional.isPresent()) {
             User user = userOptional.get();
             model.addAttribute("user", user);
             if ( user.hasAvatar()) {
-                model.addAttribute("avatarURL", Environment.fileServerDomain + "/user/" + userId + "/avatar");
+                model.addAttribute("avatarURL", Environment.getFileServerDomain() + "/user/" + userId + "/avatar");
             } else {
-                model.addAttribute("avatarURL", Environment.fileServerDomain + Environment.defaultAvatarURI);
+                model.addAttribute("avatarURL", Environment.getFileServerDomain() + Environment.getDefaultAvatarURI());
             }
             return "editProfilePage";
         } else {
@@ -174,14 +174,6 @@ public class UserController{
             return "redirect:/user/id=" + userId + "/editProfile";
         }
         else {
-//            User user = new User();
-//            user.setId(userId);
-//            user.setName(editProfileForm.getName());
-//            user.setSurname(editProfileForm.getSurname());
-//            user.setAbout(editProfileForm.getAbout());
-//            if (editProfileForm.getAvatar() != null) {
-//                user.setHasAvatar(true);
-//            }
             userService.updateUser(user);
             return "redirect:/user/id=" + userId;
         }

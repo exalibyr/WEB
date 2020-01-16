@@ -1,15 +1,17 @@
 package com.excalibur.myBlog.controller;
 
 
+import com.excalibur.myBlog.controller.service.Impl.RoleServiceImpl;
+import com.excalibur.myBlog.controller.service.RoleService;
 import com.excalibur.myBlog.controller.service.UserService;
 import com.excalibur.myBlog.controller.service.VerificationDataService;
+import com.excalibur.myBlog.dao.Role;
 import com.excalibur.myBlog.dao.User;
 import com.excalibur.myBlog.dao.VerificationData;
 import com.excalibur.myBlog.form.RegistrationForm;
 import com.excalibur.myBlog.form.VerificationForm;
+import com.excalibur.myBlog.utils.Environment;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -17,9 +19,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.Optional;
+import java.util.Set;
 
 @Controller
 public class GuestController {
@@ -29,6 +31,9 @@ public class GuestController {
 
     @Autowired
     VerificationDataService verificationDataService;
+
+    @Autowired
+    RoleServiceImpl roleService;
 
 
     @GetMapping(value = "/sign-in")
@@ -66,14 +71,18 @@ public class GuestController {
     public String tryToRegisterUser( @Valid RegistrationForm registrationForm, BindingResult bindingResult){
         if(bindingResult.hasErrors()){
             return "sign-up";
-        }
-        else{
-            User newUser = registrationForm.getUser();
-            VerificationData userVerificationData = registrationForm.getValidationData();
-            newUser.setVerificationData(userVerificationData);
-            userVerificationData.setUser(newUser);
-            userService.registerNewUser(newUser);
-            return "redirect:/registration-success/id=" + newUser.getId();
+        } else{
+            if (roleService.matchWithDatabase(Environment.getUserRolesString())) {
+                User newUser = registrationForm.getUser();
+                VerificationData userVerificationData = registrationForm.getValidationData();
+                newUser.setVerificationData(userVerificationData);
+                userVerificationData.setUser(newUser);
+                newUser.setRoles(roleService.getAllowedRoles(Environment.UserRole.admin.toString()));
+                newUser = userService.registerNewUser(newUser);
+                return "redirect:/registration-success/id=" + newUser.getId();
+            } else {
+                throw new RuntimeException("Roles not matched to database");
+            }
         }
     }
 

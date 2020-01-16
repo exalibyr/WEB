@@ -16,8 +16,14 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-    public void registerNewUser(User user){
-        userRepository.save(user);
+    @Autowired
+    private VerificationDataRepository verificationDataRepository;
+
+    public User registerNewUser(User user){
+        user.setId(userRepository.saveUser(user));
+        userRepository.saveUserRoles(user);
+        verificationDataRepository.saveVerificationData(user.getVerificationData());
+        return user;
     }
 
     public void deleteUser(User user){
@@ -29,7 +35,7 @@ public class UserService {
     }
 
     public void updateUser(User user){
-        userRepository.save(user);
+        userRepository.updateUser(user);
     }
 
     public Optional<List<User>> findUsersByNameOrSurname(String name, String surname){

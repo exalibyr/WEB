@@ -22,4 +22,8 @@ public class VerificationDataService {
         return verificationDataRepository.findByLogin(login);
     }
 
+    public int saveData(VerificationData verificationData) {
+        return verificationDataRepository.saveVerificationData(verificationData);
+    }
+
 }

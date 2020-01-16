@@ -18,7 +18,7 @@ import java.util.*;
 public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Autowired
-    VerificationDataRepository verificationDataRepository;
+    private VerificationDataRepository verificationDataRepository;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -27,13 +27,15 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             VerificationData verificationData = verificationDataRepository.findByLogin(username);
             return new User(verificationData.getLogin(),
                     verificationData.getPassword(),
-                    verificationData.getRoles());
+                    verificationData.getUser().getRoles());
         }
         catch (Exception e){
             e.printStackTrace();
             return null;
         }
     }
+
+
 
 
 }
