@@ -9,7 +9,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "role", schema = "public")
-public class Role implements GrantedAuthority{
+public class Role implements GrantedAuthority {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "role_id_seq")
@@ -17,12 +17,14 @@ public class Role implements GrantedAuthority{
     private Integer id;
 
     @Column(name = "role", nullable = false, insertable = false, length = 10)
-    private String role;
+    private String roleName;
 
+    @Column(name = "priority", nullable = false, insertable = false)
+    private Integer priority;
 
     @ManyToMany(mappedBy = "roles", fetch = FetchType.LAZY)
-    @Cascade(value = CascadeType.SAVE_UPDATE)
-    Set<VerificationData> verificationDataSet;
+    @Cascade(value = CascadeType.ALL)
+    private Set<User> users;
 
     public Role() {
     }
@@ -35,24 +37,32 @@ public class Role implements GrantedAuthority{
         this.id = id;
     }
 
-    public String getRole() {
-        return role;
+    public String getRoleName() {
+        return roleName;
     }
 
-    public void setRole(String role) {
-        this.role = role;
+    public void setRoleName(String roleName) {
+        this.roleName = roleName;
     }
 
-    public Set<VerificationData> getVerificationDataSet() {
-        return verificationDataSet;
+    public Set<User> getUsers() {
+        return users;
     }
 
-    public void setVerificationDataSet(Set<VerificationData> verificationDataSet) {
-        this.verificationDataSet = verificationDataSet;
+    public void setUsers(Set<User> users) {
+        this.users = users;
+    }
+
+    public Integer getPriority() {
+        return priority;
+    }
+
+    public void setPriority(Integer priority) {
+        this.priority = priority;
     }
 
     @Override
     public String getAuthority() {
-        return getRole();
+        return getRoleName();
     }
 }

@@ -11,25 +11,19 @@ import java.util.Set;
 public class VerificationData {
 
     @Id
-    private Integer userId;
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_verification_data_id_seq")
+    @SequenceGenerator(name = "user_verification_data_id_seq", sequenceName = "user_verification_data_id_seq", allocationSize = 1)
+    private Integer id;
 
-    @Column(name = "user_login")
+    @Column(name = "user_login", unique = true, length = 20, nullable = false, updatable = false)
     private String login;
 
-    @Column(name = "user_password", nullable = false)
+    @Column(name = "user_password", nullable = false, length = 30)
     private String password;
 
     @OneToOne(optional = false, fetch = FetchType.LAZY)
-    @Cascade(value = CascadeType.SAVE_UPDATE)
     @JoinColumn(name = "user_id", unique = true, nullable = false, updatable = false)
     private User user;
-
-    @ManyToMany(fetch = FetchType.LAZY)
-    @Cascade(value = CascadeType.SAVE_UPDATE)
-    @JoinTable(name = "user_role", schema = "public",
-            joinColumns = {@JoinColumn(name = "user_id", nullable = false)},
-            inverseJoinColumns = {@JoinColumn(name = "role_id", nullable = false)})
-    private Set<Role> roles;
 
     public VerificationData() {
     }
@@ -39,12 +33,12 @@ public class VerificationData {
         this.password = password;
     }
 
-    public Integer getUserId() {
-        return userId;
+    public Integer getId() {
+        return id;
     }
 
-    public void setUserId(Integer userId) {
-        this.userId = userId;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getLogin() {
@@ -72,11 +66,4 @@ public class VerificationData {
         this.user = user;
     }
 
-    public Set<Role> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(Set<Role> roles) {
-        this.roles = roles;
-    }
 }

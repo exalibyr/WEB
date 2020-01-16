@@ -30,12 +30,12 @@ public class User {
     @Column(name = "about")
     private String about;
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
-    @Cascade(value = {CascadeType.SAVE_UPDATE, CascadeType.DELETE})
+    @OneToMany(mappedBy = "user")
+    @Cascade(value = CascadeType.DELETE)
     private List<Publication> publications;
 
     @OneToOne(optional = false, mappedBy = "user", fetch = FetchType.LAZY)
-    @Cascade(value = CascadeType.ALL)
+    @Cascade(value = CascadeType.DELETE)
     private VerificationData verificationData;
 
     @Column(name = "avatar_url")
@@ -43,6 +43,17 @@ public class User {
 
     @Column(name = "has_avatar")
     private boolean hasAvatar;
+
+    @OneToMany(mappedBy = "user")
+    @Cascade(value = CascadeType.DELETE)
+    private Set<File> files;
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @Cascade(value = CascadeType.ALL)
+    @JoinTable(name = "user_role", schema = "public",
+            joinColumns = {@JoinColumn(name = "user_id", nullable = false)},
+            inverseJoinColumns = {@JoinColumn(name = "role_id", nullable = false)})
+    private Set<Role> roles;
 
 
     public User() {
@@ -127,5 +138,21 @@ public class User {
 
     public void setHasAvatar(boolean hasAvatar) {
         this.hasAvatar = hasAvatar;
+    }
+
+    public Set<File> getFiles() {
+        return files;
+    }
+
+    public void setFiles(Set<File> files) {
+        this.files = files;
+    }
+
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
     }
 }

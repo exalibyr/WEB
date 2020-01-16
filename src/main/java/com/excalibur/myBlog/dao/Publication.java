@@ -26,15 +26,11 @@ public class Publication {
     private String content;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @Cascade(value = {CascadeType.SAVE_UPDATE})
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @Column(name = "picture_url")
-    private String pictureUrl;
-
-    @OneToMany(mappedBy = "publication", fetch = FetchType.LAZY)
-    @Cascade(value = CascadeType.ALL)
+    @OneToMany(mappedBy = "publication")
+    @Cascade(value = {CascadeType.SAVE_UPDATE})
     private Set<File> files;
 
     public Publication() {
@@ -83,14 +79,6 @@ public class Publication {
 
     public void setUser(User user) {
         this.user = user;
-    }
-
-    public String getPictureUrl() {
-        return pictureUrl;
-    }
-
-    public void setPictureUrl(String pictureUrl) {
-        this.pictureUrl = pictureUrl;
     }
 
     public Set<File> getFiles() {
