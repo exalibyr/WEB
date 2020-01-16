@@ -6,6 +6,7 @@
         <link type="text/css" rel="stylesheet" th:href="@{/css/styles.css}">
     </head>
     <body>
+        <h1 align="center" th:text="'Page of user: ' + ${user.name} + ' ' + ${user.surname}"></h1>
         <div align="right">
             <ul class="menu">
                 <li>
@@ -28,7 +29,6 @@
                 </li>
             </ul>
         </div>
-        <h1 align="center" th:text="'Page of user: ' + ${user.name} + ' ' + ${user.surname}"></h1>
         <table>
             <tr>
                 <td><img th:src="${user.avatarUrl}" alt="Image not found" width="300" height="200"></td>

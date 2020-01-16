@@ -6,6 +6,7 @@
         <link type="text/css" rel="stylesheet" th:href="@{/css/styles.css}">
     </head>
     <body>
+        <h1 align="center" th:text="'Welcome to your home page, ' + ${user.name} + '!'"></h1>
         <div align="right">
             <ul class="menu">
                 <li>
@@ -40,7 +41,6 @@
                 </li>
             </ul>
         </div>
-        <h1 align="center" th:text="'Welcome to your home page, ' + ${user.name} + '!'"></h1>
         <table>
             <tr>
                 <td><img id="userAvatar" th:src="${avatarURL}" width="300" height="400"></td>

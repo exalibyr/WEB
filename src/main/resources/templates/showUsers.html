@@ -6,6 +6,7 @@
         <link type="text/css" rel="stylesheet" th:href="@{/css/styles.css}">
     </head>
     <body>
+        <h3 align="center">Found users</h3>
         <div align="right">
             <ul class="menu">
                 <li>
@@ -28,7 +29,6 @@
                 </li>
             </ul>
         </div>
-        <h3 align="center">Found users</h3>
         <table th:each="user : ${users}">
             <tr>
                 <td><img th:src="${user.avatarUrl}" alt="Image not found" width="300" height="200"></td>

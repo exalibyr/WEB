@@ -6,9 +6,9 @@
         <link type="text/css" rel="stylesheet" th:href="@{/css/styles.css}">
     </head>
     <body>
-        <div th:replace="fragments::buttons-menu (${userId}})"></div>
         <h1 align="center">Create publication</h1>
-        <div class="">
+        <div th:replace="fragments::buttons-menu (${userId})"></div>
+        <div>
             <form id= "createPublication" action="#" th:action = "@{/user/id={id}/createPublication(id=${userId})}" th:object="${publicationForm}" method="post">
                 <p>
                     <textarea cols="50" rows="1" maxlength="50" placeholder="Write title here" th:field="*{title}"></textarea>

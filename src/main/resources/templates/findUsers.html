@@ -6,8 +6,8 @@
         <link type="text/css" rel="stylesheet" th:href="@{/css/styles.css}">
     </head>
     <body>
-        <div th:replace="fragments::buttons-menu (${userId})"></div>
         <h1 align="center">Find users</h1>
+        <div th:replace="fragments::buttons-menu (${userId})"></div>
         <form id="findUsers" action="#" th:action = "@{/user/id={id}/findUsers (id=${userId})}" method="post">
             <table>
                 <tr>
