@@ -2,14 +2,21 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
     <head>
         <title>My blog</title>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <meta http-equiv="Content-Type" content="charset=UTF-8" />
+        <link type="text/css" rel="stylesheet" th:href="@{css/styles.css}">
     </head>
     <body>
-        <h1 align="center" th:text="'Congratulations, ' + ${user.name} +
-         ' ' + ${user.surname} + '! You managed to create account!'"></h1>
-        <h2 align="center">Go to <a th:href="@{/sign-in}">log-in page</a>.</h2>
         <div align="center">
-            <img width="600" height="400" src="../static/img/welcome.gif" th:src="@{/img/welcome.gif}">
+            <input id="user-id" type="hidden" th:value="${user.Id}"/>
+            <h1 th:text="'Congratulations, ' + ${user.name} +
+             ' ' + ${user.surname} + '! You managed to create account!'"></h1>
+            <h2>Now login</h2>
+            <div>
+                <img width="600" height="400" th:src="${welcomeURI}">
+            </div>
+            <div class="context_button">
+                <button type="button" th:onclick="'location.href=\'/login\''">Log in</button>
+            </div>
         </div>
     </body>
 </html>

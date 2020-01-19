@@ -4,9 +4,7 @@ import com.excalibur.myBlog.controller.service.PublicationService;
 import com.excalibur.myBlog.controller.service.UserService;
 import com.excalibur.myBlog.controller.service.VerificationDataService;
 import com.excalibur.myBlog.dao.Publication;
-import com.excalibur.myBlog.dao.Role;
 import com.excalibur.myBlog.dao.User;
-import com.excalibur.myBlog.form.EditProfileForm;
 import com.excalibur.myBlog.form.PublicationForm;
 import com.excalibur.myBlog.utils.Environment;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +20,6 @@ import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 @Controller
 //@PreAuthorize(value = "hasRole('USER')")
@@ -56,21 +53,20 @@ public class UserController {
             List<Publication> publications = publicationService.findPublicationsByUser(user);
             model.addAttribute("publications", publications);
             if ( user.hasAvatar()) {
-                model.addAttribute("avatarURL", Environment.getFileServerDomain() + "/user/" + userId + "/avatar");
+                model.addAttribute("avatarURI", Environment.getFileStorageURL() + "/user/" + userId + "/avatar");
             } else {
-                model.addAttribute("avatarURL", Environment.getFileServerDomain() + Environment.getDefaultAvatarURI());
+                model.addAttribute("avatarURI", Environment.getDefaultAvatarURI());
             }
             return "home-page";
         }
         else {
-            return "error-page";
+            return "redirect:/error";
         }
     }
 
     @GetMapping(value = "/user/id={userId}/createPublication")
     public String getPublicationForm( @PathVariable(name = "userId") Integer userId,
-                                    PublicationForm publicationForm,
-                                    Model model){
+                                    PublicationForm publicationForm) {
         return "createPublication";
     }
 
@@ -95,7 +91,7 @@ public class UserController {
                 return "redirect:/user/id=" + userId;
             }
             else {
-                return "error-page";
+                return "redirect:/error";
             }
         }
     }
@@ -141,7 +137,7 @@ public class UserController {
             return "showUserPage";
         }
         else {
-            return "error-page";
+            return "redirect:/error";
         }
     }
 
@@ -154,13 +150,13 @@ public class UserController {
             User user = userOptional.get();
             model.addAttribute("user", user);
             if ( user.hasAvatar()) {
-                model.addAttribute("avatarURL", Environment.getFileServerDomain() + "/user/" + userId + "/avatar");
+                model.addAttribute("avatarURI", Environment.getFileStorageURL() + "/user/" + userId + "/avatar");
             } else {
-                model.addAttribute("avatarURL", Environment.getFileServerDomain() + Environment.getDefaultAvatarURI());
+                model.addAttribute("avatarURI", Environment.getDefaultAvatarURI());
             }
             return "editProfilePage";
         } else {
-            return "error-page";
+            return "redirect:/error";
         }
 
     }
@@ -186,11 +182,6 @@ public class UserController {
     {
         publicationService.deletePublicationById(pubId);
         return "redirect:/user/id=" + userId;
-    }
-
-    @GetMapping(value = "/error")
-    public String error(){
-        return "error-page";
     }
 
 }

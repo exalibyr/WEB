@@ -25,9 +25,13 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
         try{
             VerificationData verificationData = verificationDataRepository.findByLogin(username);
-            return new User(verificationData.getLogin(),
-                    verificationData.getPassword(),
-                    verificationData.getUser().getRoles());
+            if (verificationData != null) {
+                return new User(verificationData.getLogin(),
+                        verificationData.getPassword(),
+                        verificationData.getUser().getRoles());
+            } else {
+                return null;
+            }
         }
         catch (Exception e){
             e.printStackTrace();

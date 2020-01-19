@@ -1,21 +1,28 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <title>My blog</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <link type="text/css" rel="stylesheet" th:href="@{css/styles.css}">
-</head>
+    <head>
+        <title>My blog</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <link type="text/css" rel="stylesheet" th:href="@{css/styles.css}">
+    </head>
     <body>
-        <form id="log-in" th:action="@{/login}" method="post" th:object="${user}">
-            <div><label> User Name : <input type="text" name="username"/></label></div>
-            <div><label> Password: <input type="password" name="password"/></label></div>
-            <div th:replace="fragments::form-buttons (null, 'Log in', 'log-in')"></div>
-        </form>
-        <div th:if="${param.error}">
-            Incorrect username or password!
-        </div>
-        <div th:if="${param.logout}">
-            You have successfully logged out
+        <div align="center">
+            <h1>Welcome to blog</h1>
+            <form th:id="${#execInfo.templateName}" th:action="@{/login}" method="post" th:object="${user}">
+                <div><label> User Name : <input type="text" name="username"/></label></div>
+                <div><label> Password: <input type="password" name="password"/></label></div>
+                <div class="context_button"><button type="submit" th:form="${#execInfo.templateName}">Log in</button></div>
+            </form>
+            <div th:if="${param.error}">
+                Incorrect username or password!
+            </div>
+            <div th:if="${param.logout}">
+                You have successfully logged out
+            </div>
+            <div>
+                <p>Not registered yet? Sign up!</p>
+                <button type="button" th:onclick="'location.href=\'/sign-up\''">Create account</button>
+            </div>
         </div>
     </body>
 </html>
