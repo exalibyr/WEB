@@ -22,15 +22,15 @@
     </head>
     <body>
         <h1 align="center">Here, you can update information about yourself.</h1>
-        <div th:replace="fragments::buttons-menu (${userId})"></div>
+        <div th:replace="fragments::buttons-menu (${userId}, ${#execInfo.templateName})"></div>
         <div class="content_wrap">
             <h3>Profile picture</h3>
             <div class="avatar">
-                <img th:src="${avatarURL}" class="avatar_img">
+                <img th:src="${avatarURI}" class="avatar_img">
                 <input type="hidden" id="pond" class="pond"/>
             </div>
             <div class="data_form">
-                <form id="editProfile" action="#" th:action = "@{/user/id={userId}/editProfile (userId=${user.id})}" th:object="${user}" method="post">
+                <form th:id="${execInfo.templateName}" action="#" th:action = "@{/user/id={userId}/editProfile (userId=${user.id})}" th:object="${user}" method="post">
                     <input type="hidden" th:field="*{id}"/>
                     <table>
                         <tr>
@@ -68,7 +68,7 @@
                             <td><br></td>
                         </tr>
                     </table>
-                    <div th:replace="fragments::form-buttons (${userId}, 'Save', 'editProfile')"></div>
+                    <div th:replace="fragments::form-buttons (${userId}, 'Save', ${#execInfo.templateName})"></div>
                 </form>
             </div>
         </div>

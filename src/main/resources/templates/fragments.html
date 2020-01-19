@@ -1,32 +1,51 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <link type="text/css" rel="stylesheet" th:href="@{/css/styles.css}">
-</head>
-<body>
-<div th:fragment="buttons-menu (userId)">
-    <div align="right">
-        <ul class="menu">
-            <li><div class="context_button">
-                <button type="button" th:onclick="'location.href=\''
-                                     + @{/user/id={userId} (userId=${userId})} + '\''">Home page</button>
+    <head>
+        <meta charset="UTF-8">
+        <link type="text/css" rel="stylesheet" th:href="@{/css/styles.css}">
+    </head>
+    <body>
+        <div th:fragment="buttons-menu (userId, templateName)">
+            <div align="right">
+                <ul class="menu">
+                    <li th:if="${not #strings.equals(templateName, 'createPublication')}">
+                        <div class="context_button">
+                            <button type="button" th:onclick="'location.href=\''
+                                + @{/user/id={userId}/createPublication (userId=${userId})} + '\''">Create publication</button>
+                        </div>
+                    </li>
+                    <li th:if="${not #strings.equals(templateName, 'editProfilePage')}">
+                        <div class="context_button">
+                            <button type="button" th:onclick="'location.href=\''
+                             + @{/user/id={userId}/editProfile (userId=${userId})} + '\''">Edit profile</button>
+                        </div>
+                    </li>
+                    <li th:if="${not #strings.equals(templateName, 'findUsers')}">
+                        <div class="context_button">
+                            <button type="button" th:onclick="'location.href=\''
+                             + @{/user/id={userId}/findUsers (userId=${userId})} + '\''">Find users</button>
+                        </div>
+                    </li>
+                    <li th:if="${not #strings.equals(templateName, 'home-page')}">
+                        <div class="context_button">
+                            <button type="button" th:onclick="'location.href=\''
+                                                 + @{/user/id={userId} (userId=${userId})} + '\''">Home page</button>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="context_button"><button type="button" th:onclick="'location.href=\''
+                                             + @{/} + '\''">Log out</button>
+                        </div>
+                    </li>
+                </ul>
             </div>
-            </li>
-            <li>
-                <div class="context_button"><button type="button" th:onclick="'location.href=\''
-                                     + @{/} + '\''">Log out</button>
-                </div>
-            </li>
-        </ul>
-    </div>
-</div>
-<div th:fragment="form-buttons (userId, submitLabel, formId)">
-    <div class="form_buttons">
-        <div style="context_button"><button type="submit" th:form="${formId}" th:text="${submitLabel}"></button></div>
-        <div style="context_button"><button type="button" th:onclick="((${userId} == null)? 'location.href=\'/\'' : 'location.href=\''
-                                     + @{/user/id={userId} (userId=${userId})} + '\'')">Back</button></div>
-    </div>
-</div>
-</body>
+        </div>
+        <div th:fragment="form-buttons (userId, submitLabel, templateName)">
+            <div class="form_buttons">
+                <div class="context_button"><button type="submit" th:form="${templateName}" th:text="${submitLabel}"></button></div>
+                <div class="context_button"><button type="button" th:onclick="((${userId} == null)? 'location.href=\'/\'' : 'location.href=\''
+                                             + @{/user/id={userId} (userId=${userId})} + '\'')">Back</button></div>
+            </div>
+        </div>
+    </body>
 </html>

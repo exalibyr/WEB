@@ -7,43 +7,10 @@
     </head>
     <body>
         <h1 align="center" th:text="'Welcome to your home page, ' + ${user.name} + '!'"></h1>
-        <div align="right">
-            <ul class="menu">
-                <li>
-                    <div class="context_button">
-                        <button type="button" th:onclick="'location.href=\''
-                        + @{/user/id={userId}/createPublication (userId=${user.id})} + '\''">Create publication</button>
-                    </div>
-
-                </li>
-                <li>
-                    <div class="context_button">
-                        <button type="button" th:onclick="'location.href=\''
-                        + @{/user/id={userId}/editProfile (userId=${user.id})} + '\''">Edit profile</button>
-                    </div>
-
-                </li>
-                <li>
-                    <div class="context_button">
-                        <button type="button" th:onclick="'location.href=\''
-                        + @{/user/id={userId}/findUsers (userId=${user.id})} + '\''">Find users</button>
-                    </div>
-
-                </li>
-                <li>
-                    <!--<button type="button" th:onclick="'location.href=\''-->
-                     <!--+ @{/logout} + '\''">Log out</button>-->
-                    <div class="context_button">
-                        <form th:action="@{/logout}" method="post">
-                            <button type="submit">Log out</button>
-                        </form>
-                    </div>
-                </li>
-            </ul>
-        </div>
+        <div th:replace="fragments::buttons-menu (${user.Id}, ${#execInfo.templateName})"></div>
         <table>
             <tr>
-                <td><img id="userAvatar" th:src="${avatarURL}" width="300" height="400"></td>
+                <td><img id="userAvatar" th:src="${avatarURI}" width="300" height="400"></td>
             </tr>
             <tr>
                 <td><label th:text="${user.name} + ' ' + ${user.surname}"></label></td>

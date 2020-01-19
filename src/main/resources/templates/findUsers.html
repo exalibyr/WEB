@@ -7,8 +7,8 @@
     </head>
     <body>
         <h1 align="center">Find users</h1>
-        <div th:replace="fragments::buttons-menu (${userId})"></div>
-        <form id="findUsers" action="#" th:action = "@{/user/id={id}/findUsers (id=${userId})}" method="post">
+        <div th:replace="fragments::buttons-menu (${userId}, ${#execInfo.templateName})"></div>
+        <form th:id="${#execInfo.templateName}" action="#" th:action = "@{/user/id={id}/findUsers (id=${userId})}" method="post">
             <table>
                 <tr>
                     <td>
@@ -25,7 +25,7 @@
                     </td>
                 </tr>
             </table>
-            <div th:replace="fragments::form-buttons (${userId}, 'Find', 'findUsers')"></div>
+            <div th:replace="fragments::form-buttons (${userId}, 'Find', ${#execInfo.templateName})"></div>
         </form>
     </body>
 </html>

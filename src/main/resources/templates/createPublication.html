@@ -7,16 +7,16 @@
     </head>
     <body>
         <h1 align="center">Create publication</h1>
-        <div th:replace="fragments::buttons-menu (${userId})"></div>
+        <div th:replace="fragments::buttons-menu (${userId}, ${execInfo.templateName})"></div>
         <div>
-            <form id= "createPublication" action="#" th:action = "@{/user/id={id}/createPublication(id=${userId})}" th:object="${publicationForm}" method="post">
+            <form th:id= "${#execInfo.templateName}" action="#" th:action = "@{/user/id={id}/createPublication(id=${userId})}" th:object="${publicationForm}" method="post">
                 <p>
                     <textarea cols="50" rows="1" maxlength="50" placeholder="Write title here" th:field="*{title}"></textarea>
                 </p>
                 <p>
                     <textarea cols="100" rows="5" maxlength="500" placeholder="Write text here" th:field="*{content}"></textarea>
                 </p>
-                <div th:replace="fragments::form-buttons (${userId}, 'Save', 'createPublication')"></div>
+                <div th:replace="fragments::form-buttons (${userId}, 'Save', ${#execInfo.templateName})"></div>
             </form>
         </div>
 
