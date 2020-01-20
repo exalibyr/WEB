@@ -34,7 +34,7 @@
                         <td th:if="${#fields.hasErrors('userAbout')}" th:errors="*{userAbout}">Field length must not be more than 100 symbols</td>
                     </tr>
                 </table>
-            <div th:replace="fragments::form-buttons (null, 'Sign up', 'sign-up')"></div>
+            <div th:replace="fragments::form-buttons (null, 'Sign up', ${#execInfo.templateName})"></div>
             </form>
     </body>
 </html>
