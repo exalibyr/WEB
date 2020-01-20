@@ -118,15 +118,15 @@ public class UserController {
     public String findUsers(@RequestParam(name = "prior", required = false, defaultValue = "") String priorPath,
                             @PathVariable(name = "userId") Integer userId,
                             @ModelAttribute(name = "userInfo") User userInfo) {
-        return "redirect:/user/id=" + userId + "/showUsers"
-                + userInfo.getName() + "," + userInfo.getSurname() + "?prior=" + priorPath;
+        return "redirect:/user/id=" + userId + "/showUsers?name="
+                + userInfo.getName() + "&surname=" + userInfo.getSurname() + "&prior=" + priorPath;
     }
 
-    @GetMapping(value = "/user/id={userId}/showUsers{name},{surname}")
+    @GetMapping(value = "/user/id={userId}/showUsers")
     public String showUsers(@RequestParam(name = "prior", required = false, defaultValue = "") String priorPath,
                             @PathVariable(name = "userId") Integer userId,
-                            @PathVariable(name = "name") String name,
-                            @PathVariable(name = "surname") String surname,
+                            @RequestParam(name = "name", required = false, defaultValue = "") String name,
+                            @RequestParam(name = "surname", required = false, defaultValue = "") String surname,
                             Model model){
         Optional<List<User>> users = userService.findUsersByNameOrSurname(name, surname);
         model.addAttribute("userId", userId);
