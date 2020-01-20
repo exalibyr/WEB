@@ -20,10 +20,15 @@
                     <td>About: <label th:text="${user.about}"></label></td>
                 </tr>
                 <tr>
-                    <td>
+                    <td th:if="${not #strings.isEmpty(userId)}">
                         <button class="context_button" type="button" th:onclick="'location.href=\''
-                     + @{/user/id={userId}/showUserPage/id={id} (userId=${userId}, id=${user.id})}
-                      + '\''">View page</button>
+                             + @{/user/id={userId}/showUserPage/id={id} (userId=${userId}, id=${user.id})}
+                              + '\''">View page</button>
+                    </td>
+                    <td th:if="${#strings.isEmpty(userId)}">
+                        <button class="context_button" type="button" th:onclick="'location.href=\''
+                             + @{/guest/showUserPage/id={id} (id=${user.id})}
+                              + '\''">View page</button>
                     </td>
                 </tr>
                 <tr>

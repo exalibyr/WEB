@@ -3,9 +3,10 @@
     <head>
         <title>My blog</title>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-        <link type="text/css" rel="stylesheet" th:href="@{css/styles.css}">
+        <link type="text/css" rel="stylesheet" th:href="@{/css/styles.css}">
     </head>
     <body>
+        <div th:replace="fragments::header (null, ${#execInfo.templateName})"></div>
         <div class="content_wrap">
             <div align="center">
                 <h1>Welcome to blog</h1>
@@ -22,7 +23,7 @@
                 </div>
                 <div>
                     <p>Not registered yet? Sign up!</p>
-                    <button type="button" th:onclick="'location.href=\'/sign-up\''">Create account</button>
+                    <button type="button" th:onclick="'location.href=\'/guest/sign-up\''">Create account</button>
                 </div>
             </div>
         </div>

@@ -9,7 +9,7 @@
         <div th:replace="fragments::header (${userId}, ${#execInfo.templateName})"></div>
         <div class="content_wrap">
             <h1 align="center">Find users</h1>
-            <form th:id="${#execInfo.templateName}" action="#" th:action = "@{/user/id={id}/findUsers (id=${userId})}" method="post">
+            <form th:id="${#execInfo.templateName}" action="#" th:action = "(${userId} == null? @{/guest/findUsers} : @{/user/id={id}/findUsers (id=${userId})})" method="post">
                 <table>
                     <tr>
                         <td>

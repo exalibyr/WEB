@@ -3,11 +3,12 @@
     <head>
         <title>My blog</title>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-        <link type="text/css" rel="stylesheet" th:href="@{css/styles.css}">
+        <link type="text/css" rel="stylesheet" th:href="@{/css/styles.css}">
     </head>
     <body>
+        <div th:replace="fragments::header (null, ${#execInfo.templateName})"></div>
         <div class="content_wrap" align="center">
-            <form id="sign-up" action="#" th:action = "@{/sign-up}" th:object="${registrationForm}" method="post">
+            <form id="sign-up" action="#" th:action = "@{/guest/sign-up}" th:object="${registrationForm}" method="post">
                 <table>
                     <tr>
                         <td>Your login </td>

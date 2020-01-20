@@ -3,9 +3,10 @@
     <head>
         <title>My blog</title>
         <meta http-equiv="Content-Type" content="charset=UTF-8" />
-        <link type="text/css" rel="stylesheet" th:href="@{css/styles.css}">
+        <link type="text/css" rel="stylesheet" th:href="@{/css/styles.css}">
     </head>
     <body>
+        <div th:replace="fragments::header (null, ${#execInfo.templateName})"></div>
         <div class="content_wrap">
             <div align="center">
                 <input id="user-id" type="hidden" th:value="${user.Id}"/>

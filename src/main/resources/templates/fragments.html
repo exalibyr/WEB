@@ -6,9 +6,11 @@
     </head>
     <body>
         <div th:fragment="header (userId, templateName)">
+
             <div class="header">
                 <table align="center">
-                    <tr>
+<!--                    ************************ FOR AUTHORIZED USER *************************-->
+                    <tr th:if="${not #strings.isEmpty(userId)}">
                         <td th:if="${#strings.equals(templateName, 'showUsers')}">
                             <div class="context_button">
                                 <button type="button" th:onclick="'location.href=\''
@@ -47,8 +49,39 @@
                         </td>
                         <td>
                             <div class="context_button">
+                                <button type="button" th:onclick="'location.href=\'/logout\''">Log out</button>
+                            </div>
+                        </td>
+                    </tr>
+<!--                    ************************ FOR GUEST USER *************************-->
+                    <tr th:if="${#strings.isEmpty(userId)}">
+                        <td th:if="${#strings.equals(templateName, 'showUsers')}">
+                            <div class="context_button">
                                 <button type="button" th:onclick="'location.href=\''
-                                             + @{/} + '\''">Log out</button>
+                                             + @{/guest/findUsers} + '\''">Back</button>
+                            </div>
+                        </td>
+                        <td th:if="${#strings.equals(templateName, 'showUserPage')}">
+                            <div class="context_button">
+                                <button type="button" th:onclick="'location.href=\''
+                                             + @{/guest/findUsers} + '\''">Back</button>
+                            </div>
+                        </td>
+                        <td th:if="${#strings.equals(templateName, 'registration-success')}">
+                            <div class="context_button">
+                                <button type="button" th:onclick="'location.href=\''
+                                             + @{/guest/sign-up} + '\''">Back</button>
+                            </div>
+                        </td>
+                        <td th:if="${not #strings.equals(templateName, 'findUsers')}">
+                            <div class="context_button">
+                                <button type="button" th:onclick="'location.href=\''
+                             + @{/guest/findUsers?prior={path} (path=${path})} + '\''">Find users</button>
+                            </div>
+                        </td>
+                        <td th:if="${not #strings.equals(templateName, 'login')}">
+                            <div class="context_button">
+                                <button type="button" th:onclick="'location.href=\'/login\''">Log in</button>
                             </div>
                         </td>
                     </tr>
@@ -61,7 +94,7 @@
                     <button type="submit" th:form="${templateName}" th:text="${submitLabel}"></button>
                 </div>
                 <div class="context_button">
-                    <div th:switch="${templateName}">
+                    <div th:if="${not #strings.isEmpty(userId)}" th:switch="${templateName}">
                         <button th:case="'createPublication'" type="button" th:onclick="'location.href=\''
                                              + @{/user/id={userId} (userId=${userId})} + '\''">Back</button>
                         <button th:case="'editProfilePage'" type="button" th:onclick="'location.href=\''
@@ -73,6 +106,9 @@
 <!--                        <button th:case="'showUserPage'" type="button" th:onclick="'location.href=\''-->
 <!--                                             + @{/user/id={userId}/showUsers (userId=${userId})} + '\''">Back</button>-->
                         <button th:case="'sign-up'" type="button" th:onclick="'location.href=\'/login\''">Back</button>
+                    </div>
+                    <div th:if="${#strings.isEmpty(userId)}">
+                        <button type="button" th:onclick="'location.href=\'/login\''">Back</button>
                     </div>
                 </div>
             </div>
