@@ -6,30 +6,9 @@
         <link type="text/css" rel="stylesheet" th:href="@{/css/styles.css}">
     </head>
     <body>
+        <div th:replace="fragments::buttons-menu (${userId}, ${execInfo.templateName})"></div>
         <div class="content_wrap">
             <h1 align="center" th:text="'Page of user: ' + ${user.name} + ' ' + ${user.surname}"></h1>
-            <div align="right">
-                <ul class="menu">
-                    <li>
-                        <div class="context_button">
-                            <button type="button" th:onclick="'location.href=\''
-                         + @{/user/id={id}/findUsers (id=${userId})} + '\''">Back</button>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="context_button">
-                            <button type="button" th:onclick="'location.href=\''
-                         + @{/user/id={userId} (userId=${userId})} + '\''">Home page</button>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="context_button">
-                            <button type="button" th:onclick="'location.href=\''
-                         + @{/} + '\''">Log out</button>
-                        </div>
-                    </li>
-                </ul>
-            </div>
             <table>
                 <tr>
                     <td><img th:src="${user.avatarUrl}" alt="Image not found" width="300" height="200"></td>
