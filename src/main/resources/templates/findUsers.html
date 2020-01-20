@@ -6,26 +6,28 @@
         <link type="text/css" rel="stylesheet" th:href="@{/css/styles.css}">
     </head>
     <body>
-        <h1 align="center">Find users</h1>
         <div th:replace="fragments::buttons-menu (${userId}, ${#execInfo.templateName})"></div>
-        <form th:id="${#execInfo.templateName}" action="#" th:action = "@{/user/id={id}/findUsers (id=${userId})}" method="post">
-            <table>
-                <tr>
-                    <td>
-                        <p>
-                            <input type="text" maxlength="20" placeholder="name" th:field="${userInfo.name}">
-                        </p>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <p>
-                            <input type="text" maxlength="30" placeholder="surname" th:field="${userInfo.surname}">
-                        </p>
-                    </td>
-                </tr>
-            </table>
-            <div th:replace="fragments::form-buttons (${userId}, 'Find', ${#execInfo.templateName})"></div>
-        </form>
+        <div class="content_wrap">
+            <h1 align="center">Find users</h1>
+            <form th:id="${#execInfo.templateName}" action="#" th:action = "@{/user/id={id}/findUsers (id=${userId})}" method="post">
+                <table>
+                    <tr>
+                        <td>
+                            <p>
+                                <input type="text" maxlength="20" placeholder="name" th:field="${userInfo.name}">
+                            </p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <p>
+                                <input type="text" maxlength="30" placeholder="surname" th:field="${userInfo.surname}">
+                            </p>
+                        </td>
+                    </tr>
+                </table>
+                <div th:replace="fragments::form-buttons (${userId}, 'Find', ${#execInfo.templateName})"></div>
+            </form>
+        </div>
     </body>
 </html>

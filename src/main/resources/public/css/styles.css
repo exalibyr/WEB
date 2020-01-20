@@ -1,13 +1,16 @@
 div.content_wrap {
-    position: absolute;
-    left: 5%;
-    top: 10%;
+    margin-bottom: 1%;
+    margin-left: 5%;
+    margin-right: 5%;
+    margin-top: 0px;
+    background-color: aliceblue;
+    padding: 1%;
+/*    height: 100%;*/
 }
 div.avatar {
-    all: inherit;
     cursor: pointer;
-    width : 400px;
-    height: 300px;
+    width : 300px;
+    height: 400px;
 }
 img.avatar_img {
     all: inherit;
@@ -15,9 +18,6 @@ img.avatar_img {
 div#pond {
     all: inherit;
     display: none;
-}
-ul.menu li{
-    display: inline;
 }
 div.form_buttons div {
     display: inline;
@@ -27,9 +27,26 @@ div.data_form {
     position: relative;
     margin-top: 350px;
 }
+div.menu_top {
+    padding-bottom: 10px;
+    padding-top: 10px;
+    margin-top: 10px;
+    background-color: darkorange;
+}
+body, html {
+    background-color: gray;
+    padding: 0px;
+    margin: 0px;
+    height: 100%;
+    width: 100%;
+}
 div.context_button {
-    padding-bottom: 5px;
-    padding-top: 5px;
-    padding-left: 10px;
-    padding-right: 10px;
+    margin-bottom: 5px;
+    margin-top: 5px;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+button.menu_button {
+    height: 5%;
+    width: 10%;
 }

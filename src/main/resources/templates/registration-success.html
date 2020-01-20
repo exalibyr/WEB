@@ -6,16 +6,18 @@
         <link type="text/css" rel="stylesheet" th:href="@{css/styles.css}">
     </head>
     <body>
-        <div align="center">
-            <input id="user-id" type="hidden" th:value="${user.Id}"/>
-            <h1 th:text="'Congratulations, ' + ${user.name} +
+        <div class="content_wrap">
+            <div align="center">
+                <input id="user-id" type="hidden" th:value="${user.Id}"/>
+                <h1 th:text="'Congratulations, ' + ${user.name} +
              ' ' + ${user.surname} + '! You managed to create account!'"></h1>
-            <h2>Now login</h2>
-            <div>
-                <img width="600" height="400" th:src="${welcomeURI}">
-            </div>
-            <div class="context_button">
-                <button type="button" th:onclick="'location.href=\'/login\''">Log in</button>
+                <h2>Now login</h2>
+                <div>
+                    <img width="600" height="400" th:src="${welcomeURI}">
+                </div>
+                <div class="context_button">
+                    <button type="button" th:onclick="'location.href=\'/login\''">Log in</button>
+                </div>
             </div>
         </div>
     </body>

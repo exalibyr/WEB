@@ -6,49 +6,51 @@
         <link type="text/css" rel="stylesheet" th:href="@{/css/styles.css}">
     </head>
     <body>
-        <h3 align="center">Found users</h3>
-        <div align="right">
-            <ul class="menu">
-                <li>
-                    <div class="context_button">
-                        <button type="button" th:onclick="'location.href=\''
+        <div class="content_wrap">
+            <h3 align="center">Found users</h3>
+            <div align="right">
+                <ul class="menu">
+                    <li>
+                        <div class="context_button">
+                            <button type="button" th:onclick="'location.href=\''
                                      + @{/user/id={userId}/findUsers (userId=${userId})} + '\''">Back</button>
-                    </div>
-                </li>
-                <li>
-                    <div class="context_button">
-                        <button type="button" th:onclick="'location.href=\''
+                        </div>
+                    </li>
+                    <li>
+                        <div class="context_button">
+                            <button type="button" th:onclick="'location.href=\''
                                      + @{/user/id={userId} (userId=${userId})} + '\''">Home page</button>
-                    </div>
-                </li>
-                <li>
-                    <div class="context_button">
-                        <button type="button" th:onclick="'location.href=\''
+                        </div>
+                    </li>
+                    <li>
+                        <div class="context_button">
+                            <button type="button" th:onclick="'location.href=\''
                                      + @{/} + '\''">Log out</button>
-                    </div>
-                </li>
-            </ul>
-        </div>
-        <table th:each="user : ${users}">
-            <tr>
-                <td><img th:src="${user.avatarUrl}" alt="Image not found" width="300" height="200"></td>
-            </tr>
-            <tr>
-                <td><label th:text="${user.name} + ' ' + ${user.surname}"></label></td>
-            </tr>
-            <tr>
-                <td>About: <label th:text="${user.about}"></label></td>
-            </tr>
-            <tr>
-                <td>
-                    <button class="context_button" type="button" th:onclick="'location.href=\''
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <table th:each="user : ${users}">
+                <tr>
+                    <td><img th:src="${user.avatarUrl}" alt="Image not found" width="300" height="200"></td>
+                </tr>
+                <tr>
+                    <td><label th:text="${user.name} + ' ' + ${user.surname}"></label></td>
+                </tr>
+                <tr>
+                    <td>About: <label th:text="${user.about}"></label></td>
+                </tr>
+                <tr>
+                    <td>
+                        <button class="context_button" type="button" th:onclick="'location.href=\''
                      + @{/user/id={userId}/showUserPage/id={id} (userId=${userId}, id=${user.id})}
                       + '\''">View page</button>
-                </td>
-            </tr>
-            <tr>
-                <td><br></td>
-            </tr>
-        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td><br></td>
+                </tr>
+            </table>
+        </div>
     </body>
 </html>

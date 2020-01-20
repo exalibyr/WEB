@@ -6,47 +6,49 @@
         <link type="text/css" rel="stylesheet" th:href="@{/css/styles.css}">
     </head>
     <body>
-        <h1 align="center" th:text="'Welcome to your home page, ' + ${user.name} + '!'"></h1>
         <div th:replace="fragments::buttons-menu (${user.Id}, ${#execInfo.templateName})"></div>
-        <table>
-            <tr>
-                <td><img id="userAvatar" th:src="${avatarURI}" width="300" height="400"></td>
-            </tr>
-            <tr>
-                <td><label th:text="${user.name} + ' ' + ${user.surname}"></label></td>
-            </tr>
-            <tr>
-                <td>About: <label th:text="${user.about}"></label></td>
-            </tr>
-        </table>
-
-        <h3 align="center">Your publications</h3>
-        <table th:each="publication : ${publications}">
-            <tr>
-                <td>Title:</td>
-            </tr>
-            <tr>
-                <td><label th:text="${publication.publication.title}"></label></td>
-            </tr>
-            <tr>
-                <td>Text:</td>
-            </tr>
-            <tr>
-                <td><label th:text="${publication.publication.content}"></label></td>
-            </tr>
-            <tr>
-                <td><label th:text="${publication.localDateTime}"></label></td>
-            </tr>
-            <tr>
-                <td>
-                    <button class="context_button" type="button" th:onclick="'location.href=\''
+        <div class="content_wrap">
+            <h1 align="center" th:text="'Welcome to your home page, ' + ${user.name} + '!'"></h1>
+            <table>
+                <tr>
+                    <td><img id="userAvatar" th:src="${avatarURI}" width="300" height="400"></td>
+                </tr>
+                <tr>
+                    <td><label th:text="${user.name} + ' ' + ${user.surname}"></label></td>
+                </tr>
+                <tr>
+                    <td>About: <label th:text="${user.about}"></label></td>
+                </tr>
+            </table>
+            <h3 align="center">Your publications</h3>
+            <table th:each="publication : ${publications}">
+                <tr>
+                    <td>Title:</td>
+                </tr>
+                <tr>
+                    <td><label th:text="${publication.publication.title}"></label></td>
+                </tr>
+                <tr>
+                    <td>Text:</td>
+                </tr>
+                <tr>
+                    <td><label th:text="${publication.publication.content}"></label></td>
+                </tr>
+                <tr>
+                    <td><label th:text="${publication.localDateTime}"></label></td>
+                </tr>
+                <tr>
+                    <td>
+                        <button class="context_button" type="button" th:onclick="'location.href=\''
                      + @{/user/id={userId}/deletePublication/id={pubId} (userId=${user.id}, pubId=${publication.publication.id})}
                      + '\''">Delete this publication</button>
-                </td>
-            </tr>
-            <tr>
-                <td><br></td>
-            </tr>
-        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td><br></td>
+                </tr>
+            </table>
+        </div>
+
     </body>
 </html>

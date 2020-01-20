@@ -6,7 +6,8 @@
         <link type="text/css" rel="stylesheet" th:href="@{css/styles.css}">
     </head>
     <body>
-        <form id="sign-up" action="#" th:action = "@{/sign-up}" th:object="${registrationForm}" method="post">
+        <div class="content_wrap" align="center">
+            <form id="sign-up" action="#" th:action = "@{/sign-up}" th:object="${registrationForm}" method="post">
                 <table>
                     <tr>
                         <td>Your login </td>
@@ -34,7 +35,8 @@
                         <td th:if="${#fields.hasErrors('userAbout')}" th:errors="*{userAbout}">Field length must not be more than 100 symbols</td>
                     </tr>
                 </table>
-            <div th:replace="fragments::form-buttons (null, 'Sign up', ${#execInfo.templateName})"></div>
+                <div th:replace="fragments::form-buttons (null, 'Sign up', ${#execInfo.templateName})"></div>
             </form>
+        </div>
     </body>
 </html>
