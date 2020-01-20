@@ -5,7 +5,9 @@ div.content_wrap {
     margin-top: 0px;
     background-color: aliceblue;
     padding: 1%;
-/*    height: 100%;*/
+}
+div.stretched_content_wrap {
+    height: 100%;
 }
 div.avatar {
     cursor: pointer;

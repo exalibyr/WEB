@@ -5,6 +5,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <link type="text/css" rel="stylesheet" th:href="@{/css/styles.css}">
         <script type="text/javascript"th:src = "@{/js/jquery-3.4.1.js}"></script>
+        <script type="text/javascript"th:src = "@{/js/scripts.js}"></script>
         <script type="text/javascript" th:src = "@{/js/filepond.js}"></script>
         <script type="text/javascript" th:src = "@{/js/filepond.jquery.js}"></script>
         <script>
@@ -24,55 +25,53 @@
         <div th:replace="fragments::header (${userId}, ${#execInfo.templateName})"></div>
         <div class="content_wrap">
             <h1 align="center">Here, you can update information about yourself.</h1>
-            <div class="content_wrap">
-                <h3>Profile picture</h3>
-                <div class="avatar">
-                    <img th:src="${avatarURI}" class="avatar_img">
-                    <input type="hidden" id="pond" class="pond"/>
-                </div>
-<!--                <div class="data_form">-->
-                    <form th:id="${execInfo.templateName}" action="#" th:action = "@{/user/id={userId}/editProfile (userId=${user.id})}" th:object="${user}" method="post">
-                        <input type="hidden" th:field="*{id}"/>
-                        <table>
-                            <tr>
-                                <td>Your name </td>
-                            </tr>
-                            <tr>
-                                <td><input type="text" maxlength="20" name="name" id="name" th:value="*{name}"/></td>
-                                <!--<td th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Name length must be from 1 to 20 symbols</td>-->
-                            </tr>
-                            <tr>
-                                <td><br></td>
-                            </tr>
-                            <tr>
-                                <td>Your surname </td>
-                            </tr>
-                            <tr>
-                                <td><input type="text" maxlength="30" th:field="*{surname}"/></td>
-                                <!--<td th:if="${#fields.hasErrors('surname')}" th:errors="*{surname}">Surname length must be from 1 to 30 symbols</td>-->
-                            </tr>
-                            <tr>
-                                <td><br></td>
-                            </tr>
-                            <tr>
-                                <td>You can write something about yourself here </td>
-                            </tr>
-                            <tr>
-                                <td><input type="text" maxlength="100" th:field="*{about}"/></td>
-                                <!--<td th:if="${#fields.hasErrors('about')}" th:errors="*{about}">Field length must not be more than 100 symbols</td>-->
-
-                            </tr>
-                            <tr>
-                                <td><br></td>
-                            </tr>
-                            <tr>
-                                <td><br></td>
-                            </tr>
-                        </table>
-                        <div th:replace="fragments::form-buttons (${userId}, 'Save', ${#execInfo.templateName})"></div>
-                    </form>
-<!--                </div>-->
+            <h3>Profile picture</h3>
+            <div class="avatar">
+                <img th:src="${avatarURI}" class="avatar_img">
+                <input type="hidden" id="pond" class="pond"/>
             </div>
+<!--                <div class="data_form">-->
+                <form th:id="${execInfo.templateName}" action="#" th:action = "@{/user/id={userId}/editProfile (userId=${user.id})}" th:object="${user}" method="post">
+                    <input type="hidden" th:field="*{id}"/>
+                    <table>
+                        <tr>
+                            <td>Your name </td>
+                        </tr>
+                        <tr>
+                            <td><input type="text" maxlength="20" name="name" id="name" th:value="*{name}"/></td>
+                            <!--<td th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Name length must be from 1 to 20 symbols</td>-->
+                        </tr>
+                        <tr>
+                            <td><br></td>
+                        </tr>
+                        <tr>
+                            <td>Your surname </td>
+                        </tr>
+                        <tr>
+                            <td><input type="text" maxlength="30" th:field="*{surname}"/></td>
+                            <!--<td th:if="${#fields.hasErrors('surname')}" th:errors="*{surname}">Surname length must be from 1 to 30 symbols</td>-->
+                        </tr>
+                        <tr>
+                            <td><br></td>
+                        </tr>
+                        <tr>
+                            <td>You can write something about yourself here </td>
+                        </tr>
+                        <tr>
+                            <td><input type="text" maxlength="100" th:field="*{about}"/></td>
+                            <!--<td th:if="${#fields.hasErrors('about')}" th:errors="*{about}">Field length must not be more than 100 symbols</td>-->
+
+                        </tr>
+                        <tr>
+                            <td><br></td>
+                        </tr>
+                        <tr>
+                            <td><br></td>
+                        </tr>
+                    </table>
+                    <div th:replace="fragments::form-buttons (${userId}, 'Save', ${#execInfo.templateName})"></div>
+                </form>
+<!--                </div>-->
         </div>
     </body>
 </html>

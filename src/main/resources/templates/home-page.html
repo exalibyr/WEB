@@ -4,6 +4,8 @@
         <title>My blog</title>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <link type="text/css" rel="stylesheet" th:href="@{/css/styles.css}">
+        <script type="text/javascript"th:src = "@{/js/jquery-3.4.1.js}"></script>
+        <script type="text/javascript"th:src = "@{/js/scripts.js}"></script>
     </head>
     <body>
         <div th:replace="fragments::header (${user.Id}, ${#execInfo.templateName})"></div>
