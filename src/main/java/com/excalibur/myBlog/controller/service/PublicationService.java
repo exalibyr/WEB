@@ -2,6 +2,8 @@ package com.excalibur.myBlog.controller.service;
 
 import com.excalibur.myBlog.dao.Publication;
 import com.excalibur.myBlog.dao.User;
+import com.excalibur.myBlog.utils.PublicationWrapper;
+import com.excalibur.myBlog.utils.ZonedDateTimeFormatter;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.excalibur.myBlog.repository.PublicationRepository;
 import org.springframework.stereotype.Service;
@@ -28,6 +30,14 @@ public class PublicationService {
 
     public List<Publication> findPublicationsByUser(User user){
         return publicationRepository.findByUser(user);
+    }
+
+    public List<PublicationWrapper> getUserPublications(User user) {
+        return ZonedDateTimeFormatter
+                .getFormattedPublications(
+                        publicationRepository
+                                .findByUser(user)
+                );
     }
 
     public Iterable<Publication> findAllPublications(){

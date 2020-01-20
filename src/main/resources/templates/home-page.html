@@ -26,21 +26,21 @@
                 <td>Title:</td>
             </tr>
             <tr>
-                <td><label th:text="${publication.title}"></label></td>
+                <td><label th:text="${publication.publication.title}"></label></td>
             </tr>
             <tr>
                 <td>Text:</td>
             </tr>
             <tr>
-                <td><label th:text="${publication.content}"></label></td>
+                <td><label th:text="${publication.publication.content}"></label></td>
             </tr>
             <tr>
-                <td><label th:text="${publication.dateTime}"></label></td>
+                <td><label th:text="${publication.localDateTime}"></label></td>
             </tr>
             <tr>
                 <td>
                     <button class="context_button" type="button" th:onclick="'location.href=\''
-                     + @{/user/id={userId}/deletePublication/id={pubId} (userId=${user.id}, pubId=${publication.id})}
+                     + @{/user/id={userId}/deletePublication/id={pubId} (userId=${user.id}, pubId=${publication.publication.id})}
                      + '\''">Delete this publication</button>
                 </td>
             </tr>
