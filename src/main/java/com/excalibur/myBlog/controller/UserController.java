@@ -54,8 +54,8 @@ public class UserController {
             User user = userOptional.get();
             model.addAttribute("user", user);
 //            List<Publication> publications = publicationService.findPublicationsByUser(user);
-            List<PublicationWrapper> publications = publicationService.getUserPublications(user);
-            model.addAttribute("publications", publications);
+            List<PublicationWrapper> publicationWrappers = publicationService.getUserPublications(user);
+            model.addAttribute("publicationWrappers", publicationWrappers);
             if ( user.hasAvatar()) {
                 model.addAttribute("avatarURI", Environment.getFileStorageURL() + "/user/" + userId + "/avatar");
             } else {
@@ -145,8 +145,8 @@ public class UserController {
             User user = userOptional.get();
             model.addAttribute("userId", userId);
             model.addAttribute("user", user);
-            List<Publication> publications = publicationService.findPublicationsByUser(user);
-            model.addAttribute("publications", publications);
+            List<PublicationWrapper> publicationWrappers = publicationService.getUserPublications(user);
+            model.addAttribute("publicationWrappers", publicationWrappers);
             model.addAttribute("backURI", priorPath);
             return "showUserPage";
         }
