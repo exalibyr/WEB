@@ -6,7 +6,7 @@
         <link type="text/css" rel="stylesheet" th:href="@{/css/styles.css}">
     </head>
     <body>
-        <div th:replace="fragments::buttons-menu (${userId}, ${execInfo.templateName})"></div>
+        <div th:replace="fragments::header (${userId}, ${execInfo.templateName})"></div>
         <div class="content_wrap">
             <h3 align="center">Found users</h3>
             <table th:each="user : ${users}">

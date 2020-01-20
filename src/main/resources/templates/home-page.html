@@ -6,7 +6,7 @@
         <link type="text/css" rel="stylesheet" th:href="@{/css/styles.css}">
     </head>
     <body>
-        <div th:replace="fragments::buttons-menu (${user.Id}, ${#execInfo.templateName})"></div>
+        <div th:replace="fragments::header (${user.Id}, ${#execInfo.templateName})"></div>
         <div class="content_wrap">
             <h1 align="center" th:text="'Welcome to your home page, ' + ${user.name} + '!'"></h1>
             <table>
