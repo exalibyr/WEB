@@ -9,6 +9,18 @@
             <div class="header">
                 <table align="center">
                     <tr>
+                        <td th:if="${#strings.equals(templateName, 'showUsers')}">
+                            <div class="context_button">
+                                <button type="button" th:onclick="'location.href=\''
+                                             + @{/user/id={userId}/findUsers (userId=${userId})} + '\''">Back</button>
+                            </div>
+                        </td>
+                        <td th:if="${#strings.equals(templateName, 'showUserPage')}">
+                            <div class="context_button">
+                                <button type="button" th:onclick="'location.href=\''
+                                             + @{/user/id={userId}/findUsers (userId=${userId})} + '\''">Back</button>
+                            </div>
+                        </td>
                         <td th:if="${not #strings.equals(templateName, 'createPublication')}">
                             <div class="context_button">
                                 <button type="button" th:onclick="'location.href=\''
@@ -56,10 +68,10 @@
                                              + @{/user/id={userId} (userId=${userId})} + '\''">Back</button>
                         <button th:case="'findUsers'" type="button" th:onclick="'location.href=\''
                                              + @{/user/id={userId} (userId=${userId})} + '\''">Back</button>
-                        <button th:case="'showUsers'" type="button" th:onclick="'location.href=\''
-                                             + @{/user/id={userId}/findUsers (userId=${userId})} + '\''">Back</button>
-                        <button th:case="'showUserPage'" type="button" th:onclick="'location.href=\''
-                                             + @{/user/id={userId}/showUsers (userId=${userId})} + '\''">Back</button>
+<!--                        <button th:case="'showUsers'" type="button" th:onclick="'location.href=\''-->
+<!--                                             + @{/user/id={userId}/findUsers (userId=${userId})} + '\''">Back</button>-->
+<!--                        <button th:case="'showUserPage'" type="button" th:onclick="'location.href=\''-->
+<!--                                             + @{/user/id={userId}/showUsers (userId=${userId})} + '\''">Back</button>-->
                         <button th:case="'sign-up'" type="button" th:onclick="'location.href=\'/login\''">Back</button>
                     </div>
                 </div>
