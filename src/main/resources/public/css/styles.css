@@ -5,9 +5,30 @@ div.content_wrap {
     margin-top: 0px;
     background-color: aliceblue;
     padding: 1%;
+    padding-top: 2%;
 }
-div.stretched_content_wrap {
+div.content_margin_top {
+    height: 5%;
+}
+div.header_top {
+    height: 1%;
+    width: 100%;
+    background-color: gray;
+    position: fixed;
+}
+div.header {
+    padding-bottom: 0.5%;
+    padding-top: 0.5%;
+    margin-top: 0.5%;
+    background-color: darkorange;
+    position: fixed;
+    width: 100%;
+}
+div.stretched {
     height: 100%;
+}
+body.fixed {
+    position: fixed;
 }
 div.avatar {
     cursor: pointer;
@@ -28,12 +49,6 @@ div.data_form {
     all: inherit;
     position: relative;
     margin-top: 350px;
-}
-div.header {
-    padding-bottom: 10px;
-    padding-top: 10px;
-    margin-top: 10px;
-    background-color: darkorange;
 }
 body, html {
     background-color: gray;
