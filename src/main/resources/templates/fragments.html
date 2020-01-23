@@ -49,7 +49,8 @@
                         </td>
                         <td>
                             <div class="context_button">
-                                <button type="button" th:onclick="'location.href=\'/logout\''">Log out</button>
+                                <button type="button" th:onclick="'location.href=\''
+                                             + @{/} + '\''">Log out</button>
                             </div>
                         </td>
                     </tr>
@@ -123,5 +124,36 @@
 <!--                </div>-->
 <!--            </div>-->
 <!--        </div>-->
+        <div th:fragment="publications (publicationWrappers, ownerId)">
+            <div>
+                <table th:each="wrapper : ${publicationWrappers}" class="publications">
+                    <tr>
+                        <td>Title:</td>
+                    </tr>
+                    <tr>
+                        <td><label th:text="${wrapper.publication.title}"></label></td>
+                    </tr>
+                    <tr>
+                        <td>Text:</td>
+                    </tr>
+                    <tr>
+                        <td><label th:text="${wrapper.publication.content}"></label></td>
+                    </tr>
+                    <tr>
+                        <td><label th:text="${wrapper.localDateTimeString}"></label></td>
+                    </tr>
+                    <tr th:if="${not #strings.isEmpty(ownerId)}">
+                        <td>
+                            <button class="context_button" type="button" th:onclick="'location.href=\''
+                     + @{/user/id={userId}/deletePublication/id={pubId} (userId=${ownerId}, pubId=${wrapper.publication.id})}
+                     + '\''">Delete this publication</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><br></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
     </body>
 </html>

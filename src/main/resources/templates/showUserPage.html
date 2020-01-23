@@ -23,26 +23,7 @@
                 </tr>
             </table>
             <h3 align="center" th:text="${user.name} + ' ' + ${user.surname} + '\'s publications'"></h3>
-            <table th:each="wrapper : ${publicationWrappers}">
-                <tr>
-                    <td>Title:</td>
-                </tr>
-                <tr>
-                    <td><label th:text="${wrapper.publication.title}"></label></td>
-                </tr>
-                <tr>
-                    <td>Text:</td>
-                </tr>
-                <tr>
-                    <td><label th:text="${wrapper.publication.content}"></label></td>
-                </tr>
-                <tr>
-                    <td><label th:text="${wrapper.localDateTimeString}"></label></td>
-                </tr>
-                <tr>
-                    <td><br></td>
-                </tr>
-            </table>
+            <div th:replace="fragments::publications (${publicationWrappers}, null)"></div>
         </div>
     </body>
 </html>
