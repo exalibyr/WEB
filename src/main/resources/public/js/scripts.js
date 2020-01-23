@@ -1,8 +1,10 @@
 $(document).ready(function() {
-    var screenHeight = window.screen.height;
+    var body = $("body");
     var contentWrapper = $(".content_wrap");
-    if (contentWrapper.height() < screenHeight) {
+    var headerHolder = $(".content_margin_top");
+    
+    if (contentWrapper.height() < body.height() - headerHolder.height()) {
         contentWrapper.addClass('stretched');
-        $("body").addClass('fixed');
+        body.addClass('fixed');
     }
 });
