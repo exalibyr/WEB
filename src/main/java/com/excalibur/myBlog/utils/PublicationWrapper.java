@@ -1,21 +1,16 @@
 package com.excalibur.myBlog.utils;
 
-import com.excalibur.myBlog.dao.File;
 import com.excalibur.myBlog.dao.Publication;
-import com.excalibur.myBlog.dao.User;
-
-import java.time.ZonedDateTime;
-import java.util.Set;
 
 public class PublicationWrapper {
 
     private Publication publication;
 
-    private String localDateTime;
+    private String localDateTimeString;
 
-    public PublicationWrapper(Publication publication, String localDateTime) {
+    public PublicationWrapper(Publication publication) {
         this.publication = publication;
-        this.localDateTime = localDateTime;
+        this.localDateTimeString = ZonedDateTimeFormatter.getLocalDateTimeString(publication.getDateTime());
     }
 
     public Publication getPublication() {
@@ -26,11 +21,11 @@ public class PublicationWrapper {
         this.publication = publication;
     }
 
-    public String getLocalDateTime() {
-        return localDateTime;
+    public String getLocalDateTimeString() {
+        return localDateTimeString;
     }
 
-    public void setLocalDateTime(String localDateTime) {
-        this.localDateTime = localDateTime;
+    public void setLocalDateTimeString(String localDateTimeString) {
+        this.localDateTimeString = localDateTimeString;
     }
 }

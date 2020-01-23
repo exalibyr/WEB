@@ -33,11 +33,7 @@ public class PublicationService {
     }
 
     public List<PublicationWrapper> getUserPublications(User user) {
-        return ZonedDateTimeFormatter
-                .getFormattedPublications(
-                        publicationRepository
-                                .findByUser(user)
-                );
+        return ZonedDateTimeFormatter.getFormattedPublications(publicationRepository.findByUserIdOrdered(user.getId()));
     }
 
     public Iterable<Publication> findAllPublications(){

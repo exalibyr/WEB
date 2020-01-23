@@ -13,11 +13,11 @@ public class ZonedDateTimeFormatter {
 
     public static List<PublicationWrapper> getFormattedPublications(List<Publication> publications) {
         return publications.isEmpty() ? new ArrayList<>() : publications.stream().map(
-                publication -> new PublicationWrapper(publication, getLocalDateTime(publication.getDateTime()))
+                PublicationWrapper::new
         ).collect(Collectors.toList());
     }
 
-    public static String getLocalDateTime(ZonedDateTime zonedDateTime) {
+    public static String getLocalDateTimeString(ZonedDateTime zonedDateTime) {
         return zonedDateTime
                 .format(
                         DateTimeFormatter
