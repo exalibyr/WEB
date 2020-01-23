@@ -11,6 +11,7 @@ import com.excalibur.myBlog.dao.VerificationData;
 import com.excalibur.myBlog.form.RegistrationForm;
 import com.excalibur.myBlog.form.VerificationForm;
 import com.excalibur.myBlog.utils.Environment;
+import com.excalibur.myBlog.utils.PublicationWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -138,8 +139,8 @@ public class GuestController {
             User user = userOptional.get();
             model.addAttribute("userId", null);
             model.addAttribute("user", user);
-            List<Publication> publications = publicationService.findPublicationsByUser(user);
-            model.addAttribute("publications", publications);
+            List<PublicationWrapper> publicationWrappers = publicationService.getUserPublications(user);
+            model.addAttribute("publicationWrappers", publicationWrappers);
             model.addAttribute("backURI", priorPath);
             return "showUserPage";
         }
