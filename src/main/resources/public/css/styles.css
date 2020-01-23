@@ -25,7 +25,7 @@ div.header {
     width: 100%;
 }
 div.stretched {
-    height: 87.5%;
+    height: 87%;
 }
 body.fixed {
     position: fixed;
