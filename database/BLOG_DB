@@ -1,0 +1,690 @@
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 11.0
+-- Dumped by pg_dump version 12.0
+
+-- Started on 2020-01-25 19:03:46
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
+
+--
+-- TOC entry 1 (class 3079 OID 16384)
+-- Name: adminpack; Type: EXTENSION; Schema: -; Owner: -
+--
+
+CREATE EXTENSION IF NOT EXISTS adminpack WITH SCHEMA pg_catalog;
+
+
+--
+-- TOC entry 2887 (class 0 OID 0)
+-- Dependencies: 1
+-- Name: EXTENSION adminpack; Type: COMMENT; Schema: -; Owner: 
+--
+
+COMMENT ON EXTENSION adminpack IS 'administrative functions for PostgreSQL';
+
+
+--
+-- TOC entry 204 (class 1259 OID 16670)
+-- Name: file_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.file_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.file_id_seq OWNER TO postgres;
+
+SET default_tablespace = '';
+
+--
+-- TOC entry 205 (class 1259 OID 16672)
+-- Name: file; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.file (
+    id integer DEFAULT nextval('public.file_id_seq'::regclass) NOT NULL,
+    name character varying(200) NOT NULL,
+    publication_id integer,
+    user_id integer NOT NULL
+);
+
+
+ALTER TABLE public.file OWNER TO postgres;
+
+--
+-- TOC entry 203 (class 1259 OID 16668)
+-- Name: file_key_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.file_key_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.file_key_seq OWNER TO postgres;
+
+--
+-- TOC entry 201 (class 1259 OID 16571)
+-- Name: role; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.role (
+    id integer NOT NULL,
+    role character varying(10) NOT NULL,
+    priority integer NOT NULL
+);
+
+
+ALTER TABLE public.role OWNER TO postgres;
+
+--
+-- TOC entry 202 (class 1259 OID 16580)
+-- Name: role_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.role_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.role_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 2888 (class 0 OID 0)
+-- Dependencies: 202
+-- Name: role_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.role_id_seq OWNED BY public.role.id;
+
+
+--
+-- TOC entry 198 (class 1259 OID 16395)
+-- Name: user_data; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.user_data (
+    id integer NOT NULL,
+    name character varying(20) NOT NULL,
+    surname character varying(30) NOT NULL,
+    about character varying(100),
+    avatar_url text,
+    has_avatar boolean DEFAULT false NOT NULL
+);
+
+
+ALTER TABLE public.user_data OWNER TO postgres;
+
+--
+-- TOC entry 197 (class 1259 OID 16393)
+-- Name: user_data_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.user_data_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.user_data_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 2889 (class 0 OID 0)
+-- Dependencies: 197
+-- Name: user_data_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.user_data_id_seq OWNED BY public.user_data.id;
+
+
+--
+-- TOC entry 206 (class 1259 OID 16679)
+-- Name: user_file_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.user_file_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.user_file_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 200 (class 1259 OID 16427)
+-- Name: user_publication; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.user_publication (
+    id integer NOT NULL,
+    date_time timestamp with time zone NOT NULL,
+    title character varying(50) NOT NULL,
+    content character varying(500) NOT NULL,
+    user_id integer NOT NULL
+);
+
+
+ALTER TABLE public.user_publication OWNER TO postgres;
+
+--
+-- TOC entry 199 (class 1259 OID 16425)
+-- Name: user_publication_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.user_publication_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.user_publication_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 2890 (class 0 OID 0)
+-- Dependencies: 199
+-- Name: user_publication_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.user_publication_id_seq OWNED BY public.user_publication.id;
+
+
+--
+-- TOC entry 209 (class 1259 OID 33191)
+-- Name: user_role_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.user_role_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.user_role_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 210 (class 1259 OID 33193)
+-- Name: user_role; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.user_role (
+    id integer DEFAULT nextval('public.user_role_id_seq'::regclass) NOT NULL,
+    user_id integer NOT NULL,
+    role_id integer NOT NULL
+);
+
+
+ALTER TABLE public.user_role OWNER TO postgres;
+
+--
+-- TOC entry 208 (class 1259 OID 33178)
+-- Name: user_verification_data_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.user_verification_data_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.user_verification_data_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 207 (class 1259 OID 33168)
+-- Name: user_verification_data; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.user_verification_data (
+    id integer DEFAULT nextval('public.user_verification_data_id_seq'::regclass) NOT NULL,
+    user_id integer NOT NULL,
+    user_login character varying(20) NOT NULL,
+    user_password character varying(30) NOT NULL
+);
+
+
+ALTER TABLE public.user_verification_data OWNER TO postgres;
+
+--
+-- TOC entry 2725 (class 2604 OID 16582)
+-- Name: role id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.role ALTER COLUMN id SET DEFAULT nextval('public.role_id_seq'::regclass);
+
+
+--
+-- TOC entry 2722 (class 2604 OID 16521)
+-- Name: user_data id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.user_data ALTER COLUMN id SET DEFAULT nextval('public.user_data_id_seq'::regclass);
+
+
+--
+-- TOC entry 2724 (class 2604 OID 16522)
+-- Name: user_publication id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.user_publication ALTER COLUMN id SET DEFAULT nextval('public.user_publication_id_seq'::regclass);
+
+
+--
+-- TOC entry 2876 (class 0 OID 16672)
+-- Dependencies: 205
+-- Data for Name: file; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.file (id, name, publication_id, user_id) FROM stdin;
+\.
+
+
+--
+-- TOC entry 2872 (class 0 OID 16571)
+-- Dependencies: 201
+-- Data for Name: role; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.role (id, role, priority) FROM stdin;
+10	admin	1
+11	user	2
+12	guest	3
+\.
+
+
+--
+-- TOC entry 2869 (class 0 OID 16395)
+-- Dependencies: 198
+-- Data for Name: user_data; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.user_data (id, name, surname, about, avatar_url, has_avatar) FROM stdin;
+16	alice	wonderland	alice from wonderland	https://fanparty.ru/fanclubs/alice-in-wonderland/gallery/1304750_alice_in_wonderland.jpg	f
+5	Mad	Max	Really mad guy	http://1.bp.blogspot.com/-kgnCZb4apKU/VpomDmdWquI/AAAAAAAABYY/qlZGJKT-Bmw/s1600/Mad+Max+-+Fury+Road+2015+%283%29.jpg	f
+6	Jack	Sparrow	Cpt. Jack	\N	f
+21	test	user	test user	\N	f
+161	alex	kracheck	gdgdf	\N	f
+162	dfgdfgdfg	gdfgdfg		\N	f
+3	John	Cooper	awesome guy!dsfd	\N	f
+163	fsdfsdf	fsdfsdf		\N	f
+164	username	surname		\N	f
+165	gdfgfg	dfgdfg		\N	f
+166	dfgd	gdfgdfg		\N	f
+167	dfgdf	fsdfsd		\N	f
+168	dfgdfgfg	gfgffg		\N	f
+169	dfgdfgfg	gdfgdfg		\N	f
+170	dfgdfgfg	gdfgdfg		\N	f
+171	dfgdfgfg	gdfgf		\N	f
+172	dfgdfgfgfs	fsdfsdf	fsdf	\N	f
+173	dfgdfgfgfs	fsdfs		\N	f
+174	dfgdfgfgfs	fsdfsdf		\N	f
+175	dfgdfgfgfs	fdfd		\N	f
+176	dfgdfgfgfs	sdfsdf		\N	f
+177	хермот	моржовый		\N	f
+178	мдахех	мда		\N	f
+179	ахахах	кекек		\N	f
+180	sdfsdfsd	fsdfsdfsd	fsdfsdfd	\N	f
+181	test36	test36	test36	\N	f
+182	test37	test37	test37	\N	f
+\.
+
+
+--
+-- TOC entry 2871 (class 0 OID 16427)
+-- Dependencies: 200
+-- Data for Name: user_publication; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.user_publication (id, date_time, title, content, user_id) FROM stdin;
+10	2018-11-01 03:27:53.003393+03	I'm Alice	Hi, everybody!	16
+11	2018-11-01 03:28:32.948557+03	In eu bibendum purus metus.	Ut metus lorem, porta nec feugiat at, luctus vel nisl. Suspendisse vestibulum justo vel velit maximus, sit amet posuere libero tincidunt. Duis congue consectetur sollicitudin. Nam tristique tortor vel lobortis.	16
+12	2018-11-05 03:34:42.531543+03	I'm soo MAD!	Got bait? Watch my films!	5
+3	2018-10-27 17:40:32.270386+03	Maecenas a imperdiet ex metus.	Quisque enim lectus, condimentum imperdiet efficitur sit amet, iaculis eu massa. Donec aliquam elit sit amet tellus malesuada, vitae fringilla nisl feugiat. Duis facilisis justo elit, nec tincidunt leo fermentum in. In tortor eros, fringilla consequat nulla blandit, condimentum sollicitudin posuere.	3
+8	2018-10-30 04:16:13.966616+03	Cras malesuada tortor non metus orci aliquam.	Integer pulvinar at enim vulputate condimentum. Etiam eu arcu sem. In hac habitasse platea dictumst. Nullam at ex tortor. Vivamus et elementum nunc, sed bibendum neque. Integer pretium diam orci, sit amet congue sem dapibus lacinia. Donec sit amet neque mollis, auctor augue eget, dapibus urna. Donec non ultrices dolor. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nulla facilisi. Nunc nibh quam turpis duis.	3
+24	2020-01-24 14:03:48.217433+03	aaaa+++	aaaaaaaaaaaaaaaaaa	3
+\.
+
+
+--
+-- TOC entry 2881 (class 0 OID 33193)
+-- Dependencies: 210
+-- Data for Name: user_role; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.user_role (id, user_id, role_id) FROM stdin;
+4	5	11
+5	5	12
+6	6	11
+7	6	12
+8	16	11
+9	16	12
+10	21	11
+11	21	12
+32	3	10
+33	3	11
+34	3	12
+35	161	11
+36	161	12
+37	161	10
+38	162	11
+39	162	12
+40	162	10
+41	163	11
+42	163	12
+43	163	10
+44	164	11
+45	164	12
+46	164	10
+47	165	11
+48	165	12
+49	165	10
+50	166	11
+51	166	12
+52	166	10
+53	167	11
+54	167	12
+55	167	10
+56	168	11
+57	168	12
+58	168	10
+59	169	11
+60	169	12
+61	169	10
+62	170	11
+63	170	12
+64	170	10
+65	171	11
+66	171	12
+67	171	10
+68	172	11
+69	172	12
+70	172	10
+71	173	11
+72	173	12
+73	173	10
+74	174	11
+75	174	12
+76	174	10
+77	175	11
+78	175	12
+79	175	10
+80	176	11
+81	176	12
+82	176	10
+83	177	11
+84	177	12
+85	177	10
+86	178	11
+87	178	12
+88	178	10
+89	179	11
+90	179	12
+91	179	10
+92	180	11
+93	180	12
+94	180	10
+95	181	11
+96	181	12
+97	181	10
+98	182	11
+99	182	12
+100	182	10
+\.
+
+
+--
+-- TOC entry 2878 (class 0 OID 33168)
+-- Dependencies: 207
+-- Data for Name: user_verification_data; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.user_verification_data (id, user_id, user_login, user_password) FROM stdin;
+1	3	alexey	alexey
+2	5	madmax	madmax
+3	6	jacksparrow	jacksparrow
+4	16	alice	alice
+5	21	tester	tester
+83	161	krai4ek	krai4ek
+84	162	gdgfgdf	dfgdfgdfg
+85	163	sfsdfsdfsd	sdfsdfsd
+86	164	login	password
+87	165	login1	password1
+88	166	gdfgdfgfg	alexeydfgdf
+89	167	fsdfsdf	sfdffsd
+90	168	fsgdfg	gdfgdfg
+91	169	gdfgdfg	gdfgdfggdfg
+92	170	gdgdfg	gdfgdfgdfg
+93	171	gdfgdfg	gdfgdfggdfg
+94	172	fsdfsdf	gdfgdfgfsd
+95	173	ffsdf	gdfgdfgfsdfsdf
+96	174	fsdfsdf	fsdfsdfs
+97	175	fsdfsdf	fsdfdf
+98	176	fsdfsdf	fsdfsdf
+99	177	dfgdfgdfg	dgfdfgdf
+100	178	fsdfsdf	fsdffsd
+101	179	fsdfdf	fsdffsdfd
+102	180	test35	test35
+103	181	test36	test36
+104	182	test37	test37
+\.
+
+
+--
+-- TOC entry 2891 (class 0 OID 0)
+-- Dependencies: 204
+-- Name: file_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.file_id_seq', 1, false);
+
+
+--
+-- TOC entry 2892 (class 0 OID 0)
+-- Dependencies: 203
+-- Name: file_key_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.file_key_seq', 1, false);
+
+
+--
+-- TOC entry 2893 (class 0 OID 0)
+-- Dependencies: 202
+-- Name: role_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.role_id_seq', 12, true);
+
+
+--
+-- TOC entry 2894 (class 0 OID 0)
+-- Dependencies: 197
+-- Name: user_data_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.user_data_id_seq', 182, true);
+
+
+--
+-- TOC entry 2895 (class 0 OID 0)
+-- Dependencies: 206
+-- Name: user_file_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.user_file_id_seq', 1, false);
+
+
+--
+-- TOC entry 2896 (class 0 OID 0)
+-- Dependencies: 199
+-- Name: user_publication_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.user_publication_id_seq', 24, true);
+
+
+--
+-- TOC entry 2897 (class 0 OID 0)
+-- Dependencies: 209
+-- Name: user_role_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.user_role_id_seq', 100, true);
+
+
+--
+-- TOC entry 2898 (class 0 OID 0)
+-- Dependencies: 208
+-- Name: user_verification_data_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.user_verification_data_id_seq', 104, true);
+
+
+--
+-- TOC entry 2736 (class 2606 OID 33087)
+-- Name: file file_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.file
+    ADD CONSTRAINT file_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2734 (class 2606 OID 16602)
+-- Name: role role_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.role
+    ADD CONSTRAINT role_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2730 (class 2606 OID 16403)
+-- Name: user_data user_data_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.user_data
+    ADD CONSTRAINT user_data_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2732 (class 2606 OID 16435)
+-- Name: user_publication user_publication_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.user_publication
+    ADD CONSTRAINT user_publication_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2740 (class 2606 OID 33198)
+-- Name: user_role user_role_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.user_role
+    ADD CONSTRAINT user_role_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2738 (class 2606 OID 33185)
+-- Name: user_verification_data user_verification_data_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.user_verification_data
+    ADD CONSTRAINT user_verification_data_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2742 (class 2606 OID 24887)
+-- Name: file publication_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.file
+    ADD CONSTRAINT publication_id_fk FOREIGN KEY (publication_id) REFERENCES public.user_publication(id);
+
+
+--
+-- TOC entry 2746 (class 2606 OID 33204)
+-- Name: user_role role_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.user_role
+    ADD CONSTRAINT role_id_fk FOREIGN KEY (role_id) REFERENCES public.role(id);
+
+
+--
+-- TOC entry 2741 (class 2606 OID 16436)
+-- Name: user_publication user_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.user_publication
+    ADD CONSTRAINT user_id_fk FOREIGN KEY (user_id) REFERENCES public.user_data(id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- TOC entry 2743 (class 2606 OID 33161)
+-- Name: file user_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.file
+    ADD CONSTRAINT user_id_fk FOREIGN KEY (user_id) REFERENCES public.user_data(id);
+
+
+--
+-- TOC entry 2744 (class 2606 OID 33186)
+-- Name: user_verification_data user_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.user_verification_data
+    ADD CONSTRAINT user_id_fk FOREIGN KEY (user_id) REFERENCES public.user_data(id);
+
+
+--
+-- TOC entry 2745 (class 2606 OID 33199)
+-- Name: user_role user_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.user_role
+    ADD CONSTRAINT user_id_fk FOREIGN KEY (user_id) REFERENCES public.user_data(id);
+
+
+-- Completed on 2020-01-25 19:03:46
+
+--
+-- PostgreSQL database dump complete
+--
+
