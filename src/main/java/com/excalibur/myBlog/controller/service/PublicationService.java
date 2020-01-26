@@ -8,7 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.excalibur.myBlog.repository.PublicationRepository;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class PublicationService {
@@ -18,6 +20,15 @@ public class PublicationService {
 
     public void saveNewPublication(Publication publication){
         publicationRepository.save(publication);
+    }
+
+    public PublicationWrapper getPublicationById(Integer id) throws IOException {
+        Optional<Publication> optional = publicationRepository.findById(id);
+        if (optional.isPresent()) {
+            return new PublicationWrapper(optional.get());
+        } else {
+            throw new IOException("No data found");
+        }
     }
 
     public void deletePublication(Publication publication){
