@@ -10,6 +10,8 @@ import java.util.stream.Collectors;
 
 public class Environment {
 
+    public static final String ERROR_TEMPLATE = "error-page";
+    public static final String ERROR_REDIRECT = "redirect:/error";
     private static String fileStorageURL;
     private static String defaultAvatarURN;
     private static String welcomeURN;
@@ -24,6 +26,12 @@ public class Environment {
         admin,
         user,
         guest
+    }
+    public enum Mode {
+        create,
+        edit,
+        delete,
+        view
     }
     private static Set<String> userRolesString;
 

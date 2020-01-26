@@ -130,7 +130,7 @@ public class GuestController {
         return "showUsers";
     }
 
-    @GetMapping(value = "/guest/showUserPage/id={id}")
+    @GetMapping(value = "/guest/showUser/id={id}")
     public String showUserPage(@RequestParam(name = "prior", required = false, defaultValue = "") String priorPath,
                                @PathVariable(name = "id") Integer id,
                                Model model){

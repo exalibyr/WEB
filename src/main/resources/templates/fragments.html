@@ -23,10 +23,10 @@
                                              + @{/user/id={userId}/findUsers (userId=${userId})} + '\''">Back</button>
                             </div>
                         </td>
-                        <td th:if="${not #strings.equals(templateName, 'createPublication')}">
+                        <td th:if="${not #strings.equals(templateName, 'publication')}">
                             <div class="context_button">
                                 <button type="button" th:onclick="'location.href=\''
-                                + @{/user/id={userId}/createPublication?prior={path} (userId=${userId}, path=${path})} + '\''">Create publication</button>
+                                + @{/user/id={userId}/publication/create?prior={path} (userId=${userId}, path=${path})} + '\''">Create publication</button>
                             </div>
                         </td>
                         <td th:if="${not #strings.equals(templateName, 'editProfilePage')}">
@@ -96,7 +96,7 @@
                 </div>
                 <div class="context_button">
                     <div th:if="${not #strings.isEmpty(userId)}" th:switch="${templateName}">
-                        <button th:case="'createPublication'" type="button" th:onclick="'location.href=\''
+                        <button th:case="'publication'" type="button" th:onclick="'location.href=\''
                                              + @{/user/id={userId} (userId=${userId})} + '\''">Back</button>
                         <button th:case="'editProfilePage'" type="button" th:onclick="'location.href=\''
                                              + @{/user/id={userId} (userId=${userId})} + '\''">Back</button>
@@ -124,35 +124,63 @@
 <!--                </div>-->
 <!--            </div>-->
 <!--        </div>-->
-        <div th:fragment="publications (publicationWrappers, ownerId)">
-            <div>
-                <table th:each="wrapper : ${publicationWrappers}" class="publications">
-                    <tr>
-                        <td>Title:</td>
-                    </tr>
-                    <tr>
-                        <td><label th:text="${wrapper.publication.title}"></label></td>
-                    </tr>
-                    <tr>
-                        <td>Text:</td>
-                    </tr>
-                    <tr>
-                        <td><label th:text="${wrapper.publication.content}"></label></td>
-                    </tr>
-                    <tr>
-                        <td><label th:text="${wrapper.localDateTimeString}"></label></td>
-                    </tr>
-                    <tr th:if="${not #strings.isEmpty(ownerId)}">
-                        <td>
+        <div th:fragment="publications (publicationWrappers, ownerId, userId)">
+            <div class="publications">
+                <div th:each="wrapper : ${publicationWrappers}" class="publication">
+                    <table>
+                        <tr>
+                            <td><br></td>
+                        </tr>
+                        <tr>
+                            <td><label th:text="${wrapper.publication.title}"></label></td>
+                        </tr>
+                        <tr>
+                            <td><br></td>
+                        </tr>
+                        <tr>
+                            <td><label th:text="${wrapper.publication.content}"></label></td>
+                        </tr>
+                        <tr>
+                            <td><br></td>
+                        </tr>
+                        <tr>
+                            <td><label th:text="${wrapper.localDateTimeString}"></label></td>
+                        </tr>
+                    </table>
+                    <div th:if="${#strings.equals(ownerId, userId)}" class="form_buttons">
+                        <div class="context_button">
                             <button class="context_button" type="button" th:onclick="'location.href=\''
-                     + @{/user/id={userId}/deletePublication/id={pubId} (userId=${ownerId}, pubId=${wrapper.publication.id})}
-                     + '\''">Delete this publication</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><br></td>
-                    </tr>
-                </table>
+                                 + @{/user/id={userId}/publication/id={pubId}/view (userId=${userId}, pubId=${wrapper.publication.id})}
+                                 + '\''">
+                                View
+                            </button>
+                        </div>
+                        <div class="context_button">
+                            <button class="context_button" type="button" th:onclick="'location.href=\''
+                                 + @{/user/id={userId}/publication/id={pubId}/edit (userId=${userId}, pubId=${wrapper.publication.id})}
+                                 + '\''">
+                                Edit
+                            </button>
+                        </div>
+                        <div class="context_button">
+                            <button type="button" th:onclick="'location.href=\''
+                                 + @{/user/id={userId}/publication/id={pubId}/delete (userId=${userId}, pubId=${wrapper.publication.id})}
+                                 + '\''">
+                                Delete
+                            </button>
+                        </div>
+                    </div>
+                    <div th:if="${not #strings.equals(ownerId, userId)}" class="form_buttons">
+                        <div class="context_button">
+                            <button class="context_button" type="button" th:onclick="'location.href=\''
+                                 + @{/user/id={userId}/showUser/id={id}/publication/id={pubId}/view (userId=${userId}, id=${ownerId}, pubId=${wrapper.publication.id})}
+                                 + '\''">
+                                View
+                            </button>
+                        </div>
+                    </div>
+                    <br>
+                </div>
             </div>
         </div>
     </body>

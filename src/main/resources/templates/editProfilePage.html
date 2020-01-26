@@ -31,7 +31,7 @@
                 <input type="hidden" id="pond" class="pond"/>
             </div>
 <!--                <div class="data_form">-->
-                <form th:id="${execInfo.templateName}" action="#" th:action = "@{/user/id={userId}/editProfile (userId=${user.id})}" th:object="${user}" method="post">
+                <form th:id="${#execInfo.templateName}" action="#" th:action = "@{/user/id={userId}/editProfile (userId=${user.id})}" th:object="${user}" method="post">
                     <input type="hidden" th:field="*{id}"/>
                     <table>
                         <tr>

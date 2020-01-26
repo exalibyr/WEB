@@ -8,7 +8,7 @@
         <script type="text/javascript"th:src = "@{/js/scripts.js}"></script>
     </head>
     <body>
-        <div th:replace="fragments::header (${userId}, ${execInfo.templateName})"></div>
+        <div th:replace="fragments::header (${userId}, ${#execInfo.templateName})"></div>
         <div class="content_wrap">
             <h3 align="center">Found users</h3>
             <table th:each="user : ${users}">
@@ -24,12 +24,12 @@
                 <tr>
                     <td th:if="${not #strings.isEmpty(userId)}">
                         <button class="context_button" type="button" th:onclick="'location.href=\''
-                             + @{/user/id={userId}/showUserPage/id={id} (userId=${userId}, id=${user.id})}
+                             + @{/user/id={userId}/showUser/id={id} (userId=${userId}, id=${user.id})}
                               + '\''">View page</button>
                     </td>
                     <td th:if="${#strings.isEmpty(userId)}">
                         <button class="context_button" type="button" th:onclick="'location.href=\''
-                             + @{/guest/showUserPage/id={id} (id=${user.id})}
+                             + @{/guest/showUser/id={id} (id=${user.id})}
                               + '\''">View page</button>
                     </td>
                 </tr>

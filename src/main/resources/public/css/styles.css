@@ -7,6 +7,10 @@ div.content_wrap {
     padding: 1%;
     padding-top: 2%;
 }
+.publication {
+    border-bottom: 7px solid darkorange;
+    width: 100%;
+}
 div.content_margin_top {
     height: 5%;
 }
