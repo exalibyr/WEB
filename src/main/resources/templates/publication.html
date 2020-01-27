@@ -10,27 +10,36 @@
     <body>
         <div th:replace="fragments::header (${userId}, ${#execInfo.templateName})"></div>
         <div class="content_wrap">
-            <h1 align="center">Create publication</h1>
             <div th:switch="${mode}">
-                <form th:case="'create'" th:id= "${#execInfo.templateName}" action="#" th:action = "@{/user/id={id}/publication/create (id=${userId})}" th:object="${publicationForm}" method="post">
-                    <p>
-                        <textarea cols="50" rows="1" maxlength="50" placeholder="Write title here" th:field="*{title}"></textarea>
-                    </p>
-                    <p>
-                        <textarea cols="100" rows="5" maxlength="500" placeholder="Write text here" th:field="*{content}"></textarea>
-                    </p>
-                    <div th:replace="fragments::form-buttons (${userId}, 'Save', ${#execInfo.templateName})"></div>
-                </form>
-                <form th:case="'edit'" th:id= "${#execInfo.templateName}" action="#" th:action = "@{/user/id={userId}/publication/id={pubId}/edit (userId=${userId}, pubId=${pubId})}" th:object="${publicationForm}" method="post">
-                    <p>
-                        <textarea cols="50" rows="1" maxlength="50" placeholder="Write title here" th:field="*{title}"></textarea>
-                    </p>
-                    <p>
-                        <textarea cols="100" rows="5" maxlength="500" placeholder="Write text here" th:field="*{content}"></textarea>
-                    </p>
-                    <div th:replace="fragments::form-buttons (${userId}, 'Save', ${#execInfo.templateName})"></div>
-                </form>
+
+                <div th:case="'create'">
+                    <h1 align="center">Create publication</h1>
+                    <form th:id= "${#execInfo.templateName}" action="#" th:action = "@{/user/id={id}/publication/create (id=${userId})}" th:object="${publicationForm}" method="post">
+                        <p>
+                            <textarea cols="50" rows="1" maxlength="50" placeholder="Write title here" th:field="*{title}"></textarea>
+                        </p>
+                        <p>
+                            <textarea cols="100" rows="5" maxlength="500" placeholder="Write text here" th:field="*{content}"></textarea>
+                        </p>
+                        <div th:replace="fragments::form-buttons (${userId}, 'Save', ${#execInfo.templateName})"></div>
+                    </form>
+                </div>
+
+                <div th:case="'edit'">
+                    <h1 align="center">Edit publication</h1>
+                    <form th:id= "${#execInfo.templateName}" action="#" th:action = "@{/user/id={userId}/publication/id={pubId}/edit (userId=${userId}, pubId=${pubId})}" th:object="${publicationForm}" method="post">
+                        <p>
+                            <textarea cols="50" rows="1" maxlength="50" placeholder="Write title here" th:field="*{title}"></textarea>
+                        </p>
+                        <p>
+                            <textarea cols="100" rows="5" maxlength="500" placeholder="Write text here" th:field="*{content}"></textarea>
+                        </p>
+                        <div th:replace="fragments::form-buttons (${userId}, 'Save', ${#execInfo.templateName})"></div>
+                    </form>
+                </div>
+
                 <div th:case="'view'">
+                    <h1 align="center">View publication</h1>
                     <p>
                         <label th:text="${publicationWrapper.publication.title}"></label>
                     </p>
@@ -40,7 +49,7 @@
                     <p>
                         <label th:text="${publicationWrapper.localDateTimeString}"></label>
                     </p>
-                    <div th:if="${#strings.equals(userId, owner.id)}" class="form_buttons">
+                    <div th:if="${#strings.equals(userId, ownerId)}" class="form_buttons">
                         <div class="context_button">
                             <button type="button" th:onclick="'location.href=\'' + @{/user/id={userId}/publication/id={pubId}/edit (userId=${userId}, pubId=${pubId})} + '\''">
                                 Edit
@@ -57,9 +66,9 @@
                             </button>
                         </div>
                     </div>
-                    <div th:if="${not #strings.equals(userId, owner.id)}" class="form_buttons">
+                    <div th:if="${not #strings.equals(userId, ownerId)}" class="form_buttons">
                         <div class="context_button">
-                            <button type="button" th:onclick="@{/user/id={userId}/showUser/id={id}/publication/id={pubId}/view (userId=${userId}, id=${owner.id}, pubId=${publication.id})}">
+                            <button type="button" th:onclick="'location.href=\'' + @{/user/id={userId}/showUser/id={id} (userId=${userId}, id=${ownerId})} + '\''">
                                 Back
                             </button>
                         </div>

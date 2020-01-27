@@ -27,7 +27,7 @@ public class Environment {
         user,
         guest
     }
-    public enum Mode {
+    public enum PageMode {
         create,
         edit,
         delete,

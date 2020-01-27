@@ -8,6 +8,7 @@ import com.excalibur.myBlog.dao.User;
 import com.excalibur.myBlog.form.PublicationForm;
 import com.excalibur.myBlog.utils.Environment;
 import com.excalibur.myBlog.utils.PublicationWrapper;
+import org.springframework.beans.factory.NamedBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -115,8 +116,7 @@ public class UserController {
             model.addAttribute("publicationWrappers", publicationWrappers);
             model.addAttribute("backURI", priorPath);
             return "showUserPage";
-        }
-        else {
+        } else {
             return Environment.ERROR_TEMPLATE;
         }
     }
@@ -180,7 +180,7 @@ public class UserController {
             publicationForm.setContent(wrapper.getPublication().getContent());
             publicationForm.setTitle(wrapper.getPublication().getTitle());
             model.addAttribute("backURI", priorPath);
-            model.addAttribute("mode", Environment.Mode.edit.toString());
+            model.addAttribute("mode", Environment.PageMode.edit.toString());
             model.addAttribute("userId", userId);
             model.addAttribute("pubId", pubId);
             model.addAttribute("publicationWrapper", wrapper);
@@ -221,6 +221,7 @@ public class UserController {
                                        PublicationForm publicationForm,
                                        Model model) {
         model.addAttribute("backURI", priorPath);
+        model.addAttribute("mode", Environment.PageMode.create.name());
         return "publication";
     }
 
@@ -257,13 +258,12 @@ public class UserController {
                                      Model model) {
         try {
             PublicationWrapper wrapper = publicationService.getPublicationById(pubId);
-            User owner = wrapper.getPublication().getUser();
             model.addAttribute("backURI", priorPath);
-            model.addAttribute("mode", Environment.Mode.view.toString());
+            model.addAttribute("mode", Environment.PageMode.view.toString());
             model.addAttribute("userId", userId);
             model.addAttribute("pubId", pubId);
             model.addAttribute("publicationWrapper", wrapper);
-            model.addAttribute("owner", owner);
+            model.addAttribute("ownerId", userId);
             return "publication";
         } catch (Exception e) {
             e.printStackTrace();
@@ -271,4 +271,24 @@ public class UserController {
         }
     }
 
+    @GetMapping(value = "/user/id={userId}/showUser/id={id}/publication/id={pubId}/view")
+    public String getViewPublication(@RequestParam(name = "prior", required = false, defaultValue = "") String priorPath,
+                                     @PathVariable(name = "userId") Integer userId,
+                                     @PathVariable(name = "pubId") Integer pubId,
+                                     @PathVariable(name = "id") Integer id,
+                                     Model model) {
+        try {
+            PublicationWrapper wrapper = publicationService.getPublicationById(pubId);
+            model.addAttribute("backURI", priorPath);
+            model.addAttribute("mode", Environment.PageMode.view.toString());
+            model.addAttribute("userId", userId);
+            model.addAttribute("pubId", pubId);
+            model.addAttribute("publicationWrapper", wrapper);
+            model.addAttribute("ownerId", id);
+            return "publication";
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Environment.ERROR_TEMPLATE;
+        }
+    }
 }
