@@ -1,6 +1,6 @@
-package com.excalibur.myBlog.config;
+package com.excalibur.myBlog.security.configuration;
 
-import com.excalibur.myBlog.utils.UserDetailsServiceImpl;
+import com.excalibur.myBlog.security.service.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.context.annotation.Configuration;
@@ -22,6 +22,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Autowired
     UserDetailsServiceImpl userDetailsService;
 
+    //TODO: fix logout process so that session is invalidated
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
@@ -31,9 +32,9 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                     .anyRequest().authenticated()
                 .and()
                     .formLogin().loginPage("/login").loginProcessingUrl("/login")
-                    .defaultSuccessUrl("/user/redirect", true).permitAll()
+                    .defaultSuccessUrl("/user", true).permitAll()
                 .and()
-                    .logout().logoutUrl("/logout").invalidateHttpSession(true).permitAll();
+                    .logout().logoutUrl("/logout").invalidateHttpSession(true).clearAuthentication(true).permitAll();
     }
 
     @Override

@@ -1,17 +1,13 @@
-package com.excalibur.myBlog.controller.service;
+package com.excalibur.myBlog.service.Impl;
 
+import com.excalibur.myBlog.service.FileService;
 import com.excalibur.myBlog.dao.File;
-import com.excalibur.myBlog.dao.User;
 import com.excalibur.myBlog.repository.FileRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-import java.io.FileNotFoundException;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.function.Supplier;
-
-public class FileService {
+@Service
+public class FileServiceImpl implements FileService {
 
     @Autowired
     private FileRepository fileRepository;
@@ -19,6 +15,5 @@ public class FileService {
     public File save(File file) {
         return fileRepository.save(file);
     }
-
 
 }

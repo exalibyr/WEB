@@ -1,4 +1,4 @@
-package com.excalibur.myBlog.utils;
+package com.excalibur.myBlog.configuration;
 
 import java.io.FileInputStream;
 import java.io.IOException;

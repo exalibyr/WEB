@@ -3,7 +3,7 @@ package com.excalibur.myBlog.repository.Extended.Impl;
 import com.excalibur.myBlog.dao.Role;
 import com.excalibur.myBlog.dao.User;
 import com.excalibur.myBlog.repository.Extended.ExtendedUserRepository;
-import com.excalibur.myBlog.utils.Environment;
+import com.excalibur.myBlog.configuration.Environment;
 import java.sql.*;
 
 public class ExtendedUserRepositoryImpl implements ExtendedUserRepository {
@@ -12,8 +12,8 @@ public class ExtendedUserRepositoryImpl implements ExtendedUserRepository {
     public Integer saveUser(User user) {
         try (Connection connection = DriverManager.getConnection(Environment.getDatabaseURL(), Environment.getDatabaseLogin(), Environment.getDatabasePassword())) {
             Statement statement = connection.createStatement();
-            String query = "INSERT INTO user_data (name, surname, about)" +
-                            " VALUES ('" + user.getName() + "', '" + user.getSurname() + "', '" + user.getAbout() + "')" +
+            String query = "INSERT INTO user_data (name, surname, about, username)" +
+                            " VALUES ('" + user.getName() + "', '" + user.getSurname() + "', '" + user.getAbout() + "', '" + user.getUsername() + "')" +
                             " RETURNING id";
             System.out.println("Native SQL: " + query);
             ResultSet resultSet = statement.executeQuery(query);

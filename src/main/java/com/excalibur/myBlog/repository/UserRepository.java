@@ -18,4 +18,6 @@ public interface UserRepository extends CrudRepository<User, Integer>, ExtendedU
 
     Optional<User> findByVerificationData(VerificationData verificationData);
 
+    Optional<User> findByUsername(String username);
+
 }

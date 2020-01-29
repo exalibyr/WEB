@@ -29,7 +29,7 @@
                     </td>
                     <td th:if="${#strings.isEmpty(userId)}">
                         <button class="context_button" type="button" th:onclick="'location.href=\''
-                             + @{/guest/showUser/id={id} (id=${user.id})}
+                             + @{/guest/showUser/{id} (id=${user.id})}
                               + '\''">View page</button>
                     </td>
                 </tr>

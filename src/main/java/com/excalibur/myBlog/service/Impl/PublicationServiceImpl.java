@@ -1,11 +1,12 @@
-package com.excalibur.myBlog.controller.service;
+package com.excalibur.myBlog.service.Impl;
 
+import com.excalibur.myBlog.service.PublicationService;
 import com.excalibur.myBlog.dao.Publication;
 import com.excalibur.myBlog.dao.User;
+import com.excalibur.myBlog.repository.PublicationRepository;
 import com.excalibur.myBlog.utils.PublicationWrapper;
 import com.excalibur.myBlog.utils.ZonedDateTimeFormatter;
 import org.springframework.beans.factory.annotation.Autowired;
-import com.excalibur.myBlog.repository.PublicationRepository;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -13,7 +14,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class PublicationService {
+public class PublicationServiceImpl implements PublicationService {
 
     @Autowired
     private PublicationRepository publicationRepository;
@@ -54,4 +55,5 @@ public class PublicationService {
     public void deletePublicationById(Integer id){
         publicationRepository.deleteById(id);
     }
+
 }

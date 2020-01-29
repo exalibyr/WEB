@@ -1,6 +1,6 @@
 package com.excalibur.myBlog.controller;
 
-import com.excalibur.myBlog.utils.Environment;
+import com.excalibur.myBlog.configuration.Environment;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;

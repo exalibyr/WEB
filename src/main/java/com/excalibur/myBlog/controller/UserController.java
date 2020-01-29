@@ -1,14 +1,12 @@
 package com.excalibur.myBlog.controller;
 
-import com.excalibur.myBlog.controller.service.PublicationService;
-import com.excalibur.myBlog.controller.service.UserService;
-import com.excalibur.myBlog.controller.service.VerificationDataService;
+import com.excalibur.myBlog.service.PublicationService;
+import com.excalibur.myBlog.service.Impl.UserServiceImpl;
 import com.excalibur.myBlog.dao.Publication;
 import com.excalibur.myBlog.dao.User;
 import com.excalibur.myBlog.form.PublicationForm;
-import com.excalibur.myBlog.utils.Environment;
+import com.excalibur.myBlog.configuration.Environment;
 import com.excalibur.myBlog.utils.PublicationWrapper;
-import org.springframework.beans.factory.NamedBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,6 +14,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.time.ZonedDateTime;
@@ -28,38 +27,34 @@ import java.util.Optional;
 public class UserController {
 
     @Autowired
-    private UserService userService;
+    private UserServiceImpl userService;
     @Autowired
     private PublicationService publicationService;
-    @Autowired
-    private VerificationDataService verificationDataService;
 
-
-
-
-    @GetMapping(value = "/user/redirect")
-    public String loginSuccess(HttpServletRequest httpServletRequest){
-        String login = httpServletRequest.getRemoteUser();
-        Integer id = verificationDataService.findByLogin(login).getUser().getId();
-       return "redirect:/user/id="
-               + id;
+    @GetMapping(value = "/logout")
+    public String processLogout(HttpServletRequest request) {
+        try {
+            request.logout();
+            return "redirect:/login";
+        } catch (ServletException e) {
+            e.printStackTrace();
+            return Environment.ERROR_TEMPLATE;
+        }
     }
 
-
-    @GetMapping(value = "/user/id={userId}")
+    @GetMapping(value = "/user")
     public String showHomePage(@RequestParam(name = "prior", required = false, defaultValue = "") String priorPath,
-                               @PathVariable(name = "userId") Integer userId,
+                               HttpServletRequest request,
                                Model model){
-        Optional<User> userOptional = userService.findUserById(userId);
+        Optional<User> userOptional = userService.getUser(request.getRemoteUser());
         if(userOptional.isPresent()){
             User user = userOptional.get();
-            model.addAttribute("userId", userId);
+            model.addAttribute("userId", user.getId());
             model.addAttribute("user", user);
-//            List<Publication> publications = publicationService.findPublicationsByUser(user);
             List<PublicationWrapper> publicationWrappers = publicationService.getUserPublications(user);
             model.addAttribute("publicationWrappers", publicationWrappers);
             if ( user.hasAvatar()) {
-                model.addAttribute("avatarURI", Environment.getFileStorageURL() + "/user/" + userId + "/avatar");
+                model.addAttribute("avatarURI", Environment.getFileStorageURL() + "/user/" + user.getId() + "/avatar");
             } else {
                 model.addAttribute("avatarURI", Environment.getDefaultAvatarURI());
             }
@@ -67,7 +62,7 @@ public class UserController {
             return "home-page";
         }
         else {
-            return "redirect:/error";
+            return Environment.ERROR_TEMPLATE;
         }
     }
 

@@ -1,14 +1,12 @@
-package com.excalibur.myBlog.controller.service.Impl;
+package com.excalibur.myBlog.service.Impl;
 
-import com.excalibur.myBlog.controller.service.RoleService;
+import com.excalibur.myBlog.service.RoleService;
 import com.excalibur.myBlog.dao.Role;
 import com.excalibur.myBlog.dao.User;
 import com.excalibur.myBlog.repository.RoleRepository;
-import com.excalibur.myBlog.utils.Environment;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 

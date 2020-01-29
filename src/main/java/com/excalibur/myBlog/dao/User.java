@@ -38,6 +38,10 @@ public class User {
     @Cascade(value = CascadeType.DELETE)
     private VerificationData verificationData;
 
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    @Cascade(value = CascadeType.DELETE)
+    private List<Password> passwords;
+
     @Column(name = "avatar_url")
     private String avatarUrl;
 
@@ -55,6 +59,9 @@ public class User {
             inverseJoinColumns = {@JoinColumn(name = "role_id", nullable = false)})
     private Set<Role> roles;
 
+    @Column(name = "username", nullable = false, unique = true, updatable = false, length = 20)
+    private String username;
+
 
     public User() {
     }
@@ -63,10 +70,11 @@ public class User {
         this.id = id;
     }
 
-    public User(String name, String surname, String about) {
+    public User(String name, String surname, String about, String username) {
         this.name = name;
         this.surname = surname;
         this.about = about;
+        this.username = username;
     }
 
     public void addPublication(Publication publication){
@@ -154,5 +162,25 @@ public class User {
 
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public List<Password> getPasswords() {
+        return passwords;
+    }
+
+    public void setPasswords(List<Password> passwords) {
+        this.passwords = passwords;
+    }
+
+    public Password getCurrentPassword() {
+        return getPasswords().get(0);
     }
 }

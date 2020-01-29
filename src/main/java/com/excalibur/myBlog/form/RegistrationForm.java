@@ -1,5 +1,6 @@
 package com.excalibur.myBlog.form;
 
+import com.excalibur.myBlog.dao.Password;
 import com.excalibur.myBlog.dao.User;
 import com.excalibur.myBlog.dao.VerificationData;
 
@@ -25,7 +26,11 @@ public class RegistrationForm {
     private String userAbout = null;
 
     public User getUser(){
-        return new User(userName, userSurname, userAbout);
+        return new User(userName, userSurname, userAbout, userLogin);
+    }
+
+    public Password getPassword() {
+        return new Password(userPassword);
     }
 
     public VerificationData getValidationData(){
