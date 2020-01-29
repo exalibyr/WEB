@@ -34,10 +34,6 @@ public class User {
     @Cascade(value = CascadeType.DELETE)
     private List<Publication> publications;
 
-    @OneToOne(optional = false, mappedBy = "user", fetch = FetchType.LAZY)
-    @Cascade(value = CascadeType.DELETE)
-    private VerificationData verificationData;
-
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     @Cascade(value = CascadeType.DELETE)
     private List<Password> passwords;
@@ -122,14 +118,6 @@ public class User {
 
     public void setPublications(List<Publication> publications) {
         this.publications = publications;
-    }
-
-    public VerificationData getVerificationData() {
-        return verificationData;
-    }
-
-    public void setVerificationData(VerificationData verificationData) {
-        this.verificationData = verificationData;
     }
 
     public String getAvatarUrl() {

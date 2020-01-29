@@ -2,10 +2,6 @@ package com.excalibur.myBlog.form;
 
 import com.excalibur.myBlog.dao.Password;
 import com.excalibur.myBlog.dao.User;
-import com.excalibur.myBlog.dao.VerificationData;
-
-import javax.validation.constraints.Max;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 public class RegistrationForm {
@@ -31,10 +27,6 @@ public class RegistrationForm {
 
     public Password getPassword() {
         return new Password(userPassword);
-    }
-
-    public VerificationData getValidationData(){
-        return new VerificationData(userLogin, userPassword);
     }
 
     public String getUserLogin() {

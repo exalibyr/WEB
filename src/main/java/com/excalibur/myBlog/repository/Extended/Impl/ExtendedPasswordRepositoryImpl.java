@@ -1,7 +1,6 @@
 package com.excalibur.myBlog.repository.Extended.Impl;
 
 import com.excalibur.myBlog.dao.Password;
-import com.excalibur.myBlog.dao.VerificationData;
 import com.excalibur.myBlog.repository.Extended.ExtendedPasswordRepository;
 
 import javax.persistence.EntityManager;
