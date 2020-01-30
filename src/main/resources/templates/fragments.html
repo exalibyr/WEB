@@ -78,6 +78,11 @@
                                              + @{/guest/signUp} + '\''">Back</button>
                             </div>
                         </td>
+                        <td th:if="${not #strings.equals(templateName, 'signUp')}">
+                            <div class="context_button">
+                                <button type="button" th:onclick="'location.href=\'/guest/signUp\''">Create account</button>
+                            </div>
+                        </td>
                         <td th:if="${not #strings.equals(templateName, 'guest_findUsers')}">
                             <div class="context_button">
                                 <button type="button" th:onclick="'location.href=\''
