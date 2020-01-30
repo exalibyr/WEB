@@ -50,15 +50,15 @@ public class UserController {
         Optional<User> userOptional = userService.getUser(request.getRemoteUser());
         if(userOptional.isPresent()){
             User user = userOptional.get();
-            model.addAttribute("user", user);
             List<PublicationWrapper> publicationWrappers = publicationService.getUserPublications(user);
+            model.addAttribute("user", user);
             model.addAttribute("publicationWrappers", publicationWrappers);
+            model.addAttribute("backURI", priorPath);
             if ( user.hasAvatar()) {
                 model.addAttribute("avatarURI", AppConfiguration.getFileStorageURL() + "/user/" + user.getId() + "/avatar");
             } else {
                 model.addAttribute("avatarURI", AppConfiguration.getDefaultAvatarURI());
             }
-            model.addAttribute("backURI", priorPath);
             return "home";
         }
         else {
@@ -97,10 +97,14 @@ public class UserController {
     @GetMapping(value = "/user/showUser/{id}")
     public String showUserPage(@RequestParam(name = "prior", required = false, defaultValue = "") String priorPath,
                                @PathVariable(name = "id") Integer id,
+                               HttpServletRequest request,
                                Model model){
         Optional<User> userOptional = userService.findUserById(id);
         if(userOptional.isPresent()){
             User user = userOptional.get();
+            if (user.getUsername().equals(request.getRemoteUser())) {
+                return "redirect:/user";
+            }
             List<PublicationWrapper> publicationWrappers = publicationService.getUserPublications(user);
             model.addAttribute("user", user);
             model.addAttribute("publicationWrappers", publicationWrappers);
