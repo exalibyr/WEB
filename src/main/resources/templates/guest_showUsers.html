@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>My blog</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link type="text/css" rel="stylesheet" th:href="@{/css/styles.css}">
+    <script type="text/javascript"th:src = "@{/js/jquery-3.4.1.js}"></script>
+    <script type="text/javascript"th:src = "@{/js/scripts.js}"></script>
+</head>
+<body>
+<div th:replace="fragments::guest_header (${#execInfo.templateName})"></div>
+<div class="content_wrap">
+    <h3 align="center">Found users</h3>
+    <table th:each="user : ${users}">
+        <tr>
+            <td><img th:src="${user.avatarUrl}" alt="Image not found" width="300" height="200"></td>
+        </tr>
+        <tr>
+            <td><label th:text="${user.name} + ' ' + ${user.surname}"></label></td>
+        </tr>
+        <tr>
+            <td>About: <label th:text="${user.about}"></label></td>
+        </tr>
+        <tr>
+            <td>
+                <button class="context_button" type="button" th:onclick="'location.href=\''
+                             + @{/{role}/showUser/{id} (role=${role}, id=${user.id})}
+                              + '\''">View page</button>
+            </td>
+        </tr>
+        <tr>
+            <td><br></td>
+        </tr>
+    </table>
+</div>
+</body>
+</html>

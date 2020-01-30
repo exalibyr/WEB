@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>My blog</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link type="text/css" rel="stylesheet" th:href="@{/css/styles.css}">
+    <script type="text/javascript"th:src = "@{/js/jquery-3.4.1.js}"></script>
+    <script type="text/javascript"th:src = "@{/js/scripts.js}"></script>
+</head>
+<body>
+<div th:replace="fragments::guest_header (${#execInfo.templateName})"></div>
+<div class="content_wrap">
+    <h1 align="center">Find users</h1>
+    <form th:id="${#execInfo.templateName}" action="#" th:action = "@{/{role}/findUsers (role=${role})}" method="post">
+        <table>
+            <tr>
+                <td>
+                    <p>
+                        <input type="text" maxlength="20" placeholder="name" th:field="${userInfo.name}">
+                    </p>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <p>
+                        <input type="text" maxlength="30" placeholder="surname" th:field="${userInfo.surname}">
+                    </p>
+                </td>
+            </tr>
+        </table>
+        <div th:replace="fragments::guest_formButtons ('Find', ${#execInfo.templateName})"></div>
+    </form>
+</div>
+</body>
+</html>

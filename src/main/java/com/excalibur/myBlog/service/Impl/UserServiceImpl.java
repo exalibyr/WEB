@@ -1,6 +1,6 @@
 package com.excalibur.myBlog.service.Impl;
 
-import com.excalibur.myBlog.configuration.Environment;
+import com.excalibur.myBlog.configuration.AppConfiguration;
 import com.excalibur.myBlog.service.PasswordService;
 import com.excalibur.myBlog.service.RoleService;
 import com.excalibur.myBlog.service.UserService;
@@ -30,14 +30,14 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User createUser(RegistrationForm registrationForm) throws Exception {
-        if (roleService.matchWithDatabase(Environment.getUserRolesString())) {
+        if (roleService.matchWithDatabase(AppConfiguration.getUserRolesString())) {
             User newUser = registrationForm.getUser();
             Password userPassword = registrationForm.getPassword();
             userPassword.setUser(newUser);
             List<Password> passwords = new ArrayList<>();
             passwords.add(userPassword);
             newUser.setPasswords(passwords);
-            newUser.setRoles(roleService.getAllowedRoles(Environment.UserRole.user.toString()));
+            newUser.setRoles(roleService.getAllowedRoles(AppConfiguration.UserRole.user.toString()));
             newUser.setId(userRepository.saveUser(newUser));
             userRepository.saveUserRoles(newUser);
             passwordService.saveUserPassword(userPassword);

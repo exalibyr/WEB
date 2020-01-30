@@ -1,5 +1,7 @@
 package com.excalibur.myBlog.configuration;
 
+import org.springframework.stereotype.Component;
+
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -8,10 +10,12 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class Environment {
+@Component
+public class AppConfiguration {
 
-    public static final String ERROR_TEMPLATE = "error-page";
+    public static final String ERROR_TEMPLATE = "error";
     public static final String ERROR_REDIRECT = "redirect:/error";
+    public static final String ERROR_URN = "/error";
     private static String fileStorageURL;
     private static String defaultAvatarURN;
     private static String welcomeURN;

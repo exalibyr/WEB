@@ -22,7 +22,7 @@
         </script>
     </head>
     <body>
-        <div th:replace="fragments::header (${userId}, ${#execInfo.templateName})"></div>
+        <div th:replace="fragments::user_header (${#execInfo.templateName})"></div>
         <div class="content_wrap">
             <h1 align="center">Here, you can update information about yourself.</h1>
             <h3>Profile picture</h3>
@@ -31,7 +31,7 @@
                 <input type="hidden" id="pond" class="pond"/>
             </div>
 <!--                <div class="data_form">-->
-                <form th:id="${#execInfo.templateName}" action="#" th:action = "@{/user/id={userId}/editProfile (userId=${user.id})}" th:object="${user}" method="post">
+                <form th:id="${#execInfo.templateName}" action="#" th:action = "@{/user/editProfile}" th:object="${user}" method="post">
                     <input type="hidden" th:field="*{id}"/>
                     <table>
                         <tr>
@@ -69,7 +69,7 @@
                             <td><br></td>
                         </tr>
                     </table>
-                    <div th:replace="fragments::form-buttons (${userId}, 'Save', ${#execInfo.templateName})"></div>
+                    <div th:replace="fragments::user_formButtons ('Save', ${#execInfo.templateName})"></div>
                 </form>
 <!--                </div>-->
         </div>

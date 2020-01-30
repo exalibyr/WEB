@@ -8,7 +8,7 @@
         <script type="text/javascript"th:src = "@{/js/scripts.js}"></script>
     </head>
     <body>
-        <div th:replace="fragments::header (${user.Id}, ${#execInfo.templateName})"></div>
+        <div th:replace="fragments::user_header (${#execInfo.templateName})"></div>
         <div class="content_wrap">
             <h1 align="center" th:text="'Welcome to your home page, ' + ${user.name} + '!'"></h1>
             <table>
@@ -23,7 +23,7 @@
                 </tr>
             </table>
             <h3 align="center">Your publications</h3>
-            <div th:replace="fragments::publications (${publicationWrappers}, ${userId}, ${userId})"></div>
+            <div th:replace="fragments::publications (${publicationWrappers}, null)"></div>
         </div>
 
     </body>

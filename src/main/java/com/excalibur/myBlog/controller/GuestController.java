@@ -5,7 +5,7 @@ import com.excalibur.myBlog.service.PublicationService;
 import com.excalibur.myBlog.service.Impl.UserServiceImpl;
 import com.excalibur.myBlog.dao.User;
 import com.excalibur.myBlog.form.RegistrationForm;
-import com.excalibur.myBlog.configuration.Environment;
+import com.excalibur.myBlog.configuration.AppConfiguration;
 import com.excalibur.myBlog.utils.PublicationWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -13,7 +13,6 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,22 +27,22 @@ public class GuestController {
     @Autowired
     private PublicationService publicationService;
 
-    @GetMapping(value = "/guest/sign-up")
+    @GetMapping(value = "/guest/signUp")
     public String showRegistrationForm(RegistrationForm registrationForm){
-        return "sign-up";
+        return "signUp";
     }
 
-    @PostMapping(value = "/guest/sign-up")
+    @PostMapping(value = "/guest/signUp")
     public String tryToRegisterUser( @Valid RegistrationForm registrationForm, BindingResult bindingResult){
         if(bindingResult.hasErrors()){
-            return "sign-up";
+            return "signUp";
         } else {
             try {
                 User createdUser = userService.createUser(registrationForm);
                 return "redirect:/guest/registration-success?id=" + createdUser.getId();
             } catch (Exception e) {
                 e.printStackTrace();
-                return Environment.ERROR_REDIRECT;
+                return AppConfiguration.ERROR_REDIRECT;
             }
         }
     }
@@ -54,20 +53,20 @@ public class GuestController {
         if(userOptional.isPresent()){
             User user = userOptional.get();
             model.addAttribute("user", user);
-            model.addAttribute("welcomeURI", Environment.getWelcomeURI());
+            model.addAttribute("welcomeURI", AppConfiguration.getWelcomeURI());
             return "registration-success";
         } else {
-            return Environment.ERROR_TEMPLATE;
+            return AppConfiguration.ERROR_TEMPLATE;
         }
     }
 
     @GetMapping(value = "/guest/findUsers")
     public String getFindUsersForm(@RequestParam(name = "prior", required = false, defaultValue = "") String priorPath,
                                    Model model){
-        model.addAttribute("userId", null);
+        model.addAttribute("role", AppConfiguration.UserRole.guest.name());
         model.addAttribute("userInfo", new User());
         model.addAttribute("backURI", priorPath);
-        return "findUsers";
+        return "guest_findUsers";
     }
 
     @PostMapping(value = "/guest/findUsers")
@@ -83,10 +82,10 @@ public class GuestController {
                             @RequestParam(name = "surname", required = false, defaultValue = "") String surname,
                             Model model){
         Optional<List<User>> users = userService.findUsersByNameOrSurname(name, surname);
-        model.addAttribute("userId", null);
+        model.addAttribute("role", AppConfiguration.UserRole.guest.name());
         model.addAttribute("users", users.orElseGet(ArrayList::new));
         model.addAttribute("backURI", priorPath);
-        return "showUsers";
+        return "guest_showUsers";
     }
 
     @GetMapping(value = "/guest/showUser/{id}")
@@ -96,15 +95,14 @@ public class GuestController {
         Optional<User> userOptional = userService.findUserById(id);
         if(userOptional.isPresent()){
             User user = userOptional.get();
-            model.addAttribute("userId", null);
-            model.addAttribute("user", user);
             List<PublicationWrapper> publicationWrappers = publicationService.getUserPublications(user);
+            model.addAttribute("user", user);
             model.addAttribute("publicationWrappers", publicationWrappers);
             model.addAttribute("backURI", priorPath);
-            return "showUserPage";
+            return "guest_showUser";
         }
         else {
-            return Environment.ERROR_TEMPLATE;
+            return AppConfiguration.ERROR_TEMPLATE;
         }
     }
 

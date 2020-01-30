@@ -8,9 +8,9 @@
         <script type="text/javascript"th:src = "@{/js/scripts.js}"></script>
     </head>
     <body>
-        <div th:replace="fragments::header (null, ${#execInfo.templateName})"></div>
+        <div th:replace="fragments::guest_header (${#execInfo.templateName})"></div>
         <div class="content_wrap" align="center">
-            <form id="sign-up" action="#" th:action = "@{/guest/sign-up}" th:object="${registrationForm}" method="post">
+            <form th:id="${#execInfo.templateName}" action="#" th:action="@{/guest/signUp}" th:object="${registrationForm}" method="post">
                 <table>
                     <tr>
                         <td>Your login </td>
@@ -38,7 +38,7 @@
                         <td th:if="${#fields.hasErrors('userAbout')}" th:errors="*{userAbout}">Field length must not be more than 100 symbols</td>
                     </tr>
                 </table>
-                <div th:replace="fragments::form-buttons (null, 'Sign up', ${#execInfo.templateName})"></div>
+                <div th:replace="fragments::guest_formButtons ('Sign up', ${#execInfo.templateName})"></div>
             </form>
         </div>
     </body>

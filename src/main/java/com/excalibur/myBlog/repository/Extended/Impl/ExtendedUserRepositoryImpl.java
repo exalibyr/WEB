@@ -3,14 +3,14 @@ package com.excalibur.myBlog.repository.Extended.Impl;
 import com.excalibur.myBlog.dao.Role;
 import com.excalibur.myBlog.dao.User;
 import com.excalibur.myBlog.repository.Extended.ExtendedUserRepository;
-import com.excalibur.myBlog.configuration.Environment;
+import com.excalibur.myBlog.configuration.AppConfiguration;
 import java.sql.*;
 
 public class ExtendedUserRepositoryImpl implements ExtendedUserRepository {
 
     @Override
     public Integer saveUser(User user) {
-        try (Connection connection = DriverManager.getConnection(Environment.getDatabaseURL(), Environment.getDatabaseLogin(), Environment.getDatabasePassword())) {
+        try (Connection connection = DriverManager.getConnection(AppConfiguration.getDatabaseURL(), AppConfiguration.getDatabaseLogin(), AppConfiguration.getDatabasePassword())) {
             Statement statement = connection.createStatement();
             String query = "INSERT INTO user_data (name, surname, about, username)" +
                             " VALUES ('" + user.getName() + "', '" + user.getSurname() + "', '" + user.getAbout() + "', '" + user.getUsername() + "')" +
@@ -31,7 +31,7 @@ public class ExtendedUserRepositoryImpl implements ExtendedUserRepository {
 
     @Override
     public Integer saveUserRoles(User user) {
-        try (Connection connection = DriverManager.getConnection(Environment.getDatabaseURL(), Environment.getDatabaseLogin(), Environment.getDatabasePassword())) {
+        try (Connection connection = DriverManager.getConnection(AppConfiguration.getDatabaseURL(), AppConfiguration.getDatabaseLogin(), AppConfiguration.getDatabasePassword())) {
             Statement statement = connection.createStatement();
             String query;
             System.out.println("************* BATCH PACKAGE BEGIN ****************");
@@ -56,7 +56,7 @@ public class ExtendedUserRepositoryImpl implements ExtendedUserRepository {
 
     @Override
     public Integer updateUser(User user) {
-        try (Connection connection = DriverManager.getConnection(Environment.getDatabaseURL(), Environment.getDatabaseLogin(), Environment.getDatabasePassword())) {
+        try (Connection connection = DriverManager.getConnection(AppConfiguration.getDatabaseURL(), AppConfiguration.getDatabaseLogin(), AppConfiguration.getDatabasePassword())) {
             Statement statement = connection.createStatement();
             String query = "UPDATE user_data " +
                             "SET name = '" + user.getName() +

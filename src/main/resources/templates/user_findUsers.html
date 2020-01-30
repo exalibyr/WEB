@@ -8,10 +8,10 @@
         <script type="text/javascript"th:src = "@{/js/scripts.js}"></script>
     </head>
     <body>
-        <div th:replace="fragments::header (${userId}, ${#execInfo.templateName})"></div>
+        <div th:replace="fragments::user_header (${#execInfo.templateName})"></div>
         <div class="content_wrap">
             <h1 align="center">Find users</h1>
-            <form th:id="${#execInfo.templateName}" action="#" th:action = "(${userId} == null? @{/guest/findUsers} : @{/user/id={id}/findUsers (id=${userId})})" method="post">
+            <form th:id="${#execInfo.templateName}" action="#" th:action = "@{/{role}/findUsers (role=${role})}" method="post">
                 <table>
                     <tr>
                         <td>
@@ -28,7 +28,7 @@
                         </td>
                     </tr>
                 </table>
-                <div th:replace="fragments::form-buttons (${userId}, 'Find', ${#execInfo.templateName})"></div>
+                <div th:replace="fragments::user_formButtons ('Find', ${#execInfo.templateName})"></div>
             </form>
         </div>
     </body>

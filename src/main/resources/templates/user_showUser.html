@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>My blog</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <link type="text/css" rel="stylesheet" th:href="@{/css/styles.css}">
+        <script type="text/javascript"th:src = "@{/js/jquery-3.4.1.js}"></script>
+        <script type="text/javascript"th:src = "@{/js/scripts.js}"></script>
+    </head>
+    <body>
+        <div th:replace="fragments::user_header (${#execInfo.templateName})"></div>
+        <div class="content_wrap">
+            <h1 align="center" th:text="'Page of user: ' + ${user.name} + ' ' + ${user.surname}"></h1>
+            <table>
+                <tr>
+                    <td><img th:src="${user.avatarUrl}" alt="Image not found" width="300" height="200"></td>
+                </tr>
+                <tr>
+                    <td><label th:text="${user.name} + ' ' + ${user.surname}"></label></td>
+                </tr>
+                <tr>
+                    <td>About: <label th:text="${user.about}"></label></td>
+                </tr>
+            </table>
+            <h3 align="center" th:text="${user.name} + ' ' + ${user.surname} + '\'s publications'"></h3>
+            <div th:replace="fragments::publications (${publicationWrappers}, ${user.Id})"></div>
+        </div>
+    </body>
+</html>
