@@ -13,42 +13,42 @@
                     <tr>
                         <td th:if="${#strings.equals(templateName, 'user_showUsers')}">
                             <div class="context_button">
-                                <button type="button" th:onclick="'location.href=\'/user/findUsers\''">Back</button>
+                                <button type="button" th:onclick="'location.href=\'/home/findUsers\''">Back</button>
                             </div>
                         </td>
                         <td th:if="${#strings.equals(templateName, 'user_showUser')}">
                             <div class="context_button">
-                                <button type="button" th:onclick="'location.href=\'/user/findUsers\''">Back</button>
+                                <button type="button" th:onclick="'location.href=\'/home/findUsers\''">Back</button>
                             </div>
                         </td>
                         <td th:if="${not #strings.equals(templateName, 'publication')}">
                             <div class="context_button">
                                 <button type="button" th:onclick="'location.href=\''
-                                + @{/user/publication/create?prior={path} (path=${path})} + '\''">Create publication</button>
+                                + @{/home/publication/create?prior={path} (path=${path})} + '\''">Create publication</button>
                             </div>
                         </td>
                         <td th:if="${not #strings.equals(templateName, 'editProfile')}">
                             <div class="context_button">
                                 <button type="button" th:onclick="'location.href=\''
-                             + @{/user/editProfile?prior={path} (path=${path})} + '\''">Edit profile</button>
+                             + @{/home/editProfile?prior={path} (path=${path})} + '\''">Edit profile</button>
                             </div>
                         </td>
                         <td th:if="${not #strings.equals(templateName, 'user_findUsers')}">
                             <div class="context_button">
                                 <button type="button" th:onclick="'location.href=\''
-                             + @{/user/findUsers?prior={path} (path=${path})} + '\''">Find users</button>
+                             + @{/home/findUsers?prior={path} (path=${path})} + '\''">Find users</button>
                             </div>
                         </td>
                         <td th:if="${not #strings.equals(templateName, 'home')}">
                             <div class="context_button">
                                 <button type="button" th:onclick="'location.href=\''
-                                                 + @{/user?prior={path} (path=${path})} + '\''">Home page</button>
+                                                 + @{/home?prior={path} (path=${path})} + '\''">Home page</button>
                             </div>
                         </td>
                         <td>
                             <div class="context_button">
                                 <button type="button" th:onclick="'location.href=\''
-                                             + @{/logout} + '\''">Log out</button>
+                                             + @{/home/logout} + '\''">Log out</button>
                             </div>
                         </td>
                     </tr>
@@ -72,7 +72,7 @@
                                              + @{/guest/findUsers} + '\''">Back</button>
                             </div>
                         </td>
-                        <td th:if="${#strings.equals(templateName, 'registration-success')}">
+                        <td th:if="${#strings.equals(templateName, 'registrationSuccess')}">
                             <div class="context_button">
                                 <button type="button" th:onclick="'location.href=\''
                                              + @{/guest/signUp} + '\''">Back</button>
@@ -91,7 +91,7 @@
                         </td>
                         <td th:if="${not #strings.equals(templateName, 'login')}">
                             <div class="context_button">
-                                <button type="button" th:onclick="'location.href=\'/login\''">Log in</button>
+                                <button type="button" th:onclick="'location.href=\'/guest/login\''">Log in</button>
                             </div>
                         </td>
                     </tr>
@@ -106,16 +106,16 @@
                 <div class="context_button">
                     <div th:switch="${templateName}">
                         <button th:case="'publication'" type="button" th:onclick="'location.href=\''
-                                             + @{/user} + '\''">Back</button>
+                                             + @{/home} + '\''">Back</button>
                         <button th:case="'editProfile'" type="button" th:onclick="'location.href=\''
-                                             + @{/user} + '\''">Back</button>
+                                             + @{/home} + '\''">Back</button>
                         <button th:case="'findUsers'" type="button" th:onclick="'location.href=\''
-                                             + @{/user} + '\''">Back</button>
+                                             + @{/home} + '\''">Back</button>
 <!--                        <button th:case="'showUsers'" type="button" th:onclick="'location.href=\''-->
-<!--                                             + @{/user/findUsers} + '\''">Back</button>-->
+<!--                                             + @{/home/findUsers} + '\''">Back</button>-->
 <!--                        <button th:case="'showUserPage'" type="button" th:onclick="'location.href=\''-->
-<!--                                             + @{/user/showUsers} + '\''">Back</button>-->
-                        <button th:case="'signUp'" type="button" th:onclick="'location.href=\'/login\''">Back</button>
+<!--                                             + @{/home/users} + '\''">Back</button>-->
+                        <button th:case="'signUp'" type="button" th:onclick="'location.href=\'/guest/login\''">Back</button>
                     </div>
                 </div>
             </div>
@@ -126,7 +126,7 @@
                     <button type="submit" th:form="${templateName}" th:text="${submitLabel}"></button>
                 </div>
                 <div class="context_button">
-                    <button type="button" th:onclick="'location.href=\'/login\''">Back</button>
+                    <button type="button" th:onclick="'location.href=\'/guest/login\''">Back</button>
                 </div>
             </div>
         </div>
@@ -166,21 +166,21 @@
                     <div th:if="${#strings.isEmpty(ownerId)}" class="form_buttons">
                         <div class="context_button">
                             <button class="context_button" type="button" th:onclick="'location.href=\''
-                                 + @{/user/publication/{pubId}/view (pubId=${wrapper.publication.id})}
+                                 + @{/home/publication/{pubId}/view (pubId=${wrapper.publication.id})}
                                  + '\''">
                                 View
                             </button>
                         </div>
                         <div class="context_button">
                             <button class="context_button" type="button" th:onclick="'location.href=\''
-                                 + @{/user/publication/{pubId}/edit (pubId=${wrapper.publication.id})}
+                                 + @{/home/publication/{pubId}/edit (pubId=${wrapper.publication.id})}
                                  + '\''">
                                 Edit
                             </button>
                         </div>
                         <div class="context_button">
                             <button type="button" th:onclick="'location.href=\''
-                                 + @{/user/publication/{pubId}/delete (pubId=${wrapper.publication.id})}
+                                 + @{/home/publication/{pubId}/delete (pubId=${wrapper.publication.id})}
                                  + '\''">
                                 Delete
                             </button>
@@ -189,7 +189,7 @@
                     <div th:if="${not #strings.isEmpty(ownerId)}" class="form_buttons">
                         <div class="context_button">
                             <button class="context_button" type="button" th:onclick="'location.href=\''
-                                 + @{/user/showUser/{id}/publication/{pubId}/view (id=${ownerId}, pubId=${wrapper.publication.id})}
+                                 + @{/home/user/{id}/publication/{pubId}/view (id=${ownerId}, pubId=${wrapper.publication.id})}
                                  + '\''">
                                 View
                             </button>

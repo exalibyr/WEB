@@ -13,7 +13,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
@@ -40,7 +39,7 @@ public class GuestController {
         } else {
             try {
                 User createdUser = userService.createUser(registrationForm);
-                return "redirect:/guest/registration-success?id=" + createdUser.getId();
+                return "redirect:/guest/registrationSuccess?id=" + createdUser.getId();
             } catch (Exception e) {
                 e.printStackTrace();
                 return ApplicationUtils.getErrorRedirect();
@@ -48,14 +47,14 @@ public class GuestController {
         }
     }
 
-    @GetMapping(value = "/guest/registration-success")
+    @GetMapping(value = "/guest/registrationSuccess")
     public String registrationSuccess(@RequestParam(name = "id") Integer id, Model model){
         Optional<User> userOptional = userService.findUserById(id);
         if(userOptional.isPresent()){
             User user = userOptional.get();
             model.addAttribute("user", user);
             model.addAttribute("welcomeURI", FileStorageConfiguration.getWelcomeURI());
-            return "registration-success";
+            return "registrationSuccess";
         } else {
             return ApplicationUtils.getErrorTemplate();
         }
@@ -64,7 +63,6 @@ public class GuestController {
     @GetMapping(value = "/guest/findUsers")
     public String getFindUsersForm(@RequestParam(name = "prior", required = false, defaultValue = "") String priorPath,
                                    Model model){
-        model.addAttribute("role", ApplicationUtils.UserRole.guest.name());
         model.addAttribute("userInfo", new User());
         model.addAttribute("backURI", priorPath);
         return "guest_findUsers";
@@ -73,23 +71,22 @@ public class GuestController {
     @PostMapping(value = "/guest/findUsers")
     public String findUsers(@RequestParam(name = "prior", required = false, defaultValue = "") String priorPath,
                             @ModelAttribute(name = "userInfo") User userInfo) {
-        return "redirect:/guest/showUsers?name="
+        return "redirect:/guest/users?name="
                 + userInfo.getName() + "&surname=" + userInfo.getSurname() + "&prior=" + priorPath;
     }
 
-    @GetMapping(value = "/guest/showUsers")
+    @GetMapping(value = "/guest/users")
     public String showUsers(@RequestParam(name = "prior", required = false, defaultValue = "") String priorPath,
                             @RequestParam(name = "name", required = false, defaultValue = "") String name,
                             @RequestParam(name = "surname", required = false, defaultValue = "") String surname,
                             Model model){
         Optional<List<User>> users = userService.findUsersByNameOrSurname(name, surname);
-        model.addAttribute("role", ApplicationUtils.UserRole.guest.name());
         model.addAttribute("users", users.orElseGet(ArrayList::new));
         model.addAttribute("backURI", priorPath);
         return "guest_showUsers";
     }
 
-    @GetMapping(value = "/guest/showUser/{id}")
+    @GetMapping(value = "/guest/user/{id}")
     public String showUserPage(@RequestParam(name = "prior", required = false, defaultValue = "") String priorPath,
                                @PathVariable(name = "id") Integer id,
                                Model model){

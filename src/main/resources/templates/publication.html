@@ -14,7 +14,7 @@
 
                 <div th:case="'create'">
                     <h1 align="center">Create publication</h1>
-                    <form th:id= "${#execInfo.templateName}" action="#" th:action = "@{/user/publication/create}" th:object="${publicationForm}" method="post">
+                    <form th:id= "${#execInfo.templateName}" action="#" th:action = "@{/home/publication/create}" th:object="${publicationForm}" method="post">
                         <p>
                             <textarea cols="50" rows="1" maxlength="50" placeholder="Write title here" th:field="*{title}"></textarea>
                         </p>
@@ -27,7 +27,7 @@
 
                 <div th:case="'edit'">
                     <h1 align="center">Edit publication</h1>
-                    <form th:id= "${#execInfo.templateName}" action="#" th:action = "@{/user/publication/{pubId}/edit (pubId=${pubId})}" th:object="${publicationForm}" method="post">
+                    <form th:id= "${#execInfo.templateName}" action="#" th:action = "@{/home/publication/{pubId}/edit (pubId=${pubId})}" th:object="${publicationForm}" method="post">
                         <p>
                             <textarea cols="50" rows="1" maxlength="50" placeholder="Write title here" th:field="*{title}"></textarea>
                         </p>
@@ -51,24 +51,24 @@
                     </p>
                     <div th:if="${#strings.isEmpty(ownerId)}" class="form_buttons">
                         <div class="context_button">
-                            <button type="button" th:onclick="'location.href=\'' + @{/user/publication/{pubId}/edit (pubId=${pubId})} + '\''">
+                            <button type="button" th:onclick="'location.href=\'' + @{/home/publication/{pubId}/edit (pubId=${pubId})} + '\''">
                                 Edit
                             </button>
                         </div>
                         <div class="context_button">
-                            <button type="button" th:onclick="'location.href=\'' + @{/user/publication/{pubId}/delete (pubId=${pubId})} + '\''">
+                            <button type="button" th:onclick="'location.href=\'' + @{/home/publication/{pubId}/delete (pubId=${pubId})} + '\''">
                                 Delete
                             </button>
                         </div>
                         <div class="context_button">
-                            <button type="button" th:onclick="'location.href=\'' + @{/user} + '\''">
+                            <button type="button" th:onclick="'location.href=\'' + @{/home} + '\''">
                                 Back
                             </button>
                         </div>
                     </div>
                     <div th:if="${not #strings.isEmpty(ownerId)}" class="form_buttons">
                         <div class="context_button">
-                            <button type="button" th:onclick="'location.href=\'' + @{/user/showUser/{id} (id=${ownerId})} + '\''">
+                            <button type="button" th:onclick="'location.href=\'' + @{/home/user/{id} (id=${ownerId})} + '\''">
                                 Back
                             </button>
                         </div>
