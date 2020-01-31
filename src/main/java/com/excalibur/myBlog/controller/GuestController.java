@@ -1,11 +1,12 @@
 package com.excalibur.myBlog.controller;
 
 
+import com.excalibur.myBlog.fileStorage.configuration.FileStorageConfiguration;
 import com.excalibur.myBlog.service.PublicationService;
 import com.excalibur.myBlog.service.Impl.UserServiceImpl;
 import com.excalibur.myBlog.dao.User;
 import com.excalibur.myBlog.form.RegistrationForm;
-import com.excalibur.myBlog.configuration.AppConfiguration;
+import com.excalibur.myBlog.utils.ApplicationUtils;
 import com.excalibur.myBlog.utils.PublicationWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -42,7 +43,7 @@ public class GuestController {
                 return "redirect:/guest/registration-success?id=" + createdUser.getId();
             } catch (Exception e) {
                 e.printStackTrace();
-                return AppConfiguration.ERROR_REDIRECT;
+                return ApplicationUtils.getErrorRedirect();
             }
         }
     }
@@ -53,17 +54,17 @@ public class GuestController {
         if(userOptional.isPresent()){
             User user = userOptional.get();
             model.addAttribute("user", user);
-            model.addAttribute("welcomeURI", AppConfiguration.getWelcomeURI());
+            model.addAttribute("welcomeURI", FileStorageConfiguration.getWelcomeURI());
             return "registration-success";
         } else {
-            return AppConfiguration.ERROR_TEMPLATE;
+            return ApplicationUtils.getErrorTemplate();
         }
     }
 
     @GetMapping(value = "/guest/findUsers")
     public String getFindUsersForm(@RequestParam(name = "prior", required = false, defaultValue = "") String priorPath,
                                    Model model){
-        model.addAttribute("role", AppConfiguration.UserRole.guest.name());
+        model.addAttribute("role", ApplicationUtils.UserRole.guest.name());
         model.addAttribute("userInfo", new User());
         model.addAttribute("backURI", priorPath);
         return "guest_findUsers";
@@ -82,7 +83,7 @@ public class GuestController {
                             @RequestParam(name = "surname", required = false, defaultValue = "") String surname,
                             Model model){
         Optional<List<User>> users = userService.findUsersByNameOrSurname(name, surname);
-        model.addAttribute("role", AppConfiguration.UserRole.guest.name());
+        model.addAttribute("role", ApplicationUtils.UserRole.guest.name());
         model.addAttribute("users", users.orElseGet(ArrayList::new));
         model.addAttribute("backURI", priorPath);
         return "guest_showUsers";
@@ -102,7 +103,7 @@ public class GuestController {
             return "guest_showUser";
         }
         else {
-            return AppConfiguration.ERROR_TEMPLATE;
+            return ApplicationUtils.getErrorTemplate();
         }
     }
 

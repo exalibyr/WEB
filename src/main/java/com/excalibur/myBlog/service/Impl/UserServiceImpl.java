@@ -1,12 +1,12 @@
 package com.excalibur.myBlog.service.Impl;
 
-import com.excalibur.myBlog.configuration.AppConfiguration;
 import com.excalibur.myBlog.service.PasswordService;
 import com.excalibur.myBlog.service.RoleService;
 import com.excalibur.myBlog.service.UserService;
 import com.excalibur.myBlog.dao.Password;
 import com.excalibur.myBlog.dao.User;
 import com.excalibur.myBlog.form.RegistrationForm;
+import com.excalibur.myBlog.utils.ApplicationUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.excalibur.myBlog.repository.UserRepository;
@@ -30,14 +30,14 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User createUser(RegistrationForm registrationForm) throws Exception {
-        if (roleService.matchWithDatabase(AppConfiguration.getUserRolesString())) {
+        if (roleService.matchWithDatabase(ApplicationUtils.getUserRolesString())) {
             User newUser = registrationForm.getUser();
             Password userPassword = registrationForm.getPassword();
             userPassword.setUser(newUser);
             List<Password> passwords = new ArrayList<>();
             passwords.add(userPassword);
             newUser.setPasswords(passwords);
-            newUser.setRoles(roleService.getAllowedRoles(AppConfiguration.UserRole.user.toString()));
+            newUser.setRoles(roleService.getAllowedRoles(ApplicationUtils.UserRole.user.toString()));
             newUser.setId(userRepository.saveUser(newUser));
             userRepository.saveUserRoles(newUser);
             passwordService.saveUserPassword(userPassword);

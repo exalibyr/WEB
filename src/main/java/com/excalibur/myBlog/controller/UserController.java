@@ -1,13 +1,13 @@
 package com.excalibur.myBlog.controller;
 
+import com.excalibur.myBlog.fileStorage.configuration.FileStorageConfiguration;
 import com.excalibur.myBlog.service.PublicationService;
 import com.excalibur.myBlog.service.Impl.UserServiceImpl;
 import com.excalibur.myBlog.dao.Publication;
 import com.excalibur.myBlog.dao.User;
 import com.excalibur.myBlog.form.PublicationForm;
-import com.excalibur.myBlog.configuration.AppConfiguration;
+import com.excalibur.myBlog.utils.ApplicationUtils;
 import com.excalibur.myBlog.utils.PublicationWrapper;
-import org.hibernate.cfg.Environment;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -39,7 +39,7 @@ public class UserController {
             return "redirect:/login";
         } catch (ServletException e) {
             e.printStackTrace();
-            return AppConfiguration.ERROR_TEMPLATE;
+            return ApplicationUtils.getErrorTemplate();
         }
     }
 
@@ -55,21 +55,21 @@ public class UserController {
             model.addAttribute("publicationWrappers", publicationWrappers);
             model.addAttribute("backURI", priorPath);
             if ( user.hasAvatar()) {
-                model.addAttribute("avatarURI", AppConfiguration.getFileStorageURL() + "/user/" + user.getId() + "/avatar");
+                model.addAttribute("avatarURI", FileStorageConfiguration.getFileStorageURL() + "/user/" + user.getId() + "/avatar");
             } else {
-                model.addAttribute("avatarURI", AppConfiguration.getDefaultAvatarURI());
+                model.addAttribute("avatarURI", FileStorageConfiguration.getDefaultAvatarURI());
             }
             return "home";
         }
         else {
-            return AppConfiguration.ERROR_TEMPLATE;
+            return ApplicationUtils.getErrorTemplate();
         }
     }
 
     @GetMapping(value = "/user/findUsers")
     public String getFindUsersForm(@RequestParam(name = "prior", required = false, defaultValue = "") String priorPath,
                                    Model model) {
-        model.addAttribute("role", AppConfiguration.UserRole.user.name());
+        model.addAttribute("role", ApplicationUtils.UserRole.user.name());
         model.addAttribute("userInfo", new User());
         model.addAttribute("backURI", priorPath);
         return "user_findUsers";
@@ -88,7 +88,7 @@ public class UserController {
                             @RequestParam(name = "surname", required = false, defaultValue = "") String surname,
                             Model model){
         Optional<List<User>> users = userService.findUsersByNameOrSurname(name, surname);
-        model.addAttribute("role", AppConfiguration.UserRole.user.name());
+        model.addAttribute("role", ApplicationUtils.UserRole.user.name());
         model.addAttribute("users", users.orElseGet(ArrayList::new));
         model.addAttribute("backURI", priorPath);
         return "user_showUsers";
@@ -111,7 +111,7 @@ public class UserController {
             model.addAttribute("backURI", priorPath);
             return "user_showUser";
         } else {
-            return AppConfiguration.ERROR_TEMPLATE;
+            return ApplicationUtils.getErrorTemplate();
         }
     }
 
@@ -125,14 +125,14 @@ public class UserController {
             User user = userOptional.get();
             model.addAttribute("user", user);
             if ( user.hasAvatar()) {
-                model.addAttribute("avatarURI", AppConfiguration.getFileStorageURL() + "/user/" + user.getId() + "/avatar");
+                model.addAttribute("avatarURI", FileStorageConfiguration.getFileStorageURL() + "/user/" + user.getId() + "/avatar");
             } else {
-                model.addAttribute("avatarURI", AppConfiguration.getDefaultAvatarURI());
+                model.addAttribute("avatarURI", FileStorageConfiguration.getDefaultAvatarURI());
             }
             model.addAttribute("backURI", priorPath);
             return "editProfile";
         } else {
-            return AppConfiguration.ERROR_TEMPLATE;
+            return ApplicationUtils.getErrorTemplate();
         }
 
     }
@@ -171,13 +171,13 @@ public class UserController {
             publicationForm.setContent(wrapper.getPublication().getContent());
             publicationForm.setTitle(wrapper.getPublication().getTitle());
             model.addAttribute("backURI", priorPath);
-            model.addAttribute("mode", AppConfiguration.PageMode.edit.toString());
+            model.addAttribute("mode", ApplicationUtils.PageMode.edit.toString());
             model.addAttribute("pubId", pubId);
             model.addAttribute("publicationWrapper", wrapper);
             return "publication";
         } catch (Exception e) {
             e.printStackTrace();
-            return AppConfiguration.ERROR_TEMPLATE;
+            return ApplicationUtils.getErrorTemplate();
         }
 
     }
@@ -200,7 +200,7 @@ public class UserController {
                 publicationService.saveNewPublication(publication);
                 return "redirect:/user/publication/" + pubId + "/view";
             } else {
-                return AppConfiguration.ERROR_REDIRECT;
+                return ApplicationUtils.getErrorRedirect();
             }
         }
     }
@@ -210,7 +210,7 @@ public class UserController {
                                        PublicationForm publicationForm,
                                        Model model) {
         model.addAttribute("backURI", priorPath);
-        model.addAttribute("mode", AppConfiguration.PageMode.create.name());
+        model.addAttribute("mode", ApplicationUtils.PageMode.create.name());
         return "publication";
     }
 
@@ -235,7 +235,7 @@ public class UserController {
                 return "redirect:/user?prior=" + priorPath;
             }
             else {
-                return AppConfiguration.ERROR_REDIRECT;
+                return ApplicationUtils.getErrorRedirect();
             }
         }
     }
@@ -247,14 +247,14 @@ public class UserController {
         try {
             PublicationWrapper wrapper = publicationService.getPublicationById(pubId);
             model.addAttribute("backURI", priorPath);
-            model.addAttribute("mode", AppConfiguration.PageMode.view.toString());
+            model.addAttribute("mode", ApplicationUtils.PageMode.view.toString());
             model.addAttribute("pubId", pubId);
             model.addAttribute("publicationWrapper", wrapper);
             model.addAttribute("ownerId", null);
             return "publication";
         } catch (Exception e) {
             e.printStackTrace();
-            return AppConfiguration.ERROR_TEMPLATE;
+            return ApplicationUtils.getErrorTemplate();
         }
     }
 
@@ -266,14 +266,14 @@ public class UserController {
         try {
             PublicationWrapper wrapper = publicationService.getPublicationById(pubId);
             model.addAttribute("backURI", priorPath);
-            model.addAttribute("mode", AppConfiguration.PageMode.view.toString());
+            model.addAttribute("mode", ApplicationUtils.PageMode.view.toString());
             model.addAttribute("pubId", pubId);
             model.addAttribute("publicationWrapper", wrapper);
             model.addAttribute("ownerId", id);
             return "publication";
         } catch (Exception e) {
             e.printStackTrace();
-            return AppConfiguration.ERROR_TEMPLATE;
+            return ApplicationUtils.getErrorTemplate();
         }
     }
 }

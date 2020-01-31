@@ -1,4 +1,4 @@
-package com.excalibur.myBlog.configuration;
+package com.excalibur.myBlog.controller.configuration;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
