@@ -20,7 +20,7 @@ import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Autowired
-    private UserDetailsServiceImpl userDetailsService;
+    UserDetailsServiceImpl userDetailsService;
 
     //TODO: fix logout process so that session is invalidated
     @Override
@@ -28,13 +28,13 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
         http
                 .authorizeRequests()
                     .antMatchers("/", "/guest/**").permitAll()
-                    .antMatchers("/home/**").hasAuthority("user")
+                    .antMatchers("/user/**").hasAuthority("user")
                     .anyRequest().authenticated()
                 .and()
-                    .formLogin().loginPage("/guest/login").loginProcessingUrl("/guest/login")
-                    .defaultSuccessUrl("/home", true).permitAll()
+                    .formLogin().loginPage("/login").loginProcessingUrl("/login")
+                    .defaultSuccessUrl("/user", true).permitAll()
                 .and()
-                    .logout().logoutUrl("/home/logout").invalidateHttpSession(true).clearAuthentication(true);
+                    .logout().logoutUrl("/logout").invalidateHttpSession(true).clearAuthentication(true).permitAll();
     }
 
     @Override

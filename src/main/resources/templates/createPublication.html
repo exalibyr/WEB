@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>My blog</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <link type="text/css" rel="stylesheet" th:href="@{/css/styles.css}">
+        <script type="text/javascript"th:src = "@{/js/jquery-3.4.1.js}"></script>
+        <script type="text/javascript"th:src = "@{/js/scripts.js}"></script>
+    </head>
+    <body>
+        <div th:replace="fragments::header (${userId}, ${execInfo.templateName})"></div>
+        <div class="content_wrap">
+            <h1 align="center">Create publication</h1>
+            <div>
+                <form th:id= "${#execInfo.templateName}" action="#" th:action = "@{/user/id={id}/createPublication(id=${userId})}" th:object="${publicationForm}" method="post">
+                    <p>
+                        <textarea cols="50" rows="1" maxlength="50" placeholder="Write title here" th:field="*{title}"></textarea>
+                    </p>
+                    <p>
+                        <textarea cols="100" rows="5" maxlength="500" placeholder="Write text here" th:field="*{content}"></textarea>
+                    </p>
+                    <div th:replace="fragments::form-buttons (${userId}, 'Save', ${#execInfo.templateName})"></div>
+                </form>
+            </div>
+        </div>
+    </body>
+</html>

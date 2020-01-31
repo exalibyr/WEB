@@ -32,18 +32,18 @@ public class UserController {
     @Autowired
     private PublicationService publicationService;
 
-    @GetMapping(value = "/home/logout")
+    @GetMapping(value = "/logout")
     public String processLogout(HttpServletRequest request) {
         try {
             request.logout();
-            return "redirect:/guest/login";
+            return "redirect:/login";
         } catch (ServletException e) {
             e.printStackTrace();
             return ApplicationUtils.getErrorTemplate();
         }
     }
 
-    @GetMapping(value = "/home")
+    @GetMapping(value = "/user")
     public String showHomePage(@RequestParam(name = "prior", required = false, defaultValue = "") String priorPath,
                                HttpServletRequest request,
                                Model model){
@@ -66,33 +66,35 @@ public class UserController {
         }
     }
 
-    @GetMapping(value = "/home/findUsers")
+    @GetMapping(value = "/user/findUsers")
     public String getFindUsersForm(@RequestParam(name = "prior", required = false, defaultValue = "") String priorPath,
                                    Model model) {
+        model.addAttribute("role", ApplicationUtils.UserRole.user.name());
         model.addAttribute("userInfo", new User());
         model.addAttribute("backURI", priorPath);
         return "user_findUsers";
     }
 
-    @PostMapping(value = "/home/findUsers")
+    @PostMapping(value = "/user/findUsers")
     public String findUsers(@RequestParam(name = "prior", required = false, defaultValue = "") String priorPath,
                             @ModelAttribute(name = "userInfo") User userInfo) {
-        return "redirect:/home/users?name="
+        return "redirect:/user/showUsers?name="
                 + userInfo.getName() + "&surname=" + userInfo.getSurname() + "&prior=" + priorPath;
     }
 
-    @GetMapping(value = "/home/users")
+    @GetMapping(value = "/user/showUsers")
     public String showUsers(@RequestParam(name = "prior", required = false, defaultValue = "") String priorPath,
                             @RequestParam(name = "name", required = false, defaultValue = "") String name,
                             @RequestParam(name = "surname", required = false, defaultValue = "") String surname,
                             Model model){
         Optional<List<User>> users = userService.findUsersByNameOrSurname(name, surname);
+        model.addAttribute("role", ApplicationUtils.UserRole.user.name());
         model.addAttribute("users", users.orElseGet(ArrayList::new));
         model.addAttribute("backURI", priorPath);
         return "user_showUsers";
     }
 
-    @GetMapping(value = "/home/user/{id}")
+    @GetMapping(value = "/user/showUser/{id}")
     public String showUserPage(@RequestParam(name = "prior", required = false, defaultValue = "") String priorPath,
                                @PathVariable(name = "id") Integer id,
                                HttpServletRequest request,
@@ -101,7 +103,7 @@ public class UserController {
         if(userOptional.isPresent()){
             User user = userOptional.get();
             if (user.getUsername().equals(request.getRemoteUser())) {
-                return "redirect:/home";
+                return "redirect:/user";
             }
             List<PublicationWrapper> publicationWrappers = publicationService.getUserPublications(user);
             model.addAttribute("user", user);
@@ -113,7 +115,7 @@ public class UserController {
         }
     }
 
-    @GetMapping(value = "/home/editProfile")
+    @GetMapping(value = "/user/editProfile")
     public String getEditProfilePage(@RequestParam(name = "prior", required = false, defaultValue = "") String priorPath,
                                      HttpServletRequest request,
 //                                      EditProfileForm editProfileForm,
@@ -135,31 +137,31 @@ public class UserController {
 
     }
 
-    @PostMapping(value = "/home/editProfile")
+    @PostMapping(value = "/user/editProfile")
     public String editProfile(@RequestParam(name = "prior", required = false, defaultValue = "") String priorPath,
 //                               @Valid EditProfileForm editProfileForm,
                               @ModelAttribute(name = "user") @Valid User user,
                               BindingResult bindingResult){
         if(bindingResult.hasErrors()){
-            return "redirect:/home/editProfile";
+            return "redirect:/user/editProfile";
         } else {
             userService.updateUser(user);
-            return "redirect:/home?prior=" + priorPath;
+            return "redirect:/user?prior=" + priorPath;
         }
     }
 
     /********************** PUBLICATIONS *******************************/
 
-    @GetMapping(value = "/home/publication/{pubId}/delete")
+    @GetMapping(value = "/user/publication/{pubId}/delete")
     public String deletePublication(@RequestParam(name = "prior", required = false, defaultValue = "") String priorPath,
                                     @PathVariable(name = "pubId") Integer pubId,
                                     Model model) {
         model.addAttribute("backURI", priorPath);
         publicationService.deletePublicationById(pubId);
-        return "redirect:/home";
+        return "redirect:/user";
     }
 
-    @GetMapping(value = "/home/publication/{pubId}/edit")
+    @GetMapping(value = "/user/publication/{pubId}/edit")
     public String getEditPublication(@RequestParam(name = "prior", required = false, defaultValue = "") String priorPath,
                                      @PathVariable(name = "pubId") Integer pubId,
                                      PublicationForm publicationForm,
@@ -180,14 +182,14 @@ public class UserController {
 
     }
 
-    @PostMapping(value = "/home/publication/{pubId}/edit")
+    @PostMapping(value = "/user/publication/{pubId}/edit")
     public String postEditPublication(@RequestParam(name = "prior", required = false, defaultValue = "") String priorPath,
                                       HttpServletRequest request,
                                       @PathVariable(name = "pubId") Integer pubId,
                                       @Valid PublicationForm publicationForm,
                                       BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            return "redirect:/home/publication/" + pubId + "/edit";
+            return "redirect:/user/publication/" + pubId + "/edit";
         } else {
             Optional<User> optionalUser = userService.getUser(request.getRemoteUser());
             if (optionalUser.isPresent()) {
@@ -196,14 +198,14 @@ public class UserController {
                 publication.setUser(optionalUser.get());
                 publication.setId(pubId);
                 publicationService.saveNewPublication(publication);
-                return "redirect:/home/publication/" + pubId + "/view";
+                return "redirect:/user/publication/" + pubId + "/view";
             } else {
                 return ApplicationUtils.getErrorRedirect();
             }
         }
     }
 
-    @GetMapping(value = "/home/publication/create")
+    @GetMapping(value = "/user/publication/create")
     public String getCreatePublication(@RequestParam(name = "prior", required = false, defaultValue = "") String priorPath,
                                        PublicationForm publicationForm,
                                        Model model) {
@@ -212,13 +214,13 @@ public class UserController {
         return "publication";
     }
 
-    @PostMapping(value = "/home/publication/create")
+    @PostMapping(value = "/user/publication/create")
     public String postCreatePublication(@RequestParam(name = "prior", required = false, defaultValue = "") String priorPath,
                                         HttpServletRequest request,
                                         @Valid PublicationForm publicationForm,
                                         BindingResult bindingResult){
         if(bindingResult.hasErrors()){
-            return "redirect:/home/publication/create";
+            return "redirect:/user/publication/create";
         } else {
             Optional<User> userOptional = userService.getUser(request.getRemoteUser());
             if(userOptional.isPresent()){
@@ -230,7 +232,7 @@ public class UserController {
                 newPublication.setUser(user);
                 //add new publication to db
                 publicationService.saveNewPublication(newPublication);
-                return "redirect:/home?prior=" + priorPath;
+                return "redirect:/user?prior=" + priorPath;
             }
             else {
                 return ApplicationUtils.getErrorRedirect();
@@ -238,7 +240,7 @@ public class UserController {
         }
     }
 
-    @GetMapping(value = "/home/publication/{pubId}/view")
+    @GetMapping(value = "/user/publication/{pubId}/view")
     public String getViewPublication(@RequestParam(name = "prior", required = false, defaultValue = "") String priorPath,
                                      @PathVariable(name = "pubId") Integer pubId,
                                      Model model) {
@@ -256,7 +258,7 @@ public class UserController {
         }
     }
 
-    @GetMapping(value = "/home/user/{id}/publication/{pubId}/view")
+    @GetMapping(value = "/user/showUser/{id}/publication/{pubId}/view")
     public String getViewPublication(@RequestParam(name = "prior", required = false, defaultValue = "") String priorPath,
                                      @PathVariable(name = "pubId") Integer pubId,
                                      @PathVariable(name = "id") Integer id,

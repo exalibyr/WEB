@@ -11,7 +11,7 @@
         <div th:replace="fragments::user_header (${#execInfo.templateName})"></div>
         <div class="content_wrap">
             <h1 align="center">Find users</h1>
-            <form th:id="${#execInfo.templateName}" action="#" th:action = "@{/home/findUsers}" method="post">
+            <form th:id="${#execInfo.templateName}" action="#" th:action = "@{/{role}/findUsers (role=${role})}" method="post">
                 <table>
                     <tr>
                         <td>
