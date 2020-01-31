@@ -24,7 +24,7 @@
         <tr>
             <td>
                 <button class="context_button" type="button" th:onclick="'location.href=\''
-                             + @{/{role}/showUser/{id} (role=${role}, id=${user.id})}
+                             + @{/guest/user/{id} (id=${user.id})}
                               + '\''">View page</button>
             </td>
         </tr>

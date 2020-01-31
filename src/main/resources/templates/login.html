@@ -12,7 +12,7 @@
         <div class="content_wrap">
             <div align="center">
                 <h1>Welcome to blog</h1>
-                <form th:id="${#execInfo.templateName}" th:action="@{/login}" method="post" th:object="${user}">
+                <form th:id="${#execInfo.templateName}" th:action="@{/guest/login}" method="post" th:object="${user}">
                     <div><label> User Name : <input type="text" name="username"/></label></div>
                     <div><label> Password: <input type="password" name="password"/></label></div>
                     <div class="context_button"><button type="submit" th:form="${#execInfo.templateName}">Log in</button></div>
