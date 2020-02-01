@@ -2,6 +2,7 @@ package com.excalibur.myBlog.service;
 
 import com.excalibur.myBlog.dao.User;
 import com.excalibur.myBlog.form.RegistrationForm;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
@@ -19,7 +20,7 @@ public interface UserService {
 
     List<User> getUsers(String name, String surname);
 
-    Optional<User> getUser(String username);
+    User getUser(String username) throws UsernameNotFoundException;
 
 
 }

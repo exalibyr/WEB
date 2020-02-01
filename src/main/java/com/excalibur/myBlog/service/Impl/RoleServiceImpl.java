@@ -7,6 +7,7 @@ import com.excalibur.myBlog.repository.RoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Set;
 
@@ -41,9 +42,11 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public Set<Role> getAllowedRoles(String roleName) {
-        Role role = roleRepository.findByRoleName(roleName);
-        Set<Role> allowedRoles = roleRepository.findByPriorityGreaterThan(role.getPriority());
+    public Set<Role> getAllowedRoles(String roleName) throws Exception {
+        Role role = roleRepository.findByRoleName(roleName)
+                .orElseThrow(() -> new SQLException("RoleServiceImpl.getAllowedRoles(String roleName): Role not found"));
+        Set<Role> allowedRoles = roleRepository.findByPriorityGreaterThan(role.getPriority())
+                .orElseThrow(() -> new SQLException("RoleServiceImpl.getAllowedRoles(String roleName): No allowed roles found"));
         allowedRoles.add(role);
         return allowedRoles;
     }

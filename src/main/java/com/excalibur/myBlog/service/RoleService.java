@@ -12,7 +12,7 @@ public interface RoleService {
 
     boolean matchWithDatabase(Set<String> roleNames);
 
-    Set<Role> getAllowedRoles(String roleName);
+    Set<Role> getAllowedRoles(String roleName) throws Exception;
 
     void giveAdminRole(User user);
 

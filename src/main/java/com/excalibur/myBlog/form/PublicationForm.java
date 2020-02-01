@@ -1,10 +1,15 @@
 package com.excalibur.myBlog.form;
 
 import com.excalibur.myBlog.dao.Publication;
+import com.excalibur.myBlog.dao.User;
 
 import javax.validation.constraints.Size;
 
 public class PublicationForm {
+
+    private String username;
+
+    private Integer publicationId;
 
     @Size(max = 50, min = 1)
     private String title;
@@ -18,6 +23,22 @@ public class PublicationForm {
     public PublicationForm(String title, String content) {
         this.title = title;
         this.content = content;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public Integer getPublicationId() {
+        return publicationId;
+    }
+
+    public void setPublicationId(Integer publicationId) {
+        this.publicationId = publicationId;
     }
 
     public Publication getPublication(){

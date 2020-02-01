@@ -1,15 +1,19 @@
 package com.excalibur.myBlog.service.Impl;
 
+import com.excalibur.myBlog.form.PublicationForm;
 import com.excalibur.myBlog.service.PublicationService;
 import com.excalibur.myBlog.dao.Publication;
 import com.excalibur.myBlog.dao.User;
 import com.excalibur.myBlog.repository.PublicationRepository;
 import com.excalibur.myBlog.dao.wrapper.PublicationWrapper;
+import com.excalibur.myBlog.service.UserService;
 import com.excalibur.myBlog.utils.ApplicationUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.sql.SQLException;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -18,18 +22,42 @@ import java.util.Optional;
 public class PublicationServiceImpl implements PublicationService {
 
     @Autowired
+    private UserService userService;
+
+    @Autowired
     private PublicationRepository publicationRepository;
 
-    public void createPublication(Publication publication){
+    @Override
+    public void updatePublication(Publication publication) throws Exception {
+        publication.setDateTime(ZonedDateTime.now());
         publicationRepository.save(publication);
     }
 
-    public PublicationWrapper getPublication(Integer publicationId) throws IOException {
-        Optional<Publication> optional = publicationRepository.findById(publicationId);
-        if (optional.isPresent()) {
-            return new PublicationWrapper(optional.get());
+    @Override
+    public void initPublicationForm(Integer publicationId, PublicationForm publicationForm) throws Exception {
+        Publication publication = publicationRepository.findById(publicationId)
+                .orElseThrow(() -> new SQLException("PublicationServiceImpl.getPublicationForm(Integer publicationId): No data found"));
+        publicationForm = new PublicationForm();
+        publicationForm.setContent(publication.getContent());
+        publicationForm.setTitle(publication.getTitle());
+        publicationForm.setPublicationId(publication.getId());
+        publicationForm.setUsername(publication.getUser().getUsername());
+    }
+
+    @Override
+    public void createPublication(PublicationForm publicationForm) throws Exception {
+        Publication publication = publicationForm.getPublication();
+        publication.setUser(userService.getUser(publicationForm.getUsername()));
+        publication.setDateTime(ZonedDateTime.now());
+        publicationRepository.save(publication);
+    }
+
+    public PublicationWrapper getPublication(Integer publicationId) throws SQLException {
+        Optional<Publication> publication = publicationRepository.findById(publicationId);
+        if (publication.isPresent()) {
+            return new PublicationWrapper(publication.get());
         } else {
-            throw new IOException("No data found");
+            throw new SQLException("PublicationServiceImpl.getPublication(Integer publicationId): No data found");
         }
     }
 
@@ -37,12 +65,14 @@ public class PublicationServiceImpl implements PublicationService {
         publicationRepository.delete(publication);
     }
 
-    public List<Publication> getPublication(String title){
-        return publicationRepository.findByTitle(title);
+    public List<Publication> getPublication(String title) throws SQLException {
+        return publicationRepository.findByTitle(title)
+                .orElseThrow(() -> new SQLException("PublicationServiceImpl.getPublication(String title): No data found"));
     }
 
-    public List<Publication> getPublication(User user){
-        return publicationRepository.findByUser(user);
+    public List<Publication> getPublication(User user) throws SQLException {
+        return publicationRepository.findByUser(user)
+                .orElseThrow(() -> new SQLException("PublicationServiceImpl.getPublication(User user): No data found"));
     }
 
     public List<PublicationWrapper> getUserPublications(User user) {

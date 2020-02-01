@@ -1,13 +1,12 @@
 package com.excalibur.myBlog.controller;
 
+import com.excalibur.myBlog.dao.Publication;
 import com.excalibur.myBlog.fileStorage.configuration.FileStorageConfiguration;
 import com.excalibur.myBlog.service.PublicationService;
 import com.excalibur.myBlog.service.Impl.UserServiceImpl;
-import com.excalibur.myBlog.dao.Publication;
 import com.excalibur.myBlog.dao.User;
 import com.excalibur.myBlog.form.PublicationForm;
 import com.excalibur.myBlog.utils.ApplicationUtils;
-import com.excalibur.myBlog.dao.wrapper.PublicationWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,10 +17,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.time.ZonedDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
 
 @Controller
 //@PreAuthorize(value = "hasRole('USER')")
@@ -47,12 +42,10 @@ public class UserController {
     public String showHomePage(@RequestParam(name = "prior", required = false, defaultValue = "") String priorPath,
                                HttpServletRequest request,
                                Model model){
-        Optional<User> userOptional = userService.getUser(request.getRemoteUser());
-        if(userOptional.isPresent()){
-            User user = userOptional.get();
-            List<PublicationWrapper> publicationWrappers = publicationService.getUserPublications(user);
+        try {
+            User user = userService.getUser(request.getRemoteUser());
             model.addAttribute("user", user);
-            model.addAttribute("publicationWrappers", publicationWrappers);
+            model.addAttribute("publicationWrappers", publicationService.getUserPublications(user));
             model.addAttribute("backURI", priorPath);
             if ( user.hasAvatar()) {
                 model.addAttribute("avatarURI", FileStorageConfiguration.getFileStorageURL() + "/user/" + user.getId() + "/avatar");
@@ -60,8 +53,8 @@ public class UserController {
                 model.addAttribute("avatarURI", FileStorageConfiguration.getDefaultAvatarURI());
             }
             return "home";
-        }
-        else {
+        } catch (Exception e) {
+            e.printStackTrace();
             return ApplicationUtils.getErrorTemplate();
         }
     }
@@ -86,8 +79,7 @@ public class UserController {
                             @RequestParam(name = "name", required = false, defaultValue = "") String name,
                             @RequestParam(name = "surname", required = false, defaultValue = "") String surname,
                             Model model){
-        Optional<List<User>> users = userService.getUsers(name, surname);
-        model.addAttribute("users", users.orElseGet(ArrayList::new));
+        model.addAttribute("users", userService.getUsers(name, surname));
         model.addAttribute("backURI", priorPath);
         return "user_showUsers";
     }
@@ -97,18 +89,17 @@ public class UserController {
                                @PathVariable(name = "id") Integer id,
                                HttpServletRequest request,
                                Model model){
-        Optional<User> userOptional = userService.getUser(id);
-        if(userOptional.isPresent()){
-            User user = userOptional.get();
+        try {
+            User user = userService.getUser(id);
             if (user.getUsername().equals(request.getRemoteUser())) {
                 return "redirect:/home";
             }
-            List<PublicationWrapper> publicationWrappers = publicationService.getUserPublications(user);
             model.addAttribute("user", user);
-            model.addAttribute("publicationWrappers", publicationWrappers);
+            model.addAttribute("publicationWrappers", publicationService.getUserPublications(user));
             model.addAttribute("backURI", priorPath);
             return "user_showUser";
-        } else {
+        } catch (Exception e) {
+            e.printStackTrace();
             return ApplicationUtils.getErrorTemplate();
         }
     }
@@ -116,20 +107,20 @@ public class UserController {
     @GetMapping(value = "/home/editProfile")
     public String getEditProfilePage(@RequestParam(name = "prior", required = false, defaultValue = "") String priorPath,
                                      HttpServletRequest request,
-//                                      EditProfileForm editProfileForm,
                                      Model model){
-        Optional<User> userOptional = userService.getUser(request.getRemoteUser());
-        if (userOptional.isPresent()) {
-            User user = userOptional.get();
+        try {
+            User user = userService.getUser(request.getRemoteUser());
+            System.out.println(user.getId());
             model.addAttribute("user", user);
-            if ( user.hasAvatar()) {
+            if (user.hasAvatar()) {
                 model.addAttribute("avatarURI", FileStorageConfiguration.getFileStorageURL() + "/user/" + user.getId() + "/avatar");
             } else {
                 model.addAttribute("avatarURI", FileStorageConfiguration.getDefaultAvatarURI());
             }
             model.addAttribute("backURI", priorPath);
             return "editProfile";
-        } else {
+        } catch (Exception e) {
+            e.printStackTrace();
             return ApplicationUtils.getErrorTemplate();
         }
 
@@ -137,12 +128,13 @@ public class UserController {
 
     @PostMapping(value = "/home/editProfile")
     public String editProfile(@RequestParam(name = "prior", required = false, defaultValue = "") String priorPath,
-//                               @Valid EditProfileForm editProfileForm,
                               @ModelAttribute(name = "user") @Valid User user,
+                              HttpServletRequest request,
                               BindingResult bindingResult){
         if(bindingResult.hasErrors()){
             return "redirect:/home/editProfile";
         } else {
+            user.setId(userService.getUser(request.getRemoteUser()).getId());
             userService.updateUser(user);
             return "redirect:/home?prior=" + priorPath;
         }
@@ -162,16 +154,12 @@ public class UserController {
     @GetMapping(value = "/home/publication/{pubId}/edit")
     public String getEditPublication(@RequestParam(name = "prior", required = false, defaultValue = "") String priorPath,
                                      @PathVariable(name = "pubId") Integer pubId,
-                                     PublicationForm publicationForm,
                                      Model model) {
         try {
-            PublicationWrapper wrapper = publicationService.getPublication(pubId);
-            publicationForm.setContent(wrapper.getPublication().getContent());
-            publicationForm.setTitle(wrapper.getPublication().getTitle());
+            model.addAttribute("publication", publicationService.getPublication(pubId).getPublication());
             model.addAttribute("backURI", priorPath);
             model.addAttribute("mode", ApplicationUtils.PageMode.edit.toString());
             model.addAttribute("pubId", pubId);
-            model.addAttribute("publicationWrapper", wrapper);
             return "publication";
         } catch (Exception e) {
             e.printStackTrace();
@@ -182,22 +170,20 @@ public class UserController {
 
     @PostMapping(value = "/home/publication/{pubId}/edit")
     public String postEditPublication(@RequestParam(name = "prior", required = false, defaultValue = "") String priorPath,
-                                      HttpServletRequest request,
                                       @PathVariable(name = "pubId") Integer pubId,
-                                      @Valid PublicationForm publicationForm,
+                                      HttpServletRequest request,
+                                      @ModelAttribute(name = "publication") @Valid Publication publication,
                                       BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return "redirect:/home/publication/" + pubId + "/edit";
         } else {
-            Optional<User> optionalUser = userService.getUser(request.getRemoteUser());
-            if (optionalUser.isPresent()) {
-                Publication publication = publicationForm.getPublication();
-                publication.setDateTime(ZonedDateTime.now());
-                publication.setUser(optionalUser.get());
+            try {
                 publication.setId(pubId);
-                publicationService.createPublication(publication);
+                publication.setUser(userService.getUser(request.getRemoteUser()));
+                publicationService.updatePublication(publication);
                 return "redirect:/home/publication/" + pubId + "/view";
-            } else {
+            } catch (Exception e) {
+                e.printStackTrace();
                 return ApplicationUtils.getErrorRedirect();
             }
         }
@@ -220,19 +206,12 @@ public class UserController {
         if(bindingResult.hasErrors()){
             return "redirect:/home/publication/create";
         } else {
-            Optional<User> userOptional = userService.getUser(request.getRemoteUser());
-            if(userOptional.isPresent()){
-                //get user from db
-                User user = userOptional.get();
-                //create new publication instance to insert into db
-                Publication newPublication = publicationForm.getPublication();
-                newPublication.setDateTime(ZonedDateTime.now());
-                newPublication.setUser(user);
-                //add new publication to db
-                publicationService.createPublication(newPublication);
+            try {
+                publicationForm.setUsername(request.getRemoteUser());
+                publicationService.createPublication(publicationForm);
                 return "redirect:/home?prior=" + priorPath;
-            }
-            else {
+            } catch (Exception e) {
+                e.printStackTrace();
                 return ApplicationUtils.getErrorRedirect();
             }
         }
@@ -243,11 +222,10 @@ public class UserController {
                                      @PathVariable(name = "pubId") Integer pubId,
                                      Model model) {
         try {
-            PublicationWrapper wrapper = publicationService.getPublication(pubId);
+            model.addAttribute("publicationWrapper", publicationService.getPublication(pubId));
             model.addAttribute("backURI", priorPath);
             model.addAttribute("mode", ApplicationUtils.PageMode.view.toString());
             model.addAttribute("pubId", pubId);
-            model.addAttribute("publicationWrapper", wrapper);
             model.addAttribute("ownerId", null);
             return "publication";
         } catch (Exception e) {
@@ -262,11 +240,10 @@ public class UserController {
                                      @PathVariable(name = "id") Integer id,
                                      Model model) {
         try {
-            PublicationWrapper wrapper = publicationService.getPublication(pubId);
+            model.addAttribute("publicationWrapper", publicationService.getPublication(pubId));
             model.addAttribute("backURI", priorPath);
             model.addAttribute("mode", ApplicationUtils.PageMode.view.toString());
             model.addAttribute("pubId", pubId);
-            model.addAttribute("publicationWrapper", wrapper);
             model.addAttribute("ownerId", id);
             return "publication";
         } catch (Exception e) {

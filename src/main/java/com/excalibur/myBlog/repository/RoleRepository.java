@@ -9,8 +9,8 @@ import java.util.Set;
 
 public interface RoleRepository extends CrudRepository<Role, Integer> {
 
-    Role findByRoleName(String roleName);
+    Optional<Role> findByRoleName(String roleName);
 
-    Set<Role> findByPriorityGreaterThan(Integer priority);
+    Optional<Set<Role>> findByPriorityGreaterThan(Integer priority);
 
 }

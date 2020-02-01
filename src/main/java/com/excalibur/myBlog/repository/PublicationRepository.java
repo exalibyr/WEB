@@ -12,9 +12,9 @@ import java.util.Optional;
 
 public interface PublicationRepository extends CrudRepository<Publication, Integer> {
 
-    List<Publication> findByTitle(String title);
+    Optional<List<Publication>> findByTitle(String title);
 
-    List<Publication> findByUser(User user);
+    Optional<List<Publication>> findByUser(User user);
 
     Optional<Publication> findById(Integer id);
 

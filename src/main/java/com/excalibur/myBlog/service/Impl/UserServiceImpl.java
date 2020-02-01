@@ -8,6 +8,7 @@ import com.excalibur.myBlog.dao.User;
 import com.excalibur.myBlog.form.RegistrationForm;
 import com.excalibur.myBlog.utils.ApplicationUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import com.excalibur.myBlog.repository.UserRepository;
 
@@ -50,7 +51,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public User getUser(Integer userId) throws SQLException {
         return userRepository.findById(userId)
-                .orElseThrow(() -> new SQLException("UserServiceImpl.getUser(Integer userId): No data retrieved"));
+                .orElseThrow(() -> new SQLException("UserServiceImpl.getUser(Integer userId): No data found"));
     }
 
     @Override
@@ -64,7 +65,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Optional<User> getUser(String username) {
-        return userRepository.findByUsername(username);
+    public User getUser(String username) throws UsernameNotFoundException {
+        return userRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("UserServiceImpl.getUser(String username): No data found"));
     }
 }
