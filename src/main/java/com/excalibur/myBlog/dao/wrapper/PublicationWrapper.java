@@ -1,6 +1,7 @@
-package com.excalibur.myBlog.utils;
+package com.excalibur.myBlog.dao.wrapper;
 
 import com.excalibur.myBlog.dao.Publication;
+import com.excalibur.myBlog.utils.ApplicationUtils;
 
 public class PublicationWrapper {
 
@@ -10,7 +11,7 @@ public class PublicationWrapper {
 
     public PublicationWrapper(Publication publication) {
         this.publication = publication;
-        this.localDateTimeString = ZonedDateTimeFormatter.getLocalDateTimeString(publication.getDateTime());
+        this.localDateTimeString = ApplicationUtils.getLocalDateTimeString(publication.getDateTime());
     }
 
     public Publication getPublication() {

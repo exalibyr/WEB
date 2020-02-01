@@ -2,7 +2,7 @@ package com.excalibur.myBlog.service;
 
 import com.excalibur.myBlog.dao.Publication;
 import com.excalibur.myBlog.dao.User;
-import com.excalibur.myBlog.utils.PublicationWrapper;
+import com.excalibur.myBlog.dao.wrapper.PublicationWrapper;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
