@@ -18,6 +18,6 @@ public interface PublicationRepository extends CrudRepository<Publication, Integ
 
     Optional<Publication> findById(Integer id);
 
-    List<Publication> findByUserIdOrderByDateTimeDesc(Integer userId);
+    Optional<List<Publication>> findByUserIdOrderByDateTimeDesc(Integer userId);
 
 }

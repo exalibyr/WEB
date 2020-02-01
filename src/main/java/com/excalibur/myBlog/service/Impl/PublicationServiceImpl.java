@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -45,7 +46,9 @@ public class PublicationServiceImpl implements PublicationService {
     }
 
     public List<PublicationWrapper> getUserPublications(User user) {
-        return ApplicationUtils.getFormattedPublications(publicationRepository.findByUserIdOrderByDateTimeDesc(user.getId()));
+        return ApplicationUtils.getFormattedPublications(
+                publicationRepository.findByUserIdOrderByDateTimeDesc(user.getId()).orElseGet(ArrayList::new)
+        );
     }
 
     public Iterable<Publication> getPublications(){

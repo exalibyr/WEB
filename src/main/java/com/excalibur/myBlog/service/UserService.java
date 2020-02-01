@@ -4,6 +4,7 @@ import com.excalibur.myBlog.dao.User;
 import com.excalibur.myBlog.form.RegistrationForm;
 import org.springframework.stereotype.Service;
 
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
@@ -12,11 +13,11 @@ public interface UserService {
 
     User createUser(RegistrationForm registrationForm) throws Exception;
 
-    Optional<User> getUser(Integer userId);
+    User getUser(Integer userId) throws SQLException;
 
     void updateUser(User user);
 
-    Optional<List<User>> getUsers(String name, String surname);
+    List<User> getUsers(String name, String surname);
 
     Optional<User> getUser(String username);
 

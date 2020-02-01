@@ -47,9 +47,7 @@ public class ApplicationUtils {
     }
 
     public static List<PublicationWrapper> getFormattedPublications(List<Publication> publications) {
-        return publications.isEmpty() ? new ArrayList<>() : publications.stream().map(
-                PublicationWrapper::new
-        ).collect(Collectors.toList());
+        return publications.stream().map(PublicationWrapper::new).collect(Collectors.toList());
     }
 
     public static String getLocalDateTimeString(ZonedDateTime zonedDateTime) {

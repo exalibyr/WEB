@@ -7,16 +7,13 @@ import com.excalibur.myBlog.service.Impl.UserServiceImpl;
 import com.excalibur.myBlog.dao.User;
 import com.excalibur.myBlog.form.RegistrationForm;
 import com.excalibur.myBlog.utils.ApplicationUtils;
-import com.excalibur.myBlog.dao.wrapper.PublicationWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.sql.SQLException;
 
 @Controller
 public class GuestController {
@@ -49,13 +46,12 @@ public class GuestController {
 
     @GetMapping(value = "/guest/registrationSuccess")
     public String registrationSuccess(@RequestParam(name = "id") Integer id, Model model){
-        Optional<User> userOptional = userService.getUser(id);
-        if(userOptional.isPresent()){
-            User user = userOptional.get();
-            model.addAttribute("user", user);
+        try {
+            model.addAttribute("user", userService.getUser(id));
             model.addAttribute("welcomeURI", FileStorageConfiguration.getWelcomeURI());
             return "registrationSuccess";
-        } else {
+        } catch (SQLException e) {
+            e.printStackTrace();
             return ApplicationUtils.getErrorTemplate();
         }
     }
@@ -80,8 +76,7 @@ public class GuestController {
                             @RequestParam(name = "name", required = false, defaultValue = "") String name,
                             @RequestParam(name = "surname", required = false, defaultValue = "") String surname,
                             Model model){
-        Optional<List<User>> users = userService.getUsers(name, surname);
-        model.addAttribute("users", users.orElseGet(ArrayList::new));
+        model.addAttribute("users", userService.getUsers(name, surname));
         model.addAttribute("backURI", priorPath);
         return "guest_showUsers";
     }
@@ -90,16 +85,14 @@ public class GuestController {
     public String showUserPage(@RequestParam(name = "prior", required = false, defaultValue = "") String priorPath,
                                @PathVariable(name = "id") Integer id,
                                Model model){
-        Optional<User> userOptional = userService.getUser(id);
-        if(userOptional.isPresent()){
-            User user = userOptional.get();
-            List<PublicationWrapper> publicationWrappers = publicationService.getUserPublications(user);
+        try {
+            User user = userService.getUser(id);
             model.addAttribute("user", user);
-            model.addAttribute("publicationWrappers", publicationWrappers);
+            model.addAttribute("publicationWrappers", publicationService.getUserPublications(user));
             model.addAttribute("backURI", priorPath);
             return "guest_showUser";
-        }
-        else {
+        } catch (SQLException e) {
+            e.printStackTrace();
             return ApplicationUtils.getErrorTemplate();
         }
     }

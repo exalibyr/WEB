@@ -43,13 +43,14 @@ public class UserServiceImpl implements UserService {
             passwordService.createUserPassword(userPassword);
             return newUser;
         } else {
-            throw new SQLException("Roles not matched to database");
+            throw new SQLException("Roles are not matched to database");
         }
     }
 
     @Override
-    public Optional<User> getUser(Integer userId){
-        return userRepository.findById(userId);
+    public User getUser(Integer userId) throws SQLException {
+        return userRepository.findById(userId)
+                .orElseThrow(() -> new SQLException("UserServiceImpl.getUser(Integer userId): No data retrieved"));
     }
 
     @Override
@@ -58,8 +59,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Optional<List<User>> getUsers(String name, String surname){
-        return userRepository.findByNameOrSurname(name, surname);
+    public List<User> getUsers(String name, String surname) {
+        return userRepository.findByNameOrSurname(name, surname).orElseGet(ArrayList::new);
     }
 
     @Override
