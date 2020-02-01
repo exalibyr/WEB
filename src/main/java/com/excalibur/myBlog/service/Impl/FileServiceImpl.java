@@ -12,7 +12,7 @@ public class FileServiceImpl implements FileService {
     @Autowired
     private FileRepository fileRepository;
 
-    public File save(File file) {
+    public File createFile(File file) {
         return fileRepository.save(file);
     }
 

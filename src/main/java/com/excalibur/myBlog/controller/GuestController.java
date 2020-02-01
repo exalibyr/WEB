@@ -49,7 +49,7 @@ public class GuestController {
 
     @GetMapping(value = "/guest/registrationSuccess")
     public String registrationSuccess(@RequestParam(name = "id") Integer id, Model model){
-        Optional<User> userOptional = userService.findUserById(id);
+        Optional<User> userOptional = userService.getUser(id);
         if(userOptional.isPresent()){
             User user = userOptional.get();
             model.addAttribute("user", user);
@@ -80,7 +80,7 @@ public class GuestController {
                             @RequestParam(name = "name", required = false, defaultValue = "") String name,
                             @RequestParam(name = "surname", required = false, defaultValue = "") String surname,
                             Model model){
-        Optional<List<User>> users = userService.findUsersByNameOrSurname(name, surname);
+        Optional<List<User>> users = userService.getUsers(name, surname);
         model.addAttribute("users", users.orElseGet(ArrayList::new));
         model.addAttribute("backURI", priorPath);
         return "guest_showUsers";
@@ -90,7 +90,7 @@ public class GuestController {
     public String showUserPage(@RequestParam(name = "prior", required = false, defaultValue = "") String priorPath,
                                @PathVariable(name = "id") Integer id,
                                Model model){
-        Optional<User> userOptional = userService.findUserById(id);
+        Optional<User> userOptional = userService.getUser(id);
         if(userOptional.isPresent()){
             User user = userOptional.get();
             List<PublicationWrapper> publicationWrappers = publicationService.getUserPublications(user);

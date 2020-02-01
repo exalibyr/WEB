@@ -21,7 +21,7 @@ public class PasswordServiceImpl implements PasswordService {
     }
 
     @Override
-    public int saveUserPassword(Password password) {
-        return passwordRepository.saveNewPassword(password);
+    public int createUserPassword(Password password) {
+        return passwordRepository.savePassword(password);
     }
 }

@@ -40,7 +40,7 @@ public class UserServiceImpl implements UserService {
             newUser.setRoles(roleService.getAllowedRoles(ApplicationUtils.UserRole.user.toString()));
             newUser.setId(userRepository.saveUser(newUser));
             userRepository.saveUserRoles(newUser);
-            passwordService.saveUserPassword(userPassword);
+            passwordService.createUserPassword(userPassword);
             return newUser;
         } else {
             throw new SQLException("Roles not matched to database");
@@ -48,7 +48,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Optional<User> findUserById(Integer userId){
+    public Optional<User> getUser(Integer userId){
         return userRepository.findById(userId);
     }
 
@@ -58,7 +58,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Optional<List<User>> findUsersByNameOrSurname(String name, String surname){
+    public Optional<List<User>> getUsers(String name, String surname){
         return userRepository.findByNameOrSurname(name, surname);
     }
 

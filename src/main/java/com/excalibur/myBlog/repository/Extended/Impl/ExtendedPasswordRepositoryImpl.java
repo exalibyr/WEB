@@ -15,7 +15,7 @@ public class ExtendedPasswordRepositoryImpl implements ExtendedPasswordRepositor
 
     @Transactional
     @Override
-    public int saveNewPassword(Password password) {
+    public int savePassword(Password password) {
         Query query = entityManager.createNativeQuery(
                 "INSERT INTO password (value, created_date_time, user_id) " +
                         "VALUES (:value, :dateTime, :userId)"

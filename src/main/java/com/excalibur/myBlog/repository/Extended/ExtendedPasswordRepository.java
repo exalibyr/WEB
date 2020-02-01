@@ -4,6 +4,6 @@ import com.excalibur.myBlog.dao.Password;
 
 public interface ExtendedPasswordRepository {
 
-    int saveNewPassword(Password password);
+    int savePassword(Password password);
 
 }

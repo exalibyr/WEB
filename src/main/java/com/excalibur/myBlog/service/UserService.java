@@ -12,11 +12,11 @@ public interface UserService {
 
     User createUser(RegistrationForm registrationForm) throws Exception;
 
-    Optional<User> findUserById(Integer userId);
+    Optional<User> getUser(Integer userId);
 
     void updateUser(User user);
 
-    Optional<List<User>> findUsersByNameOrSurname(String name, String surname);
+    Optional<List<User>> getUsers(String name, String surname);
 
     Optional<User> getUser(String username);
 

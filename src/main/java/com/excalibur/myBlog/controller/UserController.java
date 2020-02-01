@@ -86,7 +86,7 @@ public class UserController {
                             @RequestParam(name = "name", required = false, defaultValue = "") String name,
                             @RequestParam(name = "surname", required = false, defaultValue = "") String surname,
                             Model model){
-        Optional<List<User>> users = userService.findUsersByNameOrSurname(name, surname);
+        Optional<List<User>> users = userService.getUsers(name, surname);
         model.addAttribute("users", users.orElseGet(ArrayList::new));
         model.addAttribute("backURI", priorPath);
         return "user_showUsers";
@@ -97,7 +97,7 @@ public class UserController {
                                @PathVariable(name = "id") Integer id,
                                HttpServletRequest request,
                                Model model){
-        Optional<User> userOptional = userService.findUserById(id);
+        Optional<User> userOptional = userService.getUser(id);
         if(userOptional.isPresent()){
             User user = userOptional.get();
             if (user.getUsername().equals(request.getRemoteUser())) {
@@ -155,7 +155,7 @@ public class UserController {
                                     @PathVariable(name = "pubId") Integer pubId,
                                     Model model) {
         model.addAttribute("backURI", priorPath);
-        publicationService.deletePublicationById(pubId);
+        publicationService.deletePublication(pubId);
         return "redirect:/home";
     }
 
@@ -165,7 +165,7 @@ public class UserController {
                                      PublicationForm publicationForm,
                                      Model model) {
         try {
-            PublicationWrapper wrapper = publicationService.getPublicationById(pubId);
+            PublicationWrapper wrapper = publicationService.getPublication(pubId);
             publicationForm.setContent(wrapper.getPublication().getContent());
             publicationForm.setTitle(wrapper.getPublication().getTitle());
             model.addAttribute("backURI", priorPath);
@@ -195,7 +195,7 @@ public class UserController {
                 publication.setDateTime(ZonedDateTime.now());
                 publication.setUser(optionalUser.get());
                 publication.setId(pubId);
-                publicationService.saveNewPublication(publication);
+                publicationService.createPublication(publication);
                 return "redirect:/home/publication/" + pubId + "/view";
             } else {
                 return ApplicationUtils.getErrorRedirect();
@@ -229,7 +229,7 @@ public class UserController {
                 newPublication.setDateTime(ZonedDateTime.now());
                 newPublication.setUser(user);
                 //add new publication to db
-                publicationService.saveNewPublication(newPublication);
+                publicationService.createPublication(newPublication);
                 return "redirect:/home?prior=" + priorPath;
             }
             else {
@@ -243,7 +243,7 @@ public class UserController {
                                      @PathVariable(name = "pubId") Integer pubId,
                                      Model model) {
         try {
-            PublicationWrapper wrapper = publicationService.getPublicationById(pubId);
+            PublicationWrapper wrapper = publicationService.getPublication(pubId);
             model.addAttribute("backURI", priorPath);
             model.addAttribute("mode", ApplicationUtils.PageMode.view.toString());
             model.addAttribute("pubId", pubId);
@@ -262,7 +262,7 @@ public class UserController {
                                      @PathVariable(name = "id") Integer id,
                                      Model model) {
         try {
-            PublicationWrapper wrapper = publicationService.getPublicationById(pubId);
+            PublicationWrapper wrapper = publicationService.getPublication(pubId);
             model.addAttribute("backURI", priorPath);
             model.addAttribute("mode", ApplicationUtils.PageMode.view.toString());
             model.addAttribute("pubId", pubId);

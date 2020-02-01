@@ -18,9 +18,6 @@ public interface PublicationRepository extends CrudRepository<Publication, Integ
 
     Optional<Publication> findById(Integer id);
 
-    @Modifying
-    @Transactional
-    @Query(value = "SELECT * FROM user_publication WHERE user_id = :userId ORDER BY date_time DESC", nativeQuery = true)
-    List<Publication> findByUserIdOrdered(Integer userId);
+    List<Publication> findByUserIdOrderByDateTimeDesc(Integer userId);
 
 }

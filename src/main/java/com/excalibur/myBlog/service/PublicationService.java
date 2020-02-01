@@ -11,19 +11,19 @@ import java.util.List;
 @Service
 public interface PublicationService {
 
-    void saveNewPublication(Publication publication);
+    void createPublication(Publication publication);
 
-    PublicationWrapper getPublicationById(Integer id) throws IOException;
+    PublicationWrapper getPublication(Integer publicationId) throws IOException;
 
     void deletePublication(Publication publication);
 
-    List<Publication> findPublicationsByTitle(String title);
+    List<Publication> getPublication(String title);
 
-    List<Publication> findPublicationsByUser(User user);
+    List<Publication> getPublication(User user);
 
     List<PublicationWrapper> getUserPublications(User user);
 
-    Iterable<Publication> findAllPublications();
+    Iterable<Publication> getPublications();
 
-    void deletePublicationById(Integer id);
+    void deletePublication(Integer publicationId);
 }

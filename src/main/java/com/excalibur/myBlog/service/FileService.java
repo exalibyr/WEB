@@ -6,6 +6,6 @@ import org.springframework.stereotype.Service;
 @Service
 public interface FileService {
 
-    File save(File file);
+    File createFile(File file);
 
 }

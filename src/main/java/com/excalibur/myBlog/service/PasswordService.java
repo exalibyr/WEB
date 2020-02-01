@@ -11,6 +11,6 @@ public interface PasswordService {
 
     Optional<Password> getLastUserPassword(User user);
 
-    int saveUserPassword(Password password);
+    int createUserPassword(Password password);
 
 }

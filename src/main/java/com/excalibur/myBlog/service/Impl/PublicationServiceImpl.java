@@ -19,12 +19,12 @@ public class PublicationServiceImpl implements PublicationService {
     @Autowired
     private PublicationRepository publicationRepository;
 
-    public void saveNewPublication(Publication publication){
+    public void createPublication(Publication publication){
         publicationRepository.save(publication);
     }
 
-    public PublicationWrapper getPublicationById(Integer id) throws IOException {
-        Optional<Publication> optional = publicationRepository.findById(id);
+    public PublicationWrapper getPublication(Integer publicationId) throws IOException {
+        Optional<Publication> optional = publicationRepository.findById(publicationId);
         if (optional.isPresent()) {
             return new PublicationWrapper(optional.get());
         } else {
@@ -36,24 +36,24 @@ public class PublicationServiceImpl implements PublicationService {
         publicationRepository.delete(publication);
     }
 
-    public List<Publication> findPublicationsByTitle(String title){
+    public List<Publication> getPublication(String title){
         return publicationRepository.findByTitle(title);
     }
 
-    public List<Publication> findPublicationsByUser(User user){
+    public List<Publication> getPublication(User user){
         return publicationRepository.findByUser(user);
     }
 
     public List<PublicationWrapper> getUserPublications(User user) {
-        return ApplicationUtils.getFormattedPublications(publicationRepository.findByUserIdOrdered(user.getId()));
+        return ApplicationUtils.getFormattedPublications(publicationRepository.findByUserIdOrderByDateTimeDesc(user.getId()));
     }
 
-    public Iterable<Publication> findAllPublications(){
+    public Iterable<Publication> getPublications(){
         return publicationRepository.findAll();
     }
 
-    public void deletePublicationById(Integer id){
-        publicationRepository.deleteById(id);
+    public void deletePublication(Integer publicationId){
+        publicationRepository.deleteById(publicationId);
     }
 
 }
