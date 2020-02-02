@@ -65,7 +65,7 @@ public class ApplicationUtils {
     }
 
     public static String getUserAvatarURI(User user) {
-        if (user.getId() == null || user.getAvatarUrl().isBlank()) {
+        if (user.getId() == null || user.getAvatarUrl() == null) {
             return FileStorageConfiguration.getDefaultAvatarURI();
         } else {
             return FileStorageConfiguration.getFileStorageURL() + "/user/" + user.getId() + "/avatar/" + user.getAvatarUrl();
