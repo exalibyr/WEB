@@ -22,12 +22,11 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Autowired
     private UserDetailsServiceImpl userDetailsService;
 
-    //TODO: fix logout process so that session is invalidated
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                    .antMatchers("/", "/guest/**").permitAll()
+                    .antMatchers("/", "/guest/**", "/error").permitAll()
                     .antMatchers("/home/**").hasAuthority("user")
                     .anyRequest().authenticated()
                 .and()
