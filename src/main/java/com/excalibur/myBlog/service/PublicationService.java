@@ -27,7 +27,7 @@ public interface PublicationService {
 
     List<Publication> getPublication(User user) throws SQLException;
 
-    List<PublicationWrapper> getUserPublications(User user);
+    List<PublicationWrapper> getPublicationWrappers(User user);
 
     Iterable<Publication> getPublications();
 

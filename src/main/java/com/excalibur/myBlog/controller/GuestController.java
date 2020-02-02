@@ -7,7 +7,6 @@ import com.excalibur.myBlog.service.Impl.UserServiceImpl;
 import com.excalibur.myBlog.dao.User;
 import com.excalibur.myBlog.form.RegistrationForm;
 import com.excalibur.myBlog.utils.ApplicationUtils;
-import org.hibernate.cfg.Environment;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -89,7 +88,7 @@ public class GuestController {
         try {
             User user = userService.getUser(id);
             model.addAttribute("user", user);
-            model.addAttribute("publicationWrappers", publicationService.getUserPublications(user));
+            model.addAttribute("publicationWrappers", publicationService.getPublicationWrappers(user));
             model.addAttribute("backURI", priorPath);
             model.addAttribute("avatarURI", ApplicationUtils.getUserAvatarURI(user));
             return "guest_showUser";

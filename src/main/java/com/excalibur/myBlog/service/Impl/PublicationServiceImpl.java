@@ -17,6 +17,7 @@ import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class PublicationServiceImpl implements PublicationService {
@@ -75,10 +76,13 @@ public class PublicationServiceImpl implements PublicationService {
                 .orElseThrow(() -> new SQLException("PublicationServiceImpl.getPublication(User user): No data found"));
     }
 
-    public List<PublicationWrapper> getUserPublications(User user) {
-        return ApplicationUtils.getFormattedPublications(
-                publicationRepository.findByUserIdOrderByDateTimeDesc(user.getId()).orElseGet(ArrayList::new)
-        );
+    public List<PublicationWrapper> getPublicationWrappers(User user) {
+        return publicationRepository
+                .findByUserIdOrderByDateTimeDesc(user.getId())
+                .orElseGet(ArrayList::new)
+                .stream()
+                .map(PublicationWrapper::new)
+                .collect(Collectors.toList());
     }
 
     public Iterable<Publication> getPublications(){

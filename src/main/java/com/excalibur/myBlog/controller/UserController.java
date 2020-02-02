@@ -1,7 +1,6 @@
 package com.excalibur.myBlog.controller;
 
 import com.excalibur.myBlog.dao.Publication;
-import com.excalibur.myBlog.fileStorage.configuration.FileStorageConfiguration;
 import com.excalibur.myBlog.service.PublicationService;
 import com.excalibur.myBlog.service.Impl.UserServiceImpl;
 import com.excalibur.myBlog.dao.User;
@@ -45,7 +44,7 @@ public class UserController {
         try {
             User user = userService.getUser(request.getRemoteUser());
             model.addAttribute("user", user);
-            model.addAttribute("publicationWrappers", publicationService.getUserPublications(user));
+            model.addAttribute("publicationWrappers", publicationService.getPublicationWrappers(user));
             model.addAttribute("backURI", priorPath);
             model.addAttribute("avatarURI", ApplicationUtils.getUserAvatarURI(user));
             return "home";
@@ -91,7 +90,7 @@ public class UserController {
                 return "redirect:/home";
             }
             model.addAttribute("user", user);
-            model.addAttribute("publicationWrappers", publicationService.getUserPublications(user));
+            model.addAttribute("publicationWrappers", publicationService.getPublicationWrappers(user));
             model.addAttribute("backURI", priorPath);
             model.addAttribute("avatarURI", ApplicationUtils.getUserAvatarURI(user));
             return "user_showUser";
