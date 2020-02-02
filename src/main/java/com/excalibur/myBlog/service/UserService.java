@@ -1,6 +1,7 @@
 package com.excalibur.myBlog.service;
 
 import com.excalibur.myBlog.dao.User;
+import com.excalibur.myBlog.dao.wrapper.UserWrapper;
 import com.excalibur.myBlog.form.RegistrationForm;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -21,6 +22,8 @@ public interface UserService {
     List<User> getUsers(String name, String surname);
 
     User getUser(String username) throws UsernameNotFoundException;
+
+    List<UserWrapper> getUserWrappers(String name, String surname);
 
 
 }

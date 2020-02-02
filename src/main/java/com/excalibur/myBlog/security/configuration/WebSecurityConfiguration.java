@@ -1,6 +1,7 @@
 package com.excalibur.myBlog.security.configuration;
 
 import com.excalibur.myBlog.security.service.UserDetailsServiceImpl;
+import com.excalibur.myBlog.utils.ApplicationUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.context.annotation.Configuration;
@@ -26,7 +27,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                    .antMatchers("/", "/guest/**", "/error").permitAll()
+                    .antMatchers("/", "/guest/**", ApplicationUtils.ERROR_URN).permitAll()
                     .antMatchers("/home/**").hasAuthority("user")
                     .anyRequest().authenticated()
                 .and()

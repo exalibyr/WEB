@@ -1,5 +1,6 @@
 package com.excalibur.myBlog.service.Impl;
 
+import com.excalibur.myBlog.dao.wrapper.UserWrapper;
 import com.excalibur.myBlog.service.PasswordService;
 import com.excalibur.myBlog.service.RoleService;
 import com.excalibur.myBlog.service.UserService;
@@ -16,6 +17,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -68,5 +70,15 @@ public class UserServiceImpl implements UserService {
     public User getUser(String username) throws UsernameNotFoundException {
         return userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("UserServiceImpl.getUser(String username): No data found"));
+    }
+
+    @Override
+    public List<UserWrapper> getUserWrappers(String name, String surname) {
+        return userRepository
+                .findByNameOrSurname(name, surname)
+                .orElseGet(ArrayList::new)
+                .stream()
+                .map(UserWrapper::new)
+                .collect(Collectors.toList());
     }
 }

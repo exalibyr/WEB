@@ -1,7 +1,9 @@
 package com.excalibur.myBlog.utils;
 
 import com.excalibur.myBlog.dao.Publication;
+import com.excalibur.myBlog.dao.User;
 import com.excalibur.myBlog.dao.wrapper.PublicationWrapper;
+import com.excalibur.myBlog.fileStorage.configuration.FileStorageConfiguration;
 
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
@@ -15,8 +17,8 @@ import java.util.stream.Collectors;
 public class ApplicationUtils {
 
     private static final String ERROR_TEMPLATE = "error";
-    private static final String ERROR_REDIRECT = "redirect:/error";
-    public static final String ERROR_URN = "/error";
+    public static final String ERROR_URN = "/" + ERROR_TEMPLATE;
+    private static final String ERROR_REDIRECT = "redirect:" + ERROR_URN;
     private static Set<String> userRolesString;
     public enum UserRole {
         admin,
@@ -60,6 +62,14 @@ public class ApplicationUtils {
                                 )
                 );
 
+    }
+
+    public static String getUserAvatarURI(User user) {
+        if (user.getId() == null || user.getAvatarUrl().isBlank()) {
+            return FileStorageConfiguration.getDefaultAvatarURI();
+        } else {
+            return FileStorageConfiguration.getFileStorageURL() + "/user/" + user.getId() + "/avatar/" + user.getAvatarUrl();
+        }
     }
 
 }

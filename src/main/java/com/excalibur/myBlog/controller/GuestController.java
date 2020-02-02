@@ -7,6 +7,7 @@ import com.excalibur.myBlog.service.Impl.UserServiceImpl;
 import com.excalibur.myBlog.dao.User;
 import com.excalibur.myBlog.form.RegistrationForm;
 import com.excalibur.myBlog.utils.ApplicationUtils;
+import org.hibernate.cfg.Environment;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -76,7 +77,7 @@ public class GuestController {
                             @RequestParam(name = "name", required = false, defaultValue = "") String name,
                             @RequestParam(name = "surname", required = false, defaultValue = "") String surname,
                             Model model){
-        model.addAttribute("users", userService.getUsers(name, surname));
+        model.addAttribute("userWrappers", userService.getUserWrappers(name, surname));
         model.addAttribute("backURI", priorPath);
         return "guest_showUsers";
     }
@@ -90,6 +91,7 @@ public class GuestController {
             model.addAttribute("user", user);
             model.addAttribute("publicationWrappers", publicationService.getUserPublications(user));
             model.addAttribute("backURI", priorPath);
+            model.addAttribute("avatarURI", ApplicationUtils.getUserAvatarURI(user));
             return "guest_showUser";
         } catch (SQLException e) {
             e.printStackTrace();

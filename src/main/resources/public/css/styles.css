@@ -34,13 +34,10 @@ div.stretched {
 body.fixed {
     position: fixed;
 }
-div.avatar {
+.avatar_img {
     cursor: pointer;
     width : 300px;
-    height: 400px;
-}
-img.avatar_img {
-    all: inherit;
+    height: 200px;
 }
 div#pond {
     all: inherit;

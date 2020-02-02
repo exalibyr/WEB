@@ -47,11 +47,7 @@ public class UserController {
             model.addAttribute("user", user);
             model.addAttribute("publicationWrappers", publicationService.getUserPublications(user));
             model.addAttribute("backURI", priorPath);
-            if ( user.hasAvatar()) {
-                model.addAttribute("avatarURI", FileStorageConfiguration.getFileStorageURL() + "/user/" + user.getId() + "/avatar");
-            } else {
-                model.addAttribute("avatarURI", FileStorageConfiguration.getDefaultAvatarURI());
-            }
+            model.addAttribute("avatarURI", ApplicationUtils.getUserAvatarURI(user));
             return "home";
         } catch (Exception e) {
             e.printStackTrace();
@@ -79,7 +75,7 @@ public class UserController {
                             @RequestParam(name = "name", required = false, defaultValue = "") String name,
                             @RequestParam(name = "surname", required = false, defaultValue = "") String surname,
                             Model model){
-        model.addAttribute("users", userService.getUsers(name, surname));
+        model.addAttribute("userWrappers", userService.getUserWrappers(name, surname));
         model.addAttribute("backURI", priorPath);
         return "user_showUsers";
     }
@@ -97,6 +93,7 @@ public class UserController {
             model.addAttribute("user", user);
             model.addAttribute("publicationWrappers", publicationService.getUserPublications(user));
             model.addAttribute("backURI", priorPath);
+            model.addAttribute("avatarURI", ApplicationUtils.getUserAvatarURI(user));
             return "user_showUser";
         } catch (Exception e) {
             e.printStackTrace();
@@ -110,13 +107,8 @@ public class UserController {
                                      Model model){
         try {
             User user = userService.getUser(request.getRemoteUser());
-            System.out.println(user.getId());
             model.addAttribute("user", user);
-            if (user.hasAvatar()) {
-                model.addAttribute("avatarURI", FileStorageConfiguration.getFileStorageURL() + "/user/" + user.getId() + "/avatar");
-            } else {
-                model.addAttribute("avatarURI", FileStorageConfiguration.getDefaultAvatarURI());
-            }
+            model.addAttribute("avatarURI", ApplicationUtils.getUserAvatarURI(user));
             model.addAttribute("backURI", priorPath);
             return "editProfile";
         } catch (Exception e) {

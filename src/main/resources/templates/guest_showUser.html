@@ -13,7 +13,11 @@
     <h1 align="center" th:text="'Page of user: ' + ${user.name} + ' ' + ${user.surname}"></h1>
     <table>
         <tr>
-            <td><img th:src="${user.avatarUrl}" alt="Image not found" width="300" height="200"></td>
+            <td>
+                <div>
+                    <img class="avatar_img" th:src="${avatarURI}" alt="Image not found">
+                </div>
+            </td>
         </tr>
         <tr>
             <td><label th:text="${user.name} + ' ' + ${user.surname}"></label></td>
