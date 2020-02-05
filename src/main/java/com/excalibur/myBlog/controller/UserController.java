@@ -47,6 +47,8 @@ public class UserController {
             model.addAttribute("publicationWrappers", publicationService.getPublicationWrappers(user));
             model.addAttribute("backURI", priorPath);
             model.addAttribute("avatarURI", ApplicationUtils.getUserAvatarURI(user));
+            model.addAttribute("avatarMethod", ApplicationUtils.getAvatarMethod(user));
+            model.addAttribute("callbackURI", ApplicationUtils.getCallbackURI(ApplicationUtils.Callback.createFile));
             return "home";
         } catch (Exception e) {
             e.printStackTrace();
@@ -108,6 +110,8 @@ public class UserController {
             User user = userService.getUser(request.getRemoteUser());
             model.addAttribute("user", user);
             model.addAttribute("avatarURI", ApplicationUtils.getUserAvatarURI(user));
+            model.addAttribute("avatarMethod", ApplicationUtils.getAvatarMethod(user));
+            model.addAttribute("callbackURI", ApplicationUtils.getCallbackURI(ApplicationUtils.Callback.createFile));
             model.addAttribute("backURI", priorPath);
             return "editProfile";
         } catch (Exception e) {
@@ -125,7 +129,9 @@ public class UserController {
         if(bindingResult.hasErrors()){
             return "redirect:/home/editProfile";
         } else {
-            user.setId(userService.getUser(request.getRemoteUser()).getId());
+            User existingUser = userService.getUser(request.getRemoteUser());
+            user.setId(existingUser.getId());
+            user.setAvatar(existingUser.getAvatar());
             userService.updateUser(user);
             return "redirect:/home?prior=" + priorPath;
         }

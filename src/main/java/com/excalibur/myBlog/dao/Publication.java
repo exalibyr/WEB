@@ -29,8 +29,11 @@ public class Publication {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @OneToMany(mappedBy = "publication")
-    @Cascade(value = {CascadeType.SAVE_UPDATE})
+    @ManyToMany(fetch = FetchType.LAZY)
+    @Cascade(value = CascadeType.ALL)
+    @JoinTable(name = "publication_file", schema = "public",
+            joinColumns = {@JoinColumn(name = "publication_id", nullable = false)},
+            inverseJoinColumns = {@JoinColumn(name = "file_id", nullable = false)})
     private Set<File> files;
 
     public Publication() {

@@ -4,8 +4,9 @@
         <title>My blog</title>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <link type="text/css" rel="stylesheet" th:href="@{/css/styles.css}">
-        <script type="text/javascript"th:src = "@{/js/jquery-3.4.1.js}"></script>
-        <script type="text/javascript"th:src = "@{/js/scripts.js}"></script>
+        <link type="text/css" rel="stylesheet" th:href="@{/css/fileUpload.css}">
+        <script type="text/javascript" th:src = "@{/js/jquery-3.4.1.js}"></script>
+        <script type="text/javascript" th:src = "@{/js/scripts.js}"></script>
     </head>
     <body>
         <div th:replace="fragments::user_header (${#execInfo.templateName})"></div>
@@ -15,7 +16,15 @@
                 <tr>
                     <td>
                         <div>
-                            <img class="avatar_img" th:src="${avatarURI}" alt="Image not found">
+                            <form id="upload-container" method="post" th:action="${avatarMethod}" enctype="multipart/form-data">
+                                <input id="callbackURI" type="hidden" th:value="${callbackURI}">
+                                <div>
+                                    <input id="file-input" type="file" name="file">
+                                    <label for="file-input">
+                                        <img class="avatar_img" th:src="${avatarURI}" alt="Image not found">
+                                    </label>
+                                </div>
+                            </form>
                         </div>
                     </td>
                 </tr>

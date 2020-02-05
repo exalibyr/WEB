@@ -34,11 +34,6 @@ div.stretched {
 body.fixed {
     position: fixed;
 }
-.avatar_img {
-    cursor: pointer;
-    width : 300px;
-    height: 200px;
-}
 div#pond {
     all: inherit;
     display: none;
@@ -68,3 +63,11 @@ button.menu_button {
     height: 5%;
     width: 10%;
 }
+
+.avatar_img {
+    cursor: pointer;
+    width : 300px;
+    height: 200px;
+}
+
+

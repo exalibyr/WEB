@@ -38,11 +38,8 @@ public class User {
     @Cascade(value = CascadeType.DELETE)
     private List<Password> passwords;
 
-    @Column(name = "avatar_url")
-    private String avatarUrl;
-
-    @Column(name = "has_avatar")
-    private boolean hasAvatar;
+    @Column(name = "avatar", unique = true)
+    private String avatar;
 
     @OneToMany(mappedBy = "user")
     @Cascade(value = CascadeType.DELETE)
@@ -120,22 +117,6 @@ public class User {
         this.publications = publications;
     }
 
-    public String getAvatarUrl() {
-        return avatarUrl;
-    }
-
-    public void setAvatarUrl(String avatarUrl) {
-        this.avatarUrl = avatarUrl;
-    }
-
-    public boolean hasAvatar() {
-        return hasAvatar;
-    }
-
-    public void setHasAvatar(boolean hasAvatar) {
-        this.hasAvatar = hasAvatar;
-    }
-
     public Set<File> getFiles() {
         return files;
     }
@@ -170,5 +151,13 @@ public class User {
 
     public Password getCurrentPassword() {
         return getPasswords().get(0);
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
     }
 }

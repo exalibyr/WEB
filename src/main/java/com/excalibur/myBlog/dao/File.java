@@ -20,12 +20,12 @@ public class File {
     private String name;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "publication_id")
-    private Publication publication;
-
-    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
+
+    @ManyToMany(mappedBy = "files", fetch = FetchType.LAZY)
+    @Cascade(value = CascadeType.ALL)
+    private Set<Publication> publications;
 
     public User getUser() {
         return user;
@@ -59,11 +59,12 @@ public class File {
         this.name = name;
     }
 
-    public Publication getPublication() {
-        return publication;
+
+    public Set<Publication> getPublications() {
+        return publications;
     }
 
-    public void setPublication(Publication publication) {
-        this.publication = publication;
+    public void setPublications(Set<Publication> publications) {
+        this.publications = publications;
     }
 }

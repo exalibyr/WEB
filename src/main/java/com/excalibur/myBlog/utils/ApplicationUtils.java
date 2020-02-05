@@ -1,6 +1,7 @@
 package com.excalibur.myBlog.utils;
 
-import com.excalibur.myBlog.dao.Publication;
+import com.excalibur.myBlog.Application;
+import com.excalibur.myBlog.configuration.WebAppConfiguration;
 import com.excalibur.myBlog.dao.User;
 import com.excalibur.myBlog.fileStorage.configuration.FileStorageConfiguration;
 import com.excalibur.myBlog.security.configuration.EncryptionConfiguration;
@@ -25,6 +26,9 @@ public class ApplicationUtils {
     public static final String ERROR_URN = "/" + ERROR_TEMPLATE;
     private static final String ERROR_REDIRECT = "redirect:" + ERROR_URN;
     private static Set<String> userRolesString;
+    public enum Callback {
+        createFile
+    }
     public enum UserRole {
         admin,
         user,
@@ -66,10 +70,22 @@ public class ApplicationUtils {
     }
 
     public static String getUserAvatarURI(User user) {
-        if (user.getId() == null || user.getAvatarUrl() == null) {
+        if (user.getId() == null || user.getAvatar() == null) {
             return FileStorageConfiguration.getDefaultAvatarURI();
         } else {
-            return FileStorageConfiguration.getFileStorageURL() + "/user/" + user.getId() + "/avatar/" + user.getAvatarUrl();
+            return FileStorageConfiguration.getFileStorageURL() + "/user/"
+                    + ApplicationUtils.getEncryptor().encrypt(String.valueOf(user.getId())) + "/" + user.getAvatar();
+        }
+    }
+
+    public static String getAvatarMethod(User user) {
+        return FileStorageConfiguration.getFileStorageURL() + "/user/" + ApplicationUtils.getEncryptor().encrypt(String.valueOf(user.getId()));
+    }
+
+    public static String getCallbackURI(Callback callback) {
+        switch (callback) {
+            case createFile: return WebAppConfiguration.getUrl() + CREATE_FILE_CALLBACK;
+            default: return null;
         }
     }
 

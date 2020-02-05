@@ -1,5 +1,6 @@
 package com.excalibur.myBlog.security.configuration;
 
+import com.excalibur.myBlog.Application;
 import com.excalibur.myBlog.security.service.UserDetailsServiceImpl;
 import com.excalibur.myBlog.utils.ApplicationUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,8 +28,8 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                    .antMatchers("/", "/guest/**", ApplicationUtils.ERROR_URN).permitAll()
-                    .antMatchers("/home/**").hasAuthority("user")
+                    .antMatchers("/", "/guest/**", ApplicationUtils.ERROR_URN, "/fileStorage/**").permitAll()
+                    .antMatchers("/home/**").hasAuthority(ApplicationUtils.UserRole.user.name())
                     .anyRequest().authenticated()
                 .and()
                     .formLogin().loginPage("/guest/login").loginProcessingUrl("/guest/login")
@@ -41,7 +42,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     public void configure(WebSecurity web) throws Exception {
         web
                 .ignoring()
-                .mvcMatchers("/css/**", "/js/**");
+                .mvcMatchers("/css/**", "/js/**", "/img/**");
     }
 
     @Autowired

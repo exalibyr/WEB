@@ -62,6 +62,7 @@ public class ExtendedUserRepositoryImpl implements ExtendedUserRepository {
                             "SET name = '" + user.getName() +
                             "', surname = '" + user.getSurname() +
                             "', about = '" + user.getAbout() +
+                            "' , avatar = '" + user.getAvatar() +
                             "' WHERE id = " + user.getId();
             System.out.println("Native SQL: " + query);
             return statement.executeUpdate(query);
