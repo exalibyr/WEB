@@ -2,20 +2,25 @@ package com.excalibur.myBlog.utils;
 
 import com.excalibur.myBlog.dao.Publication;
 import com.excalibur.myBlog.dao.User;
-import com.excalibur.myBlog.dao.wrapper.PublicationWrapper;
 import com.excalibur.myBlog.fileStorage.configuration.FileStorageConfiguration;
+import com.excalibur.myBlog.security.configuration.EncryptionConfiguration;
+import org.springframework.security.crypto.encrypt.Encryptors;
+import org.springframework.security.crypto.encrypt.TextEncryptor;
 
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 public class ApplicationUtils {
 
+    private static final TextEncryptor ENCRYPTOR = Encryptors.text(
+            EncryptionConfiguration.getPassword(),
+            EncryptionConfiguration.getSalt()
+    );
+    public static final String CREATE_FILE_CALLBACK = "/fileStorage/file/create";
     private static final String ERROR_TEMPLATE = "error";
     public static final String ERROR_URN = "/" + ERROR_TEMPLATE;
     private static final String ERROR_REDIRECT = "redirect:" + ERROR_URN;
@@ -66,6 +71,10 @@ public class ApplicationUtils {
         } else {
             return FileStorageConfiguration.getFileStorageURL() + "/user/" + user.getId() + "/avatar/" + user.getAvatarUrl();
         }
+    }
+
+    public static TextEncryptor getEncryptor() {
+        return ENCRYPTOR;
     }
 
 }
