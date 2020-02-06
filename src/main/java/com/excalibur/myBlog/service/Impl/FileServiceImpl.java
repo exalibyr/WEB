@@ -24,7 +24,7 @@ public class FileServiceImpl implements FileService {
     @Override
     public File setAvatarFile(FileStorageResponseBody responseBody) throws SQLException, IllegalStateException {
         if (responseBody.getSuccess()) {
-            String userId = ApplicationUtils.getEncryptor().decrypt(responseBody.getUserId());
+            String userId = ApplicationUtils.getEncryptor().decrypt(responseBody.getKey());
             User user = userService.getUser(Integer.valueOf(userId));
             File file = new File();
             file.setName(responseBody.getFileName());

@@ -1,14 +1,10 @@
 package com.excalibur.myBlog.fileStorage.entity;
 
-import com.excalibur.myBlog.dao.File;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
-
 import java.util.List;
 
 public class FileStorageResponseBody {
 
-    private String userId;
+    private String key;
     private String fileName;
     private Boolean success;
     private List<String> errors;
@@ -16,12 +12,12 @@ public class FileStorageResponseBody {
     public FileStorageResponseBody() {
     }
 
-    public String getUserId() {
-        return userId;
+    public String getKey() {
+        return key;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setKey(String key) {
+        this.key = key;
     }
 
     public String getFileName() {
