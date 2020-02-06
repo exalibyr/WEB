@@ -53,7 +53,9 @@ $(document).ready(function() {
                 crossDomain: false,
                 success: function(data, textStatus, jqXHR) {
                     console.log(data);
-                    $('.avatar_img').prop('src', data);
+                    if (data != null) {
+                        $('.avatar_img').prop('src', data);
+                    }
                 },
                 error: function(jqXHR, textStatus, errorThrown ) {
                     console.log(errorThrown);

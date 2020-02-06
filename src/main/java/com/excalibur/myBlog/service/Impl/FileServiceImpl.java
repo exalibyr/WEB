@@ -22,15 +22,19 @@ public class FileServiceImpl implements FileService {
     private UserService userService;
 
     @Override
-    public File setAvatarFile(FileStorageResponseBody responseBody) throws SQLException {
-        String userId = ApplicationUtils.getEncryptor().decrypt(responseBody.getUserId());
-        User user = userService.getUser(Integer.valueOf(userId));
-        File file = new File();
-        file.setName(responseBody.getFileName());
-        file.setUser(user);
-        file.setId(fileRepository.saveFile(file));
-        user.setAvatar(responseBody.getFileName());
-        userService.updateUser(user);
-        return file;
+    public File setAvatarFile(FileStorageResponseBody responseBody) throws SQLException, IllegalStateException {
+        if (responseBody.getSuccess()) {
+            String userId = ApplicationUtils.getEncryptor().decrypt(responseBody.getUserId());
+            User user = userService.getUser(Integer.valueOf(userId));
+            File file = new File();
+            file.setName(responseBody.getFileName());
+            file.setUser(user);
+            file.setId(fileRepository.saveFile(file));
+            user.setAvatar(responseBody.getFileName());
+            userService.updateUser(user);
+            return file;
+        } else {
+            throw new IllegalStateException("Failed to upload file");
+        }
     }
 }

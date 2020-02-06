@@ -9,6 +9,6 @@ import java.sql.SQLException;
 @Service
 public interface FileService {
 
-    File setAvatarFile(FileStorageResponseBody responseBody) throws SQLException;
+    File setAvatarFile(FileStorageResponseBody responseBody) throws SQLException, IllegalStateException;
 
 }

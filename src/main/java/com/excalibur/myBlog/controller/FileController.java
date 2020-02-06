@@ -25,7 +25,7 @@ public class FileController {
             return ApplicationUtils.getUserAvatarURI(file.getUser());
         } catch (Exception e) {
             e.printStackTrace();
-            return "error";
+            return null;
         }
     }
 

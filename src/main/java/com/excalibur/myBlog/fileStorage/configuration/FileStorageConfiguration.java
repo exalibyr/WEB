@@ -8,6 +8,7 @@ import java.util.Properties;
 public class FileStorageConfiguration {
 
     private static String fileStorageURL;
+    private static String token;
     private static String defaultAvatarURN;
     private static String welcomeURN;
     private static String errorURN;
@@ -21,6 +22,7 @@ public class FileStorageConfiguration {
             properties.load(stream);
             defaultAvatarURN = properties.getProperty("fileStorage.avatar.default.path");
             fileStorageURL = properties.getProperty("fileStorage.url");
+            token = properties.getProperty("fileStorage.api.token");
             welcomeURN = properties.getProperty("fileStorage.welcome.path");
             errorURN = properties.getProperty("fileStorage.error.path");
         } catch (IOException e) {
@@ -57,5 +59,9 @@ public class FileStorageConfiguration {
 
     public static String getErrorURI() {
         return errorURI;
+    }
+
+    public static String getToken() {
+        return token;
     }
 }

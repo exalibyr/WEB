@@ -17,6 +17,10 @@ import java.util.stream.Collectors;
 
 public class ApplicationUtils {
 
+    public enum Endpoint {
+        fileStorage
+    }
+
     private static final TextEncryptor ENCRYPTOR = Encryptors.text(
             EncryptionConfiguration.getPassword(),
             EncryptionConfiguration.getSalt()
@@ -93,4 +97,17 @@ public class ApplicationUtils {
         return ENCRYPTOR;
     }
 
+    public static String getApiKey(Endpoint endpoint) {
+        switch (endpoint) {
+            case fileStorage: return getEncryptor().encrypt(FileStorageConfiguration.getToken());
+            default: return null;
+        }
+    }
+
+    public static boolean checkToken(Endpoint endpoint, String token) {
+        switch (endpoint) {
+            case fileStorage: return FileStorageConfiguration.getToken().equals(getEncryptor().decrypt(token));
+            default: return false;
+        }
+    }
 }
