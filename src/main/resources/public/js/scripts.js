@@ -55,6 +55,8 @@ $(document).ready(function() {
                     console.log(data);
                     if (data != null) {
                         $('.avatar_img').prop('src', data);
+                    } else {
+                        alert('Ошибка при загрузке файла');
                     }
                 },
                 error: function(jqXHR, textStatus, errorThrown ) {
