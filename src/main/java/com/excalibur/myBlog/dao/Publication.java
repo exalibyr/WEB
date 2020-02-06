@@ -8,12 +8,12 @@ import java.time.ZonedDateTime;
 import java.util.Set;
 
 @Entity
-@Table(name = "user_publication", schema = "public")
+@Table(name = "publication", schema = "public")
 public class Publication {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_publication_id_seq")
-    @SequenceGenerator(name = "user_publication_id_seq", sequenceName = "user_publication_id_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "publication_id_seq")
+    @SequenceGenerator(name = "publication_id_seq", sequenceName = "publication_id_seq", allocationSize = 1)
     private Integer id;
 
     @Column(name = "date_time", nullable = false)

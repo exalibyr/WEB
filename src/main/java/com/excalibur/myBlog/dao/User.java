@@ -10,12 +10,12 @@ import java.util.List;
 import java.util.Set;
 
 @Entity
-@Table(name = "user_data", schema = "public")
+@Table(name = "user_", schema = "public")
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_data_id_seq")
-    @SequenceGenerator(name = "user_data_id_seq", sequenceName = "user_data_id_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_id_seq")
+    @SequenceGenerator(name = "user_id_seq", sequenceName = "user_id_seq", allocationSize = 1)
     private Integer id;
 
     @Size(max = 20, min = 1)

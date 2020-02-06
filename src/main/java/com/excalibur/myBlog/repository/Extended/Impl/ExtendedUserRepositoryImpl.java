@@ -12,7 +12,7 @@ public class ExtendedUserRepositoryImpl implements ExtendedUserRepository {
     public Integer saveUser(User user) {
         try (Connection connection = DriverManager.getConnection(DatabaseConfiguration.getDatabaseURL(), DatabaseConfiguration.getDatabaseLogin(), DatabaseConfiguration.getDatabasePassword())) {
             Statement statement = connection.createStatement();
-            String query = "INSERT INTO user_data (name, surname, about, username)" +
+            String query = "INSERT INTO user_ (name, surname, about, username)" +
                             " VALUES ('" + user.getName() + "', '" + user.getSurname() + "', '" + user.getAbout() + "', '" + user.getUsername() + "')" +
                             " RETURNING id";
             System.out.println("Native SQL: " + query);
@@ -58,7 +58,7 @@ public class ExtendedUserRepositoryImpl implements ExtendedUserRepository {
     public Integer updateUser(User user) {
         try (Connection connection = DriverManager.getConnection(DatabaseConfiguration.getDatabaseURL(), DatabaseConfiguration.getDatabaseLogin(), DatabaseConfiguration.getDatabasePassword())) {
             Statement statement = connection.createStatement();
-            String query = "UPDATE user_data " +
+            String query = "UPDATE user_ " +
                             "SET name = '" + user.getName() +
                             "', surname = '" + user.getSurname() +
                             "', about = '" + user.getAbout() +
