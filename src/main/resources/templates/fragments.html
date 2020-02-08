@@ -123,7 +123,7 @@
         <div th:fragment="guest_formButtons (submitLabel, templateName)">
             <div class="form_buttons">
                 <div class="context_button">
-                    <button type="submit" th:form="${templateName}" th:text="${submitLabel}"></button>
+                    <button class="submit_btn" type="submit" th:form="${templateName}" th:text="${submitLabel}"></button>
                 </div>
                 <div class="context_button">
                     <button type="button" th:onclick="'location.href=\'/guest/login\''">Back</button>
@@ -196,6 +196,26 @@
                         </div>
                     </div>
                     <br>
+                </div>
+            </div>
+        </div>
+        <div th:fragment="footer">
+            <div class="footer">
+                <div>
+                    <span>Copyright © localhost, 1941-2020. All rights reserved.</span>
+                </div>
+                <div>
+                    <div>
+                        <span>Contact: </span>
+                    </div>
+                    <div>
+                        <a href="https://vk.com/eckalid">
+                            <span>VK</span>
+                        </a>
+                    </div>
+                    <div>
+                        <span>eckalibyr225@gmail.com</span>
+                    </div>
                 </div>
             </div>
         </div>
