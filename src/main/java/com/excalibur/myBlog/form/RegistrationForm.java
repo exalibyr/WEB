@@ -12,6 +12,9 @@ public class RegistrationForm {
     @Size(max = 30, min = 5)
     private String userPassword;
 
+    @Size(max = 30, min = 5)
+    private String userPasswordRepeat;
+
     @Size(max = 20, min = 1)
     private String userName;
 
@@ -67,5 +70,13 @@ public class RegistrationForm {
 
     public void setUserAbout(String userAbout) {
         this.userAbout = userAbout;
+    }
+
+    public String getUserPasswordRepeat() {
+        return userPasswordRepeat;
+    }
+
+    public void setUserPasswordRepeat(String userPasswordRepeat) {
+        this.userPasswordRepeat = userPasswordRepeat;
     }
 }

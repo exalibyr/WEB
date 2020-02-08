@@ -33,7 +33,9 @@ public class GuestController {
     public String tryToRegisterUser( @Valid RegistrationForm registrationForm, BindingResult bindingResult){
         if(bindingResult.hasErrors()){
             return "signUp";
-        } else {
+        } else if ( !registrationForm.getUserPassword().equals(registrationForm.getUserPasswordRepeat())) {
+            return "signUp";
+        } else  {
             try {
                 User createdUser = userService.createUser(registrationForm);
                 return "redirect:/guest/registrationSuccess?id=" + createdUser.getId();

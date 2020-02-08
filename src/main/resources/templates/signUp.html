@@ -4,116 +4,57 @@
         <title>My blog</title>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <link type="text/css" rel="stylesheet" th:href="@{/css/styles.css}">
-        <script type="text/javascript"th:src = "@{/js/jquery-3.4.1.js}"></script>
-        <script type="text/javascript"th:src = "@{/js/scripts.js}"></script>
+        <script type="text/javascript" th:src = "@{/js/jquery-3.4.1.js}"></script>
+        <script type="text/javascript" th:src = "@{/js/scripts.js}"></script>
     </head>
     <body>
         <div th:replace="fragments::guest_header (${#execInfo.templateName})"></div>
         <div class="content_wrap" align="center">
             <form th:id="${#execInfo.templateName}" action="#" th:action="@{/guest/signUp}" th:object="${registrationForm}" method="post">
                 <table>
-                    <div class="login">
-                        <tr>
-                            <td>
-                                <span>Your login</span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <input type="text" th:field="*{userLogin}"/>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
+                    <div id="validation_block" class="validation_block">
+                        <div class="username">
+                            <span>Your username</span>
+                            <input class="username" type="text" th:field="*{userLogin}" maxlength="20" placeholder="Your username"/>
                             <span th:if="${#fields.hasErrors('userLogin')}" th:errors="*{userLogin}">
                                 Login length must be from 5 to 20 symbols
                             </span>
-                            </td>
-                        </tr>
-                    </div>
-                    <div class="password">
-                        <tr>
-                            <td>
-                            <span>
-                                Your password
-                            </span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <input type="password" th:field="*{userPassword}"/>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
+                        </div>
+                        <div class="password">
+                            <span>Your password</span>
+                            <input class="password" type="password" th:field="*{userPassword}" maxlength="30" placeholder="Your password"/>
                             <span th:if="${#fields.hasErrors('userPassword')}" th:errors="*{userPassword}">
                                 Password length must be from 5 to 30 symbols
                             </span>
-                            </td>
-                        </tr>
-                    </div>
-                    <div class="name">
-                        <tr>
-                            <td>
-                            <span>
-                                Your name
+                        </div>
+                        <div>
+                            <span>Repeat password</span>
+                            <input class="password_repeat" type="password" th:field="*{userPasswordRepeat}" maxlength="30" placeholder="Repeat password"/>
+                            <span th:if="${#fields.hasErrors('userPasswordRepeat')}" th:errors="*{userPasswordRepeat}">
+                                    Password length must be from 5 to 30 symbols
                             </span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <input type="text" th:field="*{userName}"/>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
+                        </div>
+                        <div class="name">
+                            <span>Your name</span>
+                            <input class="name" type="text" th:field="*{userName}" maxlength="20" placeholder="Your name"/>
                             <span th:if="${#fields.hasErrors('userName')}" th:errors="*{userName}">
                                 Name length must be from 1 to 20 symbols
                             </span>
-                            </td>
-                        </tr>
-                    </div>
-                    <div class="surname">
-                        <tr>
-                            <td>
-                            <span>
-                                Your surname
-                            </span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <input type="text" th:field="*{userSurname}"/>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
+                        </div>
+                        <div class="surname">
+                            <span>Your surname</span>
+                            <input class="surname" type="text" th:field="*{userSurname}" maxlength="30" placeholder="Your surname"/>
                             <span th:if="${#fields.hasErrors('userSurname')}" th:errors="*{userSurname}">
                                 Surname length must be from 1 to 30 symbols
                             </span>
-                            </td>
-                        </tr>
-                    </div>
-                    <div class="about">
-                        <tr>
-                            <td>
-                            <span>
-                                Tell us who you are
-                            </span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <input type="text" th:field="*{userAbout}"/>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
+                        </div>
+                        <div class="about">
+                            <span>Tell us who you are</span>
+                            <textarea class="about" th:field="*{userAbout}" maxlength="100" rows="5" placeholder="Tell us who you are"></textarea>
                             <span th:if="${#fields.hasErrors('userAbout')}" th:errors="*{userAbout}">
                                 Field length must not be more than 100 symbols
                             </span>
-                            </td>
-                        </tr>
+                        </div>
                     </div>
                 </table>
                 <div th:replace="fragments::guest_formButtons ('Sign up', ${#execInfo.templateName})"></div>
