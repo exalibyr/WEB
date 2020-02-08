@@ -9,9 +9,12 @@ public class UserWrapper {
 
     private String avatarURI;
 
+    private String encryptedID;
+
     public UserWrapper(User user) {
         this.user = user;
         this.avatarURI = ApplicationUtils.getUserAvatarURI(this.user);
+        this.encryptedID = ApplicationUtils.getEncryptedID(user.getId());
     }
 
     public User getUser() {
@@ -28,5 +31,13 @@ public class UserWrapper {
 
     public void setAvatarURI(String avatarURI) {
         this.avatarURI = avatarURI;
+    }
+
+    public String getEncryptedID() {
+        return encryptedID;
+    }
+
+    public void setEncryptedID(String encryptedID) {
+        this.encryptedID = encryptedID;
     }
 }

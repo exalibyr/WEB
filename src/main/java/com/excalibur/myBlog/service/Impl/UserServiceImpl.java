@@ -81,4 +81,11 @@ public class UserServiceImpl implements UserService {
                 .map(UserWrapper::new)
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public UserWrapper getUserWrapper(String encryptedId) throws SQLException {
+        Integer decryptedId = ApplicationUtils.getDecryptedID(encryptedId);
+        User user = getUser(decryptedId);
+        return new UserWrapper(user);
+    }
 }

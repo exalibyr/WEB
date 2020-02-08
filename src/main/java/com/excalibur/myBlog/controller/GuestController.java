@@ -1,6 +1,8 @@
 package com.excalibur.myBlog.controller;
 
 
+import com.excalibur.myBlog.Application;
+import com.excalibur.myBlog.dao.wrapper.UserWrapper;
 import com.excalibur.myBlog.fileStorage.configuration.FileStorageConfiguration;
 import com.excalibur.myBlog.service.PublicationService;
 import com.excalibur.myBlog.service.Impl.UserServiceImpl;
@@ -38,7 +40,7 @@ public class GuestController {
         } else  {
             try {
                 User createdUser = userService.createUser(registrationForm);
-                return "redirect:/guest/registrationSuccess?id=" + createdUser.getId();
+                return "redirect:/guest/registrationSuccess?user=" + ApplicationUtils.getEncryptedID(createdUser.getId());
             } catch (Exception e) {
                 e.printStackTrace();
                 return ApplicationUtils.getErrorRedirect();
@@ -47,12 +49,12 @@ public class GuestController {
     }
 
     @GetMapping(value = "/guest/registrationSuccess")
-    public String registrationSuccess(@RequestParam(name = "id") Integer id, Model model){
+    public String registrationSuccess(@RequestParam(name = "user") String id, Model model){
         try {
-            model.addAttribute("user", userService.getUser(id));
+            model.addAttribute("user", userService.getUser(ApplicationUtils.getDecryptedID(id)));
             model.addAttribute("welcomeURI", FileStorageConfiguration.getWelcomeURI());
             return "registrationSuccess";
-        } catch (SQLException e) {
+        } catch (Exception e) {
             e.printStackTrace();
             return ApplicationUtils.getErrorTemplate();
         }
@@ -85,16 +87,15 @@ public class GuestController {
 
     @GetMapping(value = "/guest/user/{id}")
     public String showUserPage(@RequestParam(name = "prior", required = false, defaultValue = "") String priorPath,
-                               @PathVariable(name = "id") Integer id,
+                               @PathVariable(name = "id") String id,
                                Model model){
         try {
-            User user = userService.getUser(id);
-            model.addAttribute("user", user);
-            model.addAttribute("publicationWrappers", publicationService.getPublicationWrappers(user));
+            UserWrapper wrapper = userService.getUserWrapper(id);
+            model.addAttribute("userWrapper", wrapper);
+            model.addAttribute("publicationWrappers", publicationService.getPublicationWrappers(wrapper.getUser()));
             model.addAttribute("backURI", priorPath);
-            model.addAttribute("avatarURI", ApplicationUtils.getUserAvatarURI(user));
             return "guest_showUser";
-        } catch (SQLException e) {
+        } catch (Exception e) {
             e.printStackTrace();
             return ApplicationUtils.getErrorTemplate();
         }

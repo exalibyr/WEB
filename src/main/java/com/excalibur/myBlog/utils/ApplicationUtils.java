@@ -97,6 +97,14 @@ public class ApplicationUtils {
         return ENCRYPTOR;
     }
 
+    public static String getEncryptedID(Integer id) {
+        return getEncryptor().encrypt(String.valueOf(id));
+    }
+
+    public static Integer getDecryptedID(String id) {
+        return Integer.valueOf(getEncryptor().decrypt(id));
+    }
+
     public static String getApiKey(Endpoint endpoint) {
         switch (endpoint) {
             case fileStorage: return getEncryptor().encrypt(FileStorageConfiguration.getToken());
