@@ -1,6 +1,7 @@
 package com.excalibur.myBlog.controller;
 
 import com.excalibur.myBlog.dao.Publication;
+import com.excalibur.myBlog.dao.wrapper.UserWrapper;
 import com.excalibur.myBlog.service.PublicationService;
 import com.excalibur.myBlog.service.Impl.UserServiceImpl;
 import com.excalibur.myBlog.dao.User;
@@ -83,18 +84,17 @@ public class UserController {
 
     @GetMapping(value = "/home/user/{id}")
     public String showUserPage(@RequestParam(name = "prior", required = false, defaultValue = "") String priorPath,
-                               @PathVariable(name = "id") Integer id,
+                               @PathVariable(name = "id") String id,
                                HttpServletRequest request,
                                Model model){
         try {
-            User user = userService.getUser(id);
-            if (user.getUsername().equals(request.getRemoteUser())) {
+            UserWrapper wrapper = userService.getUserWrapper(id);
+            if (wrapper.getUser().getUsername().equals(request.getRemoteUser())) {
                 return "redirect:/home";
             }
-            model.addAttribute("user", user);
-            model.addAttribute("publicationWrappers", publicationService.getPublicationWrappers(user));
+            model.addAttribute("userWrapper", wrapper);
+            model.addAttribute("publicationWrappers", publicationService.getPublicationWrappers(wrapper.getUser()));
             model.addAttribute("backURI", priorPath);
-            model.addAttribute("avatarURI", ApplicationUtils.getUserAvatarURI(user));
             return "user_showUser";
         } catch (Exception e) {
             e.printStackTrace();
@@ -141,19 +141,19 @@ public class UserController {
 
     @GetMapping(value = "/home/publication/{pubId}/delete")
     public String deletePublication(@RequestParam(name = "prior", required = false, defaultValue = "") String priorPath,
-                                    @PathVariable(name = "pubId") Integer pubId,
+                                    @PathVariable(name = "pubId") String pubId,
                                     Model model) {
         model.addAttribute("backURI", priorPath);
-        publicationService.deletePublication(pubId);
+        publicationService.deletePublication(ApplicationUtils.getDecryptedID(pubId));
         return "redirect:/home";
     }
 
     @GetMapping(value = "/home/publication/{pubId}/edit")
     public String getEditPublication(@RequestParam(name = "prior", required = false, defaultValue = "") String priorPath,
-                                     @PathVariable(name = "pubId") Integer pubId,
+                                     @PathVariable(name = "pubId") String pubId,
                                      Model model) {
         try {
-            model.addAttribute("publication", publicationService.getPublication(pubId).getPublication());
+            model.addAttribute("publication", publicationService.getPublication(ApplicationUtils.getDecryptedID(pubId)).getPublication());
             model.addAttribute("backURI", priorPath);
             model.addAttribute("mode", ApplicationUtils.PageMode.edit.toString());
             model.addAttribute("pubId", pubId);
@@ -167,7 +167,7 @@ public class UserController {
 
     @PostMapping(value = "/home/publication/{pubId}/edit")
     public String postEditPublication(@RequestParam(name = "prior", required = false, defaultValue = "") String priorPath,
-                                      @PathVariable(name = "pubId") Integer pubId,
+                                      @PathVariable(name = "pubId") String pubId,
                                       HttpServletRequest request,
                                       @ModelAttribute(name = "publication") @Valid Publication publication,
                                       BindingResult bindingResult) {
@@ -175,7 +175,7 @@ public class UserController {
             return "redirect:/home/publication/" + pubId + "/edit";
         } else {
             try {
-                publication.setId(pubId);
+                publication.setId(ApplicationUtils.getDecryptedID(pubId));
                 publication.setUser(userService.getUser(request.getRemoteUser()));
                 publicationService.updatePublication(publication);
                 return "redirect:/home/publication/" + pubId + "/view";
@@ -216,10 +216,10 @@ public class UserController {
 
     @GetMapping(value = "/home/publication/{pubId}/view")
     public String getViewPublication(@RequestParam(name = "prior", required = false, defaultValue = "") String priorPath,
-                                     @PathVariable(name = "pubId") Integer pubId,
+                                     @PathVariable(name = "pubId") String pubId,
                                      Model model) {
         try {
-            model.addAttribute("publicationWrapper", publicationService.getPublication(pubId));
+            model.addAttribute("publicationWrapper", publicationService.getPublication(ApplicationUtils.getDecryptedID(pubId)));
             model.addAttribute("backURI", priorPath);
             model.addAttribute("mode", ApplicationUtils.PageMode.view.toString());
             model.addAttribute("pubId", pubId);
@@ -233,11 +233,11 @@ public class UserController {
 
     @GetMapping(value = "/home/user/{id}/publication/{pubId}/view")
     public String getViewPublication(@RequestParam(name = "prior", required = false, defaultValue = "") String priorPath,
-                                     @PathVariable(name = "pubId") Integer pubId,
-                                     @PathVariable(name = "id") Integer id,
+                                     @PathVariable(name = "pubId") String pubId,
+                                     @PathVariable(name = "id") String id,
                                      Model model) {
         try {
-            model.addAttribute("publicationWrapper", publicationService.getPublication(pubId));
+            model.addAttribute("publicationWrapper", publicationService.getPublication(ApplicationUtils.getDecryptedID(pubId)));
             model.addAttribute("backURI", priorPath);
             model.addAttribute("mode", ApplicationUtils.PageMode.view.toString());
             model.addAttribute("pubId", pubId);

@@ -10,24 +10,24 @@
     <body>
         <div th:replace="fragments::user_header (${#execInfo.templateName})"></div>
         <div class="content_wrap">
-            <h1 align="center" th:text="'Page of user: ' + ${user.name} + ' ' + ${user.surname}"></h1>
+            <h1 align="center" th:text="'Page of user: ' + ${userWrapper.user.name} + ' ' + ${userWrapper.user.surname}"></h1>
             <table>
                 <tr>
                     <td>
                         <div>
-                            <img class="avatar_img" th:src="${avatarURI}" alt="Image not found">
+                            <img class="avatar_img" th:src="${userWrapper.avatarURI}" alt="Image not found">
                         </div>
                     </td>
                 </tr>
                 <tr>
-                    <td><label th:text="${user.name} + ' ' + ${user.surname}"></label></td>
+                    <td><label th:text="${userWrapper.user.name} + ' ' + ${userWrapper.user.surname}"></label></td>
                 </tr>
                 <tr>
-                    <td>About: <label th:text="${user.about}"></label></td>
+                    <td>About: <label th:text="${userWrapper.user.about}"></label></td>
                 </tr>
             </table>
-            <h3 align="center" th:text="${user.name} + ' ' + ${user.surname} + '\'s publications'"></h3>
-            <div th:replace="fragments::publications (${publicationWrappers}, ${user.Id})"></div>
+            <h3 align="center" th:text="${userWrapper.user.name} + ' ' + ${userWrapper.user.surname} + '\'s publications'"></h3>
+            <div th:replace="fragments::publications (${publicationWrappers}, ${userWrapper.encryptedID})"></div>
         </div>
     </body>
 </html>

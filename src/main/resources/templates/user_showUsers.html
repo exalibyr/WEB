@@ -28,7 +28,7 @@
                 <tr>
                     <td>
                         <button class="context_button" type="button" th:onclick="'location.href=\''
-                             + @{/home/user/{id} (id=${wrapper.user.id})}
+                             + @{/home/user/{id} (id=${wrapper.encryptedID})}
                               + '\''">View page</button>
                     </td>
                 </tr>

@@ -9,8 +9,11 @@ public class PublicationWrapper {
 
     private String localDateTimeString;
 
+    private String encryptedID;
+
     public PublicationWrapper(Publication publication) {
         this.publication = publication;
+        this.encryptedID = ApplicationUtils.getEncryptedID(this.publication.getId());
         this.localDateTimeString = ApplicationUtils.getLocalDateTimeString(publication.getDateTime());
     }
 
@@ -28,5 +31,13 @@ public class PublicationWrapper {
 
     public void setLocalDateTimeString(String localDateTimeString) {
         this.localDateTimeString = localDateTimeString;
+    }
+
+    public String getEncryptedID() {
+        return encryptedID;
+    }
+
+    public void setEncryptedID(String encryptedID) {
+        this.encryptedID = encryptedID;
     }
 }
