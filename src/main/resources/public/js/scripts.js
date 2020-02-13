@@ -9,7 +9,7 @@ $(document).ready(function() {
         body.addClass('fixed');
     }
 
-    if ($('div').is('#validation_block')) {
+    if ($('div').is('#sign_up_validation')) {
 
         var username = $('#userLogin');
         var password = $('#userPassword');
@@ -17,26 +17,43 @@ $(document).ready(function() {
         var name = $('#userName');
         var surname = $('#userSurname');
 
-        validate();
+        validate('signUp');
 
         username.on('keypress keyup keydown', function() {
-            validate();
+            validate('signUp');
         });
 
         password.on('keypress keyup keydown', function() {
-            validate();
+            validate('signUp');
         });
 
         passwordRepeat.on('keypress keyup keydown', function() {
-            validate();
+            validate('signUp');
         });
 
         name.on('keypress keyup keydown', function() {
-            validate();
+            validate('signUp');
         });
 
         surname.on('keypress keyup keydown', function() {
-            validate();
+            validate('signUp');
+        });
+
+    }
+
+    if ($('div').is('#edit_profile_validation')) {
+
+        var name = $('#name');
+        var surname = $('#surname');
+
+        validate('editProfile');
+
+        name.on('keypress keyup keydown', function() {
+            validate('editProfile');
+        });
+
+        surname.on('keypress keyup keydown', function() {
+            validate('editProfile');
         });
 
     }
@@ -78,56 +95,83 @@ $(document).ready(function() {
 
 });
 
-function validate() {
-    var username = $('#userLogin');
-    var password = $('#userPassword');
-    var passwordRepeat = $('#userPasswordRepeat');
-    var name = $('#userName');
-    var surname = $('#userSurname');
-    var submitBtn = $('.submit_btn');
-    var invalid = false;
+function validate(page) {
 
-    if (username.val().length > 4) {
-        username.removeClass('invalid');
-        username.addClass('valid');
-    } else {
-        username.removeClass('valid');
-        username.addClass('invalid');
-        invalid = true;
+    if (page == 'signUp') {
+        var username = $('#userLogin');
+        var password = $('#userPassword');
+        var passwordRepeat = $('#userPasswordRepeat');
+        var name = $('#userName');
+        var surname = $('#userSurname');
+        var submitBtn = $('.submit_btn');
+        var invalid = false;
+
+        if (username.val().length > 4) {
+            username.removeClass('invalid');
+            username.addClass('valid');
+        } else {
+            username.removeClass('valid');
+            username.addClass('invalid');
+            invalid = true;
+        }
+        if (password.val().length > 4) {
+            password.removeClass('invalid');
+            password.addClass('valid');
+        } else {
+            password.removeClass('valid');
+            password.addClass('invalid');
+            invalid = true;
+        }
+        if (passwordRepeat.val().length > 4 && passwordRepeat.val() == password.val()) {
+            passwordRepeat.removeClass('invalid');
+            passwordRepeat.addClass('valid');
+        } else {
+            passwordRepeat.removeClass('valid');
+            passwordRepeat.addClass('invalid');
+            invalid = true;
+        }
+        if (name.val().length > 0) {
+            name.removeClass('invalid');
+            name.addClass('valid');
+        } else {
+            name.removeClass('valid');
+            name.addClass('invalid');
+            invalid = true;
+        }
+        if (surname.val().length > 0) {
+            surname.removeClass('invalid');
+            surname.addClass('valid');
+        } else {
+            surname.removeClass('valid');
+            surname.addClass('invalid');
+            invalid = true;
+        }
+        submitBtn.prop('disabled', invalid);
+    } else if (page == 'editProfile') {
+
+        var name = $('#name');
+        var surname = $('#surname');
+        var submitBtn = $('.submit_btn');
+        var invalid = false;
+
+        if (name.val().length > 0) {
+            name.removeClass('invalid');
+            name.addClass('valid');
+        } else {
+            name.removeClass('valid');
+            name.addClass('invalid');
+            invalid = true;
+        }
+        if (surname.val().length > 0) {
+            surname.removeClass('invalid');
+            surname.addClass('valid');
+        } else {
+            surname.removeClass('valid');
+            surname.addClass('invalid');
+            invalid = true;
+        }
+        submitBtn.prop('disabled', invalid);
     }
-    if (password.val().length > 4) {
-        password.removeClass('invalid');
-        password.addClass('valid');
-    } else {
-        password.removeClass('valid');
-        password.addClass('invalid');
-        invalid = true;
-    }
-    if (passwordRepeat.val().length > 4 && passwordRepeat.val() == password.val()) {
-        passwordRepeat.removeClass('invalid');
-        passwordRepeat.addClass('valid');
-    } else {
-        passwordRepeat.removeClass('valid');
-        passwordRepeat.addClass('invalid');
-        invalid = true;
-    }
-    if (name.val().length > 0) {
-        name.removeClass('invalid');
-        name.addClass('valid');
-    } else {
-        name.removeClass('valid');
-        name.addClass('invalid');
-        invalid = true;
-    }
-    if (surname.val().length > 0) {
-        surname.removeClass('invalid');
-        surname.addClass('valid');
-    } else {
-        surname.removeClass('valid');
-        surname.addClass('invalid');
-        invalid = true;
-    }
-    submitBtn.prop('disabled', invalid);
 }
 
 function sendFiles(files) {

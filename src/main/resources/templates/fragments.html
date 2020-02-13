@@ -101,7 +101,7 @@
         <div th:fragment="user_formButtons (submitLabel, templateName)">
             <div class="form_buttons">
                 <div class="context_button">
-                    <button type="submit" th:form="${templateName}" th:text="${submitLabel}"></button>
+                    <button class="submit_btn" type="submit" th:form="${templateName}" th:text="${submitLabel}"></button>
                 </div>
                 <div class="context_button">
                     <div th:switch="${templateName}">

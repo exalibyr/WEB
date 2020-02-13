@@ -23,42 +23,20 @@
                 </div>
             </form>
             <form th:id="${#execInfo.templateName}" action="#" th:action = "@{/home/editProfile}" th:object="${user}" method="post">
-                <table>
-                    <tr>
-                        <td>Your name </td>
-                    </tr>
-                    <tr>
-                        <td><input type="text" maxlength="20" name="name" id="name" th:value="*{name}"/></td>
-                        <!--<td th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Name length must be from 1 to 20 symbols</td>-->
-                    </tr>
-                    <tr>
-                        <td><br></td>
-                    </tr>
-                    <tr>
-                        <td>Your surname </td>
-                    </tr>
-                    <tr>
-                        <td><input type="text" maxlength="30" th:field="*{surname}"/></td>
-                        <!--<td th:if="${#fields.hasErrors('surname')}" th:errors="*{surname}">Surname length must be from 1 to 30 symbols</td>-->
-                    </tr>
-                    <tr>
-                        <td><br></td>
-                    </tr>
-                    <tr>
-                        <td>You can write something about yourself here </td>
-                    </tr>
-                    <tr>
-                        <td><input type="text" maxlength="100" th:field="*{about}"/></td>
-                        <!--<td th:if="${#fields.hasErrors('about')}" th:errors="*{about}">Field length must not be more than 100 symbols</td>-->
-
-                    </tr>
-                    <tr>
-                        <td><br></td>
-                    </tr>
-                    <tr>
-                        <td><br></td>
-                    </tr>
-                </table>
+                <div id="edit_profile_validation" class="validation_block">
+                    <div>
+                        <span>Your name</span>
+                        <input type="text" maxlength="20" th:field="*{name}"/>
+                    </div>
+                    <div>
+                        <span>Your surname</span>
+                        <input type="text" maxlength="30" th:field="*{surname}"/>
+                    </div>
+                    <div>
+                        <span>You can write something about yourself here</span>
+                        <textarea class="about" th:field="*{about}" maxlength="100" rows="5" placeholder="Tell us who you are"></textarea>
+                    </div>
+                </div>
                 <div th:replace="fragments::user_formButtons ('Save', ${#execInfo.templateName})"></div>
             </form>
         </div>

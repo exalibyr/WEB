@@ -11,52 +11,50 @@
         <div th:replace="fragments::guest_header (${#execInfo.templateName})"></div>
         <div class="content_wrap" align="center">
             <form th:id="${#execInfo.templateName}" action="#" th:action="@{/guest/signUp}" th:object="${registrationForm}" method="post">
-                <table>
-                    <div id="validation_block" class="validation_block">
-                        <div class="username">
-                            <span>Your username</span>
-                            <input class="username" type="text" th:field="*{userLogin}" maxlength="20" placeholder="Your username"/>
-                            <span th:if="${#fields.hasErrors('userLogin')}" th:errors="*{userLogin}">
-                                Login length must be from 5 to 20 symbols
-                            </span>
-                        </div>
-                        <div class="password">
-                            <span>Your password</span>
-                            <input class="password" type="password" th:field="*{userPassword}" maxlength="30" placeholder="Your password"/>
-                            <span th:if="${#fields.hasErrors('userPassword')}" th:errors="*{userPassword}">
-                                Password length must be from 5 to 30 symbols
-                            </span>
-                        </div>
-                        <div>
-                            <span>Repeat password</span>
-                            <input class="password_repeat" type="password" th:field="*{userPasswordRepeat}" maxlength="30" placeholder="Repeat password"/>
-                            <span th:if="${#fields.hasErrors('userPasswordRepeat')}" th:errors="*{userPasswordRepeat}">
-                                    Password length must be from 5 to 30 symbols
-                            </span>
-                        </div>
-                        <div class="name">
-                            <span>Your name</span>
-                            <input class="name" type="text" th:field="*{userName}" maxlength="20" placeholder="Your name"/>
-                            <span th:if="${#fields.hasErrors('userName')}" th:errors="*{userName}">
-                                Name length must be from 1 to 20 symbols
-                            </span>
-                        </div>
-                        <div class="surname">
-                            <span>Your surname</span>
-                            <input class="surname" type="text" th:field="*{userSurname}" maxlength="30" placeholder="Your surname"/>
-                            <span th:if="${#fields.hasErrors('userSurname')}" th:errors="*{userSurname}">
-                                Surname length must be from 1 to 30 symbols
-                            </span>
-                        </div>
-                        <div class="about">
-                            <span>Tell us who you are</span>
-                            <textarea class="about" th:field="*{userAbout}" maxlength="100" rows="5" placeholder="Tell us who you are"></textarea>
-                            <span th:if="${#fields.hasErrors('userAbout')}" th:errors="*{userAbout}">
-                                Field length must not be more than 100 symbols
-                            </span>
-                        </div>
+                <div id="sign_up_validation" class="validation_block">
+                    <div class="username">
+                        <span>Your username</span>
+                        <input class="username" type="text" th:field="*{userLogin}" maxlength="20" placeholder="Your username"/>
+                        <span th:if="${#fields.hasErrors('userLogin')}" th:errors="*{userLogin}">
+                            Login length must be from 5 to 20 symbols
+                        </span>
                     </div>
-                </table>
+                    <div class="password">
+                        <span>Your password</span>
+                        <input class="password" type="password" th:field="*{userPassword}" maxlength="30" placeholder="Your password"/>
+                        <span th:if="${#fields.hasErrors('userPassword')}" th:errors="*{userPassword}">
+                            Password length must be from 5 to 30 symbols
+                        </span>
+                    </div>
+                    <div>
+                        <span>Repeat password</span>
+                        <input class="password_repeat" type="password" th:field="*{userPasswordRepeat}" maxlength="30" placeholder="Repeat password"/>
+                        <span th:if="${#fields.hasErrors('userPasswordRepeat')}" th:errors="*{userPasswordRepeat}">
+                                Password length must be from 5 to 30 symbols
+                        </span>
+                    </div>
+                    <div class="name">
+                        <span>Your name</span>
+                        <input class="name" type="text" th:field="*{userName}" maxlength="20" placeholder="Your name"/>
+                        <span th:if="${#fields.hasErrors('userName')}" th:errors="*{userName}">
+                            Name length must be from 1 to 20 symbols
+                        </span>
+                    </div>
+                    <div class="surname">
+                        <span>Your surname</span>
+                        <input class="surname" type="text" th:field="*{userSurname}" maxlength="30" placeholder="Your surname"/>
+                        <span th:if="${#fields.hasErrors('userSurname')}" th:errors="*{userSurname}">
+                            Surname length must be from 1 to 30 symbols
+                        </span>
+                    </div>
+                    <div class="about">
+                        <span>Tell us who you are</span>
+                        <textarea class="about" th:field="*{userAbout}" maxlength="100" rows="5" placeholder="Tell us who you are"></textarea>
+                        <span th:if="${#fields.hasErrors('userAbout')}" th:errors="*{userAbout}">
+                            Field length must not be more than 100 symbols
+                        </span>
+                    </div>
+                </div>
                 <div th:replace="fragments::guest_formButtons ('Sign up', ${#execInfo.templateName})"></div>
             </form>
         </div>
