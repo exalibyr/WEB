@@ -101,7 +101,7 @@ div.validation_block div {
     margin: 1%;
 }
 .valid {
-    border-color: lawngreen;
+    border-color: #00c800;
 }
 .invalid {
     border-color: red;
