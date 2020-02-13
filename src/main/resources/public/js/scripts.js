@@ -39,9 +39,7 @@ $(document).ready(function() {
             validate('signUp');
         });
 
-    }
-
-    if ($('div').is('#edit_profile_validation')) {
+    } else if ($('div').is('#edit_profile_validation')) {
 
         var name = $('#name');
         var surname = $('#surname');
@@ -56,6 +54,19 @@ $(document).ready(function() {
             validate('editProfile');
         });
 
+    } else if ($('div').is('#publication_validation')) {
+        var title = $('#title');
+        var content = $('#content');
+
+        validate('publication');
+
+        title.on('keypress keyup keydown', function() {
+            validate('publication');
+        });
+
+        content.on('keypress keyup keydown', function() {
+            validate('publication');
+        });
     }
 
 	var dropZone = $('#upload-container');
@@ -168,6 +179,29 @@ function validate(page) {
         } else {
             surname.removeClass('valid');
             surname.addClass('invalid');
+            invalid = true;
+        }
+        submitBtn.prop('disabled', invalid);
+    } else if (page == 'publication') {
+        var title = $('#title');
+        var content = $('#content');
+        var submitBtn = $('.submit_btn');
+        var invalid = false;
+
+        if (title.val().length > 0) {
+            title.removeClass('invalid');
+            title.addClass('valid');
+        } else {
+            title.removeClass('valid');
+            title.addClass('invalid');
+            invalid = true;
+        }
+        if (content.val().length > 0) {
+            content.removeClass('invalid');
+            content.addClass('valid');
+        } else {
+            content.removeClass('valid');
+            content.addClass('invalid');
             invalid = true;
         }
         submitBtn.prop('disabled', invalid);

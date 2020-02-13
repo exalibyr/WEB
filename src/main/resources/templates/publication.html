@@ -15,12 +15,14 @@
                 <div th:case="'create'">
                     <h1 align="center">Create publication</h1>
                     <form th:id= "${#execInfo.templateName}" action="#" th:action = "@{/home/publication/create}" th:object="${publicationForm}" method="post">
-                        <p>
-                            <textarea cols="50" rows="1" maxlength="50" placeholder="Write title here" th:field="*{title}"></textarea>
-                        </p>
-                        <p>
-                            <textarea cols="100" rows="5" maxlength="500" placeholder="Write text here" th:field="*{content}"></textarea>
-                        </p>
+                        <div id="publication_validation" class="validation_block">
+                            <p>
+                                <textarea cols="50" rows="1" maxlength="50" placeholder="Write title here" th:field="*{title}"></textarea>
+                            </p>
+                            <p>
+                                <textarea cols="50" rows="10" maxlength="500" placeholder="Write text here" th:field="*{content}"></textarea>
+                            </p>
+                        </div>
                         <div th:replace="fragments::user_formButtons ('Save', ${#execInfo.templateName})"></div>
                     </form>
                 </div>
@@ -28,12 +30,14 @@
                 <div th:case="'edit'">
                     <h1 align="center">Edit publication</h1>
                     <form th:id= "${#execInfo.templateName}" action="#" th:action = "@{/home/publication/{pubId}/edit (pubId=${pubId})}" th:object="${publication}" method="post">
-                        <p>
-                            <textarea cols="50" rows="1" maxlength="50" placeholder="Write title here" th:field="*{title}" th:text="*{title}"></textarea>
-                        </p>
-                        <p>
-                            <textarea cols="100" rows="5" maxlength="500" placeholder="Write text here" th:field="*{content}" th:text="*{content}"></textarea>
-                        </p>
+                        <div id="publication_validation" class="validation_block">
+                            <p>
+                                <textarea cols="50" rows="1" maxlength="50" placeholder="Write title here" th:field="*{title}" th:text="*{title}"></textarea>
+                            </p>
+                            <p>
+                                <textarea cols="50" rows="10" maxlength="500" placeholder="Write text here" th:field="*{content}" th:text="*{content}"></textarea>
+                            </p>
+                        </div>
                         <div th:replace="fragments::user_formButtons ('Save', ${#execInfo.templateName})"></div>
                     </form>
                 </div>
