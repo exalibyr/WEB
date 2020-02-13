@@ -88,4 +88,5 @@ public class UserServiceImpl implements UserService {
         User user = getUser(decryptedId);
         return new UserWrapper(user);
     }
+
 }

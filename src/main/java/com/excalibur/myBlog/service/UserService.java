@@ -26,4 +26,5 @@ public interface UserService {
     List<UserWrapper> getUserWrappers(String name, String surname);
 
     UserWrapper getUserWrapper(String encryptedId) throws SQLException;
+
 }

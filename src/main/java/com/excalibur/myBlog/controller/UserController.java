@@ -6,6 +6,7 @@ import com.excalibur.myBlog.service.PublicationService;
 import com.excalibur.myBlog.service.Impl.UserServiceImpl;
 import com.excalibur.myBlog.dao.User;
 import com.excalibur.myBlog.form.PublicationForm;
+import com.excalibur.myBlog.service.UserService;
 import com.excalibur.myBlog.utils.ApplicationUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -23,7 +24,7 @@ import javax.validation.Valid;
 public class UserController {
 
     @Autowired
-    private UserServiceImpl userService;
+    private UserService userService;
     @Autowired
     private PublicationService publicationService;
 
@@ -43,12 +44,11 @@ public class UserController {
                                HttpServletRequest request,
                                Model model){
         try {
-            User user = userService.getUser(request.getRemoteUser());
-            model.addAttribute("user", user);
-            model.addAttribute("publicationWrappers", publicationService.getPublicationWrappers(user));
+            UserWrapper userWrapper = new UserWrapper(userService.getUser(request.getRemoteUser()));
+            model.addAttribute("userWrapper", userWrapper);
+            model.addAttribute("publicationWrappers", publicationService.getPublicationWrappers(userWrapper.getUser()));
             model.addAttribute("backURI", priorPath);
-            model.addAttribute("avatarURI", ApplicationUtils.getUserAvatarURI(user));
-            model.addAttribute("avatarMethod", ApplicationUtils.getAvatarMethod(user));
+            model.addAttribute("avatarMethod", ApplicationUtils.getAvatarMethod(userWrapper.getUser()));
             model.addAttribute("callbackURI", ApplicationUtils.getCallbackURI(ApplicationUtils.Callback.createFile));
             return "home";
         } catch (Exception e) {

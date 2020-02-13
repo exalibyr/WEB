@@ -11,7 +11,7 @@
     <body>
         <div th:replace="fragments::user_header (${#execInfo.templateName})"></div>
         <div class="content_wrap">
-            <h1 align="center" th:text="'Welcome to your home page, ' + ${user.name} + '!'"></h1>
+            <h1 align="center" th:text="'Welcome to your home page, ' + ${userWrapper.user.name} + '!'"></h1>
             <table>
                 <tr>
                     <td>
@@ -21,7 +21,7 @@
                                 <div>
                                     <input id="file-input" type="file" name="file">
                                     <label for="file-input">
-                                        <img class="avatar_img" th:src="${avatarURI}" alt="Image not found">
+                                        <img class="avatar_img" th:src="${userWrapper.avatarURI}" alt="Image not found">
                                     </label>
                                 </div>
                             </form>
@@ -29,10 +29,10 @@
                     </td>
                 </tr>
                 <tr>
-                    <td><label th:text="${user.name} + ' ' + ${user.surname}"></label></td>
+                    <td><label th:text="${userWrapper.user.name} + ' ' + ${userWrapper.user.surname}"></label></td>
                 </tr>
                 <tr>
-                    <td>About: <label th:text="${user.about}"></label></td>
+                    <td>About: <label th:text="${userWrapper.user.about}"></label></td>
                 </tr>
             </table>
             <h3 align="center">Your publications</h3>
