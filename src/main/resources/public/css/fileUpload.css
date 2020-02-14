@@ -9,6 +9,11 @@
 	text-decoration: underline;
 }
 
+#upload-container img:hover {
+    cursor: pointer;
+    border: medium solid black;
+}
+
 #upload-container input[type=file] {
 	width: 0.1px;
 	height: 0.1px;

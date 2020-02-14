@@ -16,7 +16,7 @@
             <form id="upload-container" method="post" th:action="${avatarMethod}" enctype="multipart/form-data">
                 <input id="callbackURI" type="hidden" th:value="${callbackURI}">
                 <div>
-                    <input id="file-input" type="file" name="file">
+                    <input id="file-input" type="file" name="file" accept="image/jpeg, image/png">
                     <label for="file-input">Select a file or drag it
                         <img class="avatar_img" th:src="${avatarURI}" alt="Image not found">
                     </label>
