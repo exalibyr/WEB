@@ -1,13 +1,11 @@
 package com.excalibur.myBlog.fileStorage.entity;
 
-import java.util.List;
-
 public class FileStorageResponseBody {
 
     private String key;
     private String fileName;
     private Boolean success;
-    private List<String> errors;
+    private String message;
 
     public FileStorageResponseBody() {
     }
@@ -36,11 +34,11 @@ public class FileStorageResponseBody {
         this.success = success;
     }
 
-    public List<String> getErrors() {
-        return errors;
+    public String getMessage() {
+        return message;
     }
 
-    public void setErrors(List<String> errors) {
-        this.errors = errors;
+    public void setMessage(String message) {
+        this.message = message;
     }
 }

@@ -3,7 +3,6 @@ package com.excalibur.myBlog.controller;
 import com.excalibur.myBlog.dao.Publication;
 import com.excalibur.myBlog.dao.wrapper.UserWrapper;
 import com.excalibur.myBlog.service.PublicationService;
-import com.excalibur.myBlog.service.Impl.UserServiceImpl;
 import com.excalibur.myBlog.dao.User;
 import com.excalibur.myBlog.form.PublicationForm;
 import com.excalibur.myBlog.service.UserService;

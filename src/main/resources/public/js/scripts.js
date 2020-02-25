@@ -228,10 +228,14 @@ function sendFiles(files) {
         crossDomain: true,
         success: function(data, textStatus, jqXHR) {
             console.log(data);
-            sendFilesInfo(data);
+            if (data.success) {
+                sendFilesInfo(JSON.stringify(data));
+            } else {
+                alert('Ошибка при загрузке файла');
+            }
         },
         error: function(jqXHR, textStatus, errorThrown ) {
-            alert (errorThrown);
+            console.log(errorThrown);
         },
         timeout: 30000,
         statusCode: {
@@ -240,6 +244,9 @@ function sendFiles(files) {
             },
             500: function () {
                 console.log('internal server error 500');
+            },
+            201: function() {
+                console.log('Created 201');
             },
             200: function() {
                 console.log('status OK 200');
@@ -262,7 +269,7 @@ function sendFilesInfo(data) {
         url: $('#callbackURI').prop('value'),
         type: 'POST',
         data: data,
-        contentType: 'application/json; charset=UTF-8',
+        contentType: "application/json",
         beforeSend: function(request) {
             request.setRequestHeader("X-CSRF-TOKEN", $('input[name=_csrf]').prop('value'));
         },
@@ -270,8 +277,8 @@ function sendFilesInfo(data) {
         crossDomain: false,
         success: function(data, textStatus, jqXHR) {
             console.log(data);
-            if (data != null) {
-                $('.avatar_img').prop('src', data);
+            if (data.success) {
+                $('.avatar_img').prop('src', data.message);
             } else {
                 alert('Ошибка при загрузке файла');
             }
@@ -286,6 +293,9 @@ function sendFilesInfo(data) {
             },
             500: function () {
                 console.log('internal server error 500');
+            },
+            201: function() {
+                console.log('Created 201');
             },
             200: function() {
                 console.log('status OK 200');
