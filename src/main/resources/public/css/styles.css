@@ -34,17 +34,8 @@ div.stretched {
 body.fixed {
     position: fixed;
 }
-div#pond {
-    all: inherit;
-    display: none;
-}
 div.form_buttons div {
     display: inline;
-}
-div.data_form {
-    all: inherit;
-    position: relative;
-    margin-top: 350px;
 }
 body, html {
     background-color: gray;
@@ -58,10 +49,6 @@ div.context_button {
     margin-top: 5px;
     margin-left: 10px;
     margin-right: 10px;
-}
-button.menu_button {
-    height: 5%;
-    width: 10%;
 }
 
 .avatar_img {
