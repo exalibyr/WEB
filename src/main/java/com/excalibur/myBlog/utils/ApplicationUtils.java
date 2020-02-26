@@ -26,7 +26,7 @@ public class ApplicationUtils {
             EncryptionConfiguration.getSalt()
     );
     public static final String CREATE_FILE_CALLBACK = "/fileStorage/file/create";
-    private static final String ERROR_TEMPLATE = "error";
+    private static final String ERROR_TEMPLATE = "exception";
     public static final String ERROR_URN = "/" + ERROR_TEMPLATE;
     private static final String ERROR_REDIRECT = "redirect:" + ERROR_URN;
     private static Set<String> userRolesString;

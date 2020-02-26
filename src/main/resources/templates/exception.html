@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>My blog</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <link type="text/css" rel="stylesheet" th:href="@{/css/styles.css}">
+        <script type="text/javascript" th:src = "@{/js/jquery-3.4.1.js}"></script>
+        <script type="text/javascript" th:src = "@{/js/scripts.js}"></script>
+    </head>
+    <body>
+        <div class="content_wrap" align="center">
+            <h1>ERROR!!! Something went wrong</h1>
+            <div class="context_button">
+                <button type="button" th:onclick="'location.href=\'/home\''">Home</button>
+            </div>
+            <div align="center">
+                <img th:src="${errorURI}" alt="Image not found" width="500" height="350">
+            </div>
+        </div>
+    </body>
+</html>
