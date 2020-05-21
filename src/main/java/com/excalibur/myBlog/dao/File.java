@@ -38,6 +38,10 @@ public class File {
     public File() {
     }
 
+    public File(String name) {
+        this.name = name;
+    }
+
     public File(Integer id, String name) {
         this.id = id;
         this.name = name;

@@ -1,13 +1,17 @@
 package com.excalibur.myBlog.fileStorage.entity;
 
-public class FileStorageResponseBody {
+import com.excalibur.myBlog.dao.response.ResponseBody;
+
+public class FileStorageResponseBody extends ResponseBody {
 
     private String key;
     private String fileName;
-    private Boolean success;
-    private String message;
 
     public FileStorageResponseBody() {
+    }
+
+    public FileStorageResponseBody(boolean success, String message) {
+        super(success, message);
     }
 
     public String getKey() {
@@ -26,19 +30,4 @@ public class FileStorageResponseBody {
         this.fileName = fileName;
     }
 
-    public Boolean getSuccess() {
-        return success;
-    }
-
-    public void setSuccess(Boolean success) {
-        this.success = success;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
 }

@@ -4,9 +4,28 @@ import com.excalibur.myBlog.repository.configuration.DatabaseConfiguration;
 import com.excalibur.myBlog.dao.Role;
 import com.excalibur.myBlog.dao.User;
 import com.excalibur.myBlog.repository.Extended.ExtendedUserRepository;
+
+import javax.sql.rowset.CachedRowSet;
+import javax.sql.rowset.RowSetProvider;
 import java.sql.*;
 
 public class ExtendedUserRepositoryImpl implements ExtendedUserRepository {
+
+    @Override
+    public ResultSet findByNameSurname(String name, String surname) {
+        String query = "SELECT id, name, surname, about, avatar FROM user_ WHERE name LIKE '" + name + "%' AND surname LIKE '" + surname + "%'";
+        System.out.println("Native SQL: " + query);
+        try (Connection connection = DriverManager.getConnection(DatabaseConfiguration.getDatabaseURL(), DatabaseConfiguration.getDatabaseLogin(), DatabaseConfiguration.getDatabasePassword())) {
+            Statement statement = connection.createStatement();
+            CachedRowSet rowSet = RowSetProvider.newFactory().createCachedRowSet();
+            rowSet.populate(statement.executeQuery(query));
+            statement.close();
+            return rowSet;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 
     @Override
     public Integer saveUser(User user) {
@@ -44,7 +63,7 @@ public class ExtendedUserRepositoryImpl implements ExtendedUserRepository {
             int rows = statement.executeBatch().length;
             System.out.println("************* BATCH PACKAGE END ****************");
             if (rows != user.getRoles().size()) {
-                throw new RuntimeException("Batch insert failed");
+                throw new SQLException("Batch insert failed");
             } else {
                 return rows;
             }

@@ -5,6 +5,7 @@ import com.excalibur.myBlog.dao.User;
 import com.excalibur.myBlog.dao.wrapper.PublicationWrapper;
 import com.excalibur.myBlog.form.PublicationForm;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -17,7 +18,9 @@ public interface PublicationService {
 
     void initPublicationForm(Integer publicationId, PublicationForm publicationForm) throws Exception;
 
-    void createPublication(PublicationForm publicationForm) throws Exception;
+    Publication createPublication(PublicationForm publicationForm, List<MultipartFile> files) throws Exception;
+
+    Publication createPublication(PublicationForm publicationForm) throws Exception;
 
     PublicationWrapper getPublication(Integer publicationId) throws SQLException;
 

@@ -1,6 +1,9 @@
 package com.excalibur.myBlog.service.Impl;
 
+import com.excalibur.myBlog.dao.File;
+import com.excalibur.myBlog.fileStorage.service.FileWebService;
 import com.excalibur.myBlog.form.PublicationForm;
+import com.excalibur.myBlog.service.FileService;
 import com.excalibur.myBlog.service.PublicationService;
 import com.excalibur.myBlog.dao.Publication;
 import com.excalibur.myBlog.dao.User;
@@ -10,17 +13,25 @@ import com.excalibur.myBlog.service.UserService;
 import com.excalibur.myBlog.utils.ApplicationUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.sql.SQLException;
 import java.time.ZonedDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.LogManager;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 @Service
 public class PublicationServiceImpl implements PublicationService {
+
+    @Autowired
+    private FileService fileService;
+
+    @Autowired
+    private FileWebService fileWebService;
 
     @Autowired
     private UserService userService;
@@ -46,11 +57,30 @@ public class PublicationServiceImpl implements PublicationService {
     }
 
     @Override
-    public void createPublication(PublicationForm publicationForm) throws Exception {
+    public Publication createPublication(PublicationForm publicationForm, List<MultipartFile> multipartFiles) throws Exception {
+        for (MultipartFile multipartFile : multipartFiles) ApplicationUtils.validateContentType(multipartFile.getContentType());
+        User user = this.userService.getUser(publicationForm.getUsername());
+        List<String> fileNames = new ArrayList<>();
+        for (MultipartFile multipartFile : multipartFiles) fileNames.add(this.fileWebService.postFile(multipartFile, user.getId()));
         Publication publication = publicationForm.getPublication();
-        publication.setUser(userService.getUser(publicationForm.getUsername()));
+        publication.setUser(user);
         publication.setDateTime(ZonedDateTime.now());
-        publicationRepository.save(publication);
+        publication = this.publicationRepository.save(publication);
+        if ( !multipartFiles.isEmpty()) {
+            List<File> files = new ArrayList<>();
+            for (String fileName : fileNames) files.add(new File(fileName));
+            this.fileService.createPublicationFiles(files, publication, user);
+        }
+        return publication;
+    }
+
+    @Override
+    public Publication createPublication(PublicationForm publicationForm) throws Exception {
+        User user = userService.getUser(publicationForm.getUsername());
+        Publication publication = publicationForm.getPublication();
+        publication.setUser(user);
+        publication.setDateTime(ZonedDateTime.now());
+        return publicationRepository.save(publication);
     }
 
     public PublicationWrapper getPublication(Integer publicationId) throws SQLException {

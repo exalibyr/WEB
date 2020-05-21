@@ -18,26 +18,24 @@ public class FileController {
     private FileService fileService;
 
     @PostMapping(value = ApplicationUtils.CREATE_FILE_CALLBACK)
-    public ResponseEntity<ResponseBody<File>> createFile(@RequestBody FileStorageResponseBody responseBody) {
+    public ResponseEntity<ResponseBody> createFile(@RequestBody FileStorageResponseBody responseBody) {
         try {
             File file = fileService.setAvatarFile(responseBody);
             return new ResponseEntity<>(
-                    new ResponseBody<>(
+                    new ResponseBody(
                             true,
-                            ApplicationUtils.getUserAvatarURI(file.getUser()),
-                            null
+                            ApplicationUtils.getUserAvatarURI(file.getUser())
                     ),
                     HttpStatus.CREATED
             );
         } catch (Exception e) {
             e.printStackTrace();
             return new ResponseEntity<>(
-                    new ResponseBody<>(
+                    new ResponseBody(
                             false,
-                            e.getMessage(),
-                            null
+                            e.getMessage()
                     ),
-                    HttpStatus.CREATED
+                    HttpStatus.INTERNAL_SERVER_ERROR
             );
         }
     }

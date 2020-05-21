@@ -9,6 +9,25 @@ $(document).ready(function() {
         body.addClass('fixed');
     }
 
+    if ($('div').is('#select_picture')) {
+        $(".publication_img_input").change(function(){
+            readURL(this);
+        });
+    }
+
+    if ($('img').is('.publication_img')) {
+        var publicationImage = $(".publication_img");
+        publicationImage.change(function() {
+            if (publicationImage.prop('src') != '#') {
+                console.log('visible');
+                publicationImage.removeClass('hidden');
+            } else {
+                console.log('hidden');
+                publicationImage.addClass('hidden');
+            }
+        });
+    }
+
     if ($('div').is('#sign_up_validation')) {
 
         var username = $('#userLogin');
@@ -105,6 +124,19 @@ $(document).ready(function() {
 
 
 });
+
+function readURL(input) {
+    if (input.files && input.files[0]) {
+        var reader = new FileReader();
+
+        reader.onload = function (e) {
+            $('.publication_img').prop('src', e.target.result);
+            $('#base64image').prop('value', e.target.result.substr(0, 100));
+        };
+
+        reader.readAsDataURL(input.files[0]);
+    }
+}
 
 function validate(page) {
 

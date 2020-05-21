@@ -14,7 +14,7 @@
 
                 <div th:case="'create'">
                     <h1 align="center">Create publication</h1>
-                    <form th:id= "${#execInfo.templateName}" action="#" th:action = "@{/home/publication/create}" th:object="${publicationForm}" method="post">
+                    <form th:id="${#execInfo.templateName}" enctype="multipart/form-data" action="#" th:action="@{/home/publication/create}" th:object="${publicationForm}" method="post">
                         <div id="publication_validation" class="validation_block">
                             <p>
                                 <textarea cols="50" rows="1" maxlength="50" placeholder="Write title here" th:field="*{title}"></textarea>
@@ -24,6 +24,9 @@
                             </p>
                         </div>
                         <div th:replace="fragments::user_formButtons ('Save', ${#execInfo.templateName})"></div>
+                        <div>
+                            <img src="#" class="publication_img" alt="Image preview">
+                        </div>
                     </form>
                 </div>
 
@@ -75,6 +78,11 @@
                             <button type="button" th:onclick="'location.href=\'' + @{/home/user/{id} (id=${ownerId})} + '\''">
                                 Back
                             </button>
+                        </div>
+                    </div>
+                    <div class="publication_media">
+                        <div th:each="mediaSource : ${publicationWrapper.mediaSources}">
+                            <img th:src="${mediaSource}" class="publication_img" alt="Image">
                         </div>
                     </div>
                 </div>

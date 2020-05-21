@@ -56,6 +56,17 @@ div.context_button {
     width : 300px;
     height: 200px;
 }
+.publication_img {
+    width : 300px;
+    height: 200px;
+    margin: 20px;
+}
+.publication_media div {
+    display:inline;
+}
+.hidden {
+    visibility: hidden;
+}
 .footer div {
     display: inline;
 }

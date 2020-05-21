@@ -13,6 +13,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import com.excalibur.myBlog.repository.UserRepository;
 
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -63,7 +64,24 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<User> getUsers(String name, String surname) {
-        return userRepository.findByNameOrSurname(name, surname).orElseGet(ArrayList::new);
+        try {
+            ResultSet resultSet = userRepository.findByNameSurname(name, surname);
+            List<User> users = new ArrayList<>();
+            while (resultSet.next()) {
+                User user = new User();
+                user.setId(resultSet.getInt("id"));
+                user.setAvatar(resultSet.getString("avatar"));
+                user.setAbout(resultSet.getString("about"));
+                user.setName(resultSet.getString("name"));
+                user.setSurname(resultSet.getString("surname"));
+                users.add(user);
+            }
+            return users;
+//            return userRepository.findByNameOrSurname(name, surname).orElseGet(ArrayList::new);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ArrayList<>();
+        }
     }
 
     @Override
@@ -74,9 +92,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<UserWrapper> getUserWrappers(String name, String surname) {
-        return userRepository
-                .findByNameOrSurname(name, surname)
-                .orElseGet(ArrayList::new)
+        return getUsers(name, surname)
                 .stream()
                 .map(UserWrapper::new)
                 .collect(Collectors.toList());

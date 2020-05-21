@@ -1,6 +1,5 @@
 package com.excalibur.myBlog.security.configuration;
 
-import com.excalibur.myBlog.Application;
 import com.excalibur.myBlog.security.service.UserDetailsServiceImpl;
 import com.excalibur.myBlog.utils.ApplicationUtils;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,15 +1,16 @@
 package com.excalibur.myBlog.dao.response;
 
-public class ResponseBody<T> {
+public class ResponseBody {
 
     private boolean success;
     private String message;
-    private T entity;
 
-    public ResponseBody(boolean success, String message, T entity) {
+    public ResponseBody() {
+    }
+
+    public ResponseBody(boolean success, String message) {
         this.success = success;
         this.message = message;
-        this.entity = entity;
     }
 
     public boolean isSuccess() {
@@ -28,11 +29,4 @@ public class ResponseBody<T> {
         this.message = message;
     }
 
-    public T getEntity() {
-        return entity;
-    }
-
-    public void setEntity(T entity) {
-        this.entity = entity;
-    }
 }

@@ -29,7 +29,7 @@ public class Publication {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.EAGER)
     @Cascade(value = CascadeType.ALL)
     @JoinTable(name = "publication_file", schema = "public",
             joinColumns = {@JoinColumn(name = "publication_id", nullable = false)},

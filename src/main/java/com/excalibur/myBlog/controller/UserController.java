@@ -7,20 +7,30 @@ import com.excalibur.myBlog.dao.User;
 import com.excalibur.myBlog.form.PublicationForm;
 import com.excalibur.myBlog.service.UserService;
 import com.excalibur.myBlog.utils.ApplicationUtils;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonIgnoreType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.logging.Level;
+import java.util.logging.LogManager;
+import java.util.logging.Logger;
 
 @Controller
 //@PreAuthorize(value = "hasRole('USER')")
 public class UserController {
+
 
     @Autowired
     private UserService userService;
@@ -196,6 +206,7 @@ public class UserController {
 
     @PostMapping(value = "/home/publication/create")
     public String postCreatePublication(@RequestParam(name = "prior", required = false, defaultValue = "") String priorPath,
+                                        @RequestPart(name = "file") MultipartFile file,
                                         HttpServletRequest request,
                                         @Valid PublicationForm publicationForm,
                                         BindingResult bindingResult){
@@ -204,7 +215,7 @@ public class UserController {
         } else {
             try {
                 publicationForm.setUsername(request.getRemoteUser());
-                publicationService.createPublication(publicationForm);
+                this.publicationService.createPublication(publicationForm, Arrays.asList(file));
                 return "redirect:/home?prior=" + priorPath;
             } catch (Exception e) {
                 e.printStackTrace();

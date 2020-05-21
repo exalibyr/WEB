@@ -1,7 +1,6 @@
 package com.excalibur.myBlog.form;
 
 import com.excalibur.myBlog.dao.Publication;
-import com.excalibur.myBlog.dao.User;
 
 import javax.validation.constraints.Size;
 
@@ -17,12 +16,20 @@ public class PublicationForm {
     @Size(max = 500, min = 1)
     private String content;
 
+    private String base64image;
+
     public PublicationForm() {
     }
 
     public PublicationForm(String title, String content) {
         this.title = title;
         this.content = content;
+    }
+
+    public PublicationForm(@Size(max = 50, min = 1) String title, @Size(max = 500, min = 1) String content, String base64image) {
+        this.title = title;
+        this.content = content;
+        this.base64image = base64image;
     }
 
     public String getUsername() {
@@ -42,7 +49,9 @@ public class PublicationForm {
     }
 
     public Publication getPublication(){
-        return new Publication(title, content);
+        Publication publication = new Publication(title, content);
+        if (this.publicationId != null) publication.setId(this.publicationId);
+        return publication;
     }
 
     public String getTitle() {
@@ -59,5 +68,13 @@ public class PublicationForm {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public String getBase64image() {
+        return base64image;
+    }
+
+    public void setBase64image(String base64image) {
+        this.base64image = base64image;
     }
 }

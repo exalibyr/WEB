@@ -103,20 +103,34 @@
                 <div class="context_button">
                     <button class="submit_btn" type="submit" th:form="${templateName}" th:text="${submitLabel}"></button>
                 </div>
-                <div class="context_button">
-                    <div th:switch="${templateName}">
-                        <button th:case="'publication'" type="button" th:onclick="'location.href=\''
-                                                     + @{/home} + '\''">Back</button>
-                        <button th:case="'editProfile'" type="button" th:onclick="'location.href=\''
-                                                     + @{/home} + '\''">Back</button>
-                        <button th:case="'findUsers'" type="button" th:onclick="'location.href=\''
-                                                     + @{/home} + '\''">Back</button>
-                        <!--                        <button th:case="'showUsers'" type="button" th:onclick="'location.href=\''-->
-                        <!--                                             + @{/home/findUsers} + '\''">Back</button>-->
-                        <!--                        <button th:case="'showUserPage'" type="button" th:onclick="'location.href=\''-->
-                        <!--                                             + @{/home/users} + '\''">Back</button>-->
-                        <button th:case="'signUp'" type="button" th:onclick="'location.href=\'/guest/login\''">Back</button>
+                <div th:switch="${templateName}">
+                    <div th:case="'publication'">
+                        <div class="context_button">
+                            <button type="button" th:onclick="'location.href=\'' + @{/home} + '\''">Back</button>
+                        </div>
+                        <div id="select_picture" class="context_button">
+                            <input type="file" th:form="${templateName}" class="publication_img_input" id="file" name="file" accept="image/jpeg, image/png">
+                        </div>
                     </div>
+                    <div th:case="'editProfile'">
+                        <div class="context_button">
+                            <button type="button" th:onclick="'location.href=\'' + @{/home} + '\''">Back</button>
+                        </div>
+                    </div>
+                    <div th:case="'findUsers'">
+                        <div class="context_button">
+                            <button type="button" th:onclick="'location.href=\'' + @{/home} + '\''">Back</button>
+                        </div>
+                    </div>
+                    <div th:case="'signUp'">
+                        <div class="context_button">
+                            <button type="button" th:onclick="'location.href=\'/guest/login\''">Back</button>
+                        </div>
+                    </div>
+                    <!--                        <button th:case="'showUsers'" type="button" th:onclick="'location.href=\''-->
+                    <!--                                             + @{/home/findUsers} + '\''">Back</button>-->
+                    <!--                        <button th:case="'showUserPage'" type="button" th:onclick="'location.href=\''-->
+                    <!--                                             + @{/home/users} + '\''">Back</button>-->
                 </div>
             </div>
         </div>
@@ -193,6 +207,11 @@
                                          + '\''">
                                 View
                             </button>
+                        </div>
+                    </div>
+                    <div class="publication_media">
+                        <div th:each="mediaSource : ${wrapper.mediaSources}">
+                            <img th:src="${mediaSource}" class="publication_img" alt="Image">
                         </div>
                     </div>
                     <br>
