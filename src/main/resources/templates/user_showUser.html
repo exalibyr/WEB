@@ -8,24 +8,26 @@
         <script type="text/javascript"th:src = "@{/js/scripts.js}"></script>
     </head>
     <body>
-        <div th:replace="fragments::user_header (${#execInfo.templateName})"></div>
+        <div th:replace="fragments::user_header (${#execInfo.templateName}, ${admin})"></div>
         <div class="content_wrap">
             <h1 align="center" th:text="'Page of user: ' + ${userWrapper.user.name} + ' ' + ${userWrapper.user.surname}"></h1>
-            <table>
-                <tr>
-                    <td>
-                        <div>
-                            <img class="avatar_img" th:src="${userWrapper.avatarURI}" alt="Image not found">
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td><label th:text="${userWrapper.user.name} + ' ' + ${userWrapper.user.surname}"></label></td>
-                </tr>
-                <tr>
-                    <td>About: <label th:text="${userWrapper.user.about}"></label></td>
-                </tr>
-            </table>
+            <div class="user_info">
+                <table>
+                    <tr>
+                        <td>
+                            <div>
+                                <img class="avatar_img" th:src="${userWrapper.avatarURI}" alt="Image not found">
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><label th:text="${userWrapper.user.name} + ' ' + ${userWrapper.user.surname}"></label></td>
+                    </tr>
+                    <tr>
+                        <td>About: <label th:text="${userWrapper.user.about}"></label></td>
+                    </tr>
+                </table>
+            </div>
             <h3 align="center" th:text="${userWrapper.user.name} + ' ' + ${userWrapper.user.surname} + '\'s publications'"></h3>
             <div th:replace="fragments::publications (${publicationWrappers}, ${userWrapper.encryptedID})"></div>
         </div>

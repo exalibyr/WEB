@@ -2,7 +2,6 @@ package com.excalibur.myBlog.service.Impl;
 
 import com.excalibur.myBlog.dao.Publication;
 import com.excalibur.myBlog.dao.User;
-import com.excalibur.myBlog.fileStorage.entity.FileStorageResponseBody;
 import com.excalibur.myBlog.service.FileService;
 import com.excalibur.myBlog.dao.File;
 import com.excalibur.myBlog.repository.FileRepository;
@@ -13,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class FileServiceImpl implements FileService {
@@ -24,19 +24,20 @@ public class FileServiceImpl implements FileService {
     private UserService userService;
 
     @Override
-    public File setAvatarFile(FileStorageResponseBody responseBody) throws SQLException, IllegalStateException {
-        if (responseBody.isSuccess()) {
-            String userId = ApplicationUtils.getEncryptor().decrypt(responseBody.getKey());
+    public File setAvatarFile(Map<String, Object> payload) throws SQLException, IllegalStateException {
+        if ((Boolean) payload.get("success")) {
+            String userId = ApplicationUtils.getEncryptor().decrypt((String) payload.get("key"));
             User user = userService.getUser(Integer.valueOf(userId));
             File file = new File();
-            file.setName(responseBody.getFileName());
+            String fileName = (String) payload.get("fileName");
+            file.setName(fileName);
             file.setUser(user);
             file = this.fileRepository.save(file);
-            user.setAvatar(responseBody.getFileName());
+            user.setAvatar(fileName);
             userService.updateUser(user);
             return file;
         } else {
-            throw new IllegalStateException("Failed to upload file");
+            throw new IllegalStateException("Failed to upload file. " + payload.get("message"));
         }
     }
 

@@ -9,7 +9,7 @@
         <script type="text/javascript" th:src = "@{/js/scripts.js}"></script>
     </head>
     <body>
-        <div th:replace="fragments::user_header (${#execInfo.templateName})"></div>
+        <div th:replace="fragments::user_header (${#execInfo.templateName}, ${admin})"></div>
         <div class="content_wrap">
             <h1 align="center">Here, you can update information about yourself.</h1>
             <span>Profile picture</span>

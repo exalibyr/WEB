@@ -15,9 +15,7 @@ import com.excalibur.myBlog.repository.UserRepository;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -63,6 +61,23 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public void updateUser(Map<String, Object> payload) throws Exception{
+        String id = (String) payload.get("id");
+        payload.remove("id");
+        Integer result = this.userRepository.updateUser(payload, id);
+    }
+
+    @Override
+    public void updateUsers(List<Object> payload) throws Exception {
+        Map<String, Map<String, Object>> data = new HashMap<>();
+        for (Object userObject : payload) {
+            Map<String, Object> userMap = (Map<String, Object>) userObject;
+            data.put((String) userMap.get("id"), (Map<String, Object>) userMap.get("data"));
+        }
+        this.userRepository.updateUsers(data);
+    }
+
+    @Override
     public List<User> getUsers(String name, String surname) {
         try {
             ResultSet resultSet = userRepository.findByNameSurname(name, surname);
@@ -85,6 +100,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public List<User> getUsers() {
+        return (List<User>) this.userRepository.findAll();
+    }
+
+    @Override
     public User getUser(String username) throws UsernameNotFoundException {
         return userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("UserServiceImpl.getUser(String username): No data found"));
@@ -92,7 +112,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<UserWrapper> getUserWrappers(String name, String surname) {
-        return getUsers(name, surname)
+        return getUsers(name.toLowerCase(), surname.toLowerCase())
                 .stream()
                 .map(UserWrapper::new)
                 .collect(Collectors.toList());

@@ -107,12 +107,13 @@ public class PublicationServiceImpl implements PublicationService {
     }
 
     public List<PublicationWrapper> getPublicationWrappers(User user) {
-        return publicationRepository
-                .findByUserIdOrderByDateTimeDesc(user.getId())
-                .orElseGet(ArrayList::new)
-                .stream()
-                .map(PublicationWrapper::new)
-                .collect(Collectors.toList());
+        return transform(this.publicationRepository.findByUserIdOrderByDateTimeDesc(user.getId()));
+
+    }
+
+    @Override
+    public List<PublicationWrapper> getLastPublicationWrappers() {
+        return transform(this.publicationRepository.findAllOrderByDateTimeDesc());
     }
 
     public Iterable<Publication> getPublications(){
@@ -121,6 +122,14 @@ public class PublicationServiceImpl implements PublicationService {
 
     public void deletePublication(Integer publicationId){
         publicationRepository.deleteById(publicationId);
+    }
+
+    private List<PublicationWrapper> transform(Optional<List<Publication>> publications) {
+        return publications
+                .orElseGet(ArrayList::new)
+                .stream()
+                .map(PublicationWrapper::new)
+                .collect(Collectors.toList());
     }
 
 }

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>My blog</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <link type="text/css" rel="stylesheet" th:href="@{/css/styles.css}">
+        <script type="text/javascript"th:src = "@{/js/jquery-3.4.1.js}"></script>
+        <script type="text/javascript"th:src = "@{/js/scripts.js}"></script>
+    </head>
+    <body>
+        <div th:replace="fragments::user_header (${#execInfo.templateName}, ${admin})"></div>
+        <div class="content_wrap">
+            <h1 align="center">Users</h1>
+            <input type="hidden" th:value="${#execInfo.templateName}" id="page"/>
+            <input type="hidden" th:value="${#httpServletRequest.requestURL}" id="pageURI"/>
+            <div class="context_button">
+                <button type="button" onclick="updateUserData()">Save</button>
+                <span class="update_status"></span>
+            </div>
+            <form th:id="${#execInfo.templateName}" action="#" th:action = "@{/admin/users}" method="post">
+                <table id="data">
+                    <tr class="headers">
+                        <th>
+                            <span>username</span>
+                        </th>
+                        <th>
+                            <span>name</span>
+                        </th>
+                        <th>
+                            <span>surname</span>
+                        </th>
+                        <th>
+                            <span>avatar</span>
+                        </th>
+                    </tr>
+                    <tr class="content" th:each="user : ${users}">
+                        <input type="hidden" th:value="${user.id}" class="id"/>
+                        <td>
+                            <input type="text" maxlength="20" placeholder="username" th:value="${user.username}" class="username">
+                        </td>
+                        <td>
+                            <input type="text" maxlength="20" placeholder="name" th:value="${user.name}" class="name">
+                        </td>
+                        <td>
+                            <input type="text" maxlength="30" placeholder="surname" th:value="${user.surname}" class="surname">
+                        </td>
+                        <td>
+                            <input type="text" placeholder="avatar" th:value="${user.avatar}" class="avatar">
+                        </td>
+                    </tr>
+                </table>
+            </form>
+            <div class="context_button">
+                <button type="button" onclick="updateUserData()">Save</button>
+                <span class="update_status"></span>
+            </div>
+        </div>
+    </body>
+</html>

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -19,7 +20,13 @@ public interface UserService {
 
     void updateUser(User user);
 
+    void updateUser(Map<String, Object> payload) throws Exception;
+
+    void updateUsers(List<Object> payload) throws Exception;
+
     List<User> getUsers(String name, String surname);
+
+    List<User> getUsers();
 
     User getUser(String username) throws UsernameNotFoundException;
 

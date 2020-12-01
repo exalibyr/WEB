@@ -8,6 +8,10 @@ public class ResponseBody {
     public ResponseBody() {
     }
 
+    public ResponseBody(boolean success) {
+        this.success = success;
+    }
+
     public ResponseBody(boolean success, String message) {
         this.success = success;
         this.message = message;

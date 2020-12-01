@@ -1,40 +1,28 @@
 package com.excalibur.myBlog.fileStorage.service.impl;
 
-import com.excalibur.myBlog.dao.File;
-import com.excalibur.myBlog.dao.response.ResponseBody;
 import com.excalibur.myBlog.dao.response.ResponseBodyException;
 import com.excalibur.myBlog.fileStorage.configuration.FileStorageConfiguration;
-import com.excalibur.myBlog.fileStorage.entity.FileStorageResponseBody;
 import com.excalibur.myBlog.fileStorage.service.FileWebService;
 import com.excalibur.myBlog.utils.ApplicationUtils;
-import com.excalibur.myBlog.utils.entity.Image;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationConfig;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.http.HttpMessageConverters;
-import org.springframework.boot.web.server.WebServerException;
+import org.springframework.boot.json.JacksonJsonParser;
 import org.springframework.http.*;
-import org.springframework.http.client.MultipartBodyBuilder;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.http.converter.FormHttpMessageConverter;
-import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.ResourceHttpMessageConverter;
 import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.stereotype.Service;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
-import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.io.IOException;
 import java.net.URI;
-import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -46,6 +34,7 @@ public class FileWebServiceImpl implements FileWebService {
     private ObjectMapper mapper = new ObjectMapper();
     private SimpleClientHttpRequestFactory httpRequestFactory;
     private RestTemplate restTemplate;
+    private JacksonJsonParser jsonParser = new JacksonJsonParser();
 
     public FileWebServiceImpl() {
         this.httpRequestFactory = new SimpleClientHttpRequestFactory();
@@ -67,18 +56,18 @@ public class FileWebServiceImpl implements FileWebService {
         params.put("mediaType", multipartFile.getContentType());
         RequestEntity<byte[]> requestEntity = new RequestEntity<>(
                 multipartFile.getBytes(),
-                getHeaders(MediaType.parseMediaType(multipartFile.getContentType())),
+                createHeaders(MediaType.APPLICATION_OCTET_STREAM),
                 HttpMethod.POST,
-                setParams(generateURI(userId), params)
+                createURI(userId, params)
         );
         System.out.println(requestEntity.getUrl());
-        ResponseEntity<FileStorageResponseBody> responseEntity = this.restTemplate.exchange(requestEntity, FileStorageResponseBody.class);
+        ResponseEntity<String> responseEntity = this.restTemplate.exchange(requestEntity, String.class);
         switch (responseEntity.getStatusCode()) {
             case CREATED:
             case OK: {
-                FileStorageResponseBody responseBody = responseEntity.getBody();
-                if (responseBody.isSuccess() && ApplicationUtils.compare(responseBody.getKey(), userId)) {
-                    return responseBody.getFileName();
+                Map<String, Object> responseBody = this.jsonParser.parseMap(responseEntity.getBody());
+                if ((Boolean) responseBody.get("success") && ApplicationUtils.compare((String) responseBody.get("key"), userId)) {
+                    return (String) responseBody.get("fileName");
                 } else {
                     throw new ResponseBodyException("Invalid response body");
                 }
@@ -89,19 +78,15 @@ public class FileWebServiceImpl implements FileWebService {
         }
     }
 
-    private HttpHeaders getHeaders(MediaType mediaType) {
+    private HttpHeaders createHeaders(MediaType mediaType) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(mediaType);
         return headers;
     }
 
-    private URI generateURI(Integer userId) {
-        return URI.create(FileStorageConfiguration.getFileStorageURL() + "/temp/user/" + ApplicationUtils.getEncryptedID(userId));
-    }
-
-    private URI setParams(URI uri, Map<String, String> params) {
-        StringBuilder builder = new StringBuilder(uri.toString());
-        builder.append("?");
+    private URI createURI(Integer userId, Map<String, String> params) {
+        StringBuilder builder = new StringBuilder(FileStorageConfiguration.getFileStorageURL());
+        builder.append("/user/").append(ApplicationUtils.getEncryptedID(userId)).append("?");
         for (String paramName : params.keySet()) {
             builder.append(paramName).append("=").append(params.get(paramName)).append("&");
         }

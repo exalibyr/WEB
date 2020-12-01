@@ -6,11 +6,22 @@
 </head>
     <body>
     <!--                    ************************ FOR AUTHORIZED USER *************************-->
-        <div th:fragment="user_header (templateName)" class="content_margin_top">
+        <div th:fragment="user_header (templateName, admin)" class="content_margin_top">
             <div class="header_top"></div>
             <div class="header">
                 <table align="center">
                     <tr>
+                        <td th:if="${not #strings.equals(templateName, 'admin_showUsers') && #bools.isTrue(admin)}">
+                            <div class="context_button">
+                                <button type="button" th:onclick="'location.href=\'/admin/users\''">Admin tools</button>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="context_button">
+                                <button type="button" th:onclick="'location.href=\''
+                                                     + @{/feed} + '\''">News</button>
+                            </div>
+                        </td>
                         <td th:if="${#strings.equals(templateName, 'user_showUsers')}">
                             <div class="context_button">
                                 <button type="button" th:onclick="'location.href=\'/home/findUsers\''">Back</button>

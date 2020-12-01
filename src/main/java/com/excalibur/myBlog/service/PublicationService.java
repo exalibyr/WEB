@@ -32,6 +32,8 @@ public interface PublicationService {
 
     List<PublicationWrapper> getPublicationWrappers(User user);
 
+    List<PublicationWrapper> getLastPublicationWrappers();
+
     Iterable<Publication> getPublications();
 
     void deletePublication(Integer publicationId);

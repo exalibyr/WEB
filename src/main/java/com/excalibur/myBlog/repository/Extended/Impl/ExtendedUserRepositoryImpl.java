@@ -8,6 +8,7 @@ import com.excalibur.myBlog.repository.Extended.ExtendedUserRepository;
 import javax.sql.rowset.CachedRowSet;
 import javax.sql.rowset.RowSetProvider;
 import java.sql.*;
+import java.util.*;
 
 public class ExtendedUserRepositoryImpl implements ExtendedUserRepository {
 
@@ -89,5 +90,67 @@ public class ExtendedUserRepositoryImpl implements ExtendedUserRepository {
             e.printStackTrace();
             return -1;
         }
+    }
+
+    @Override
+    public Integer updateUser(Map<String, Object> data, String id) throws Exception{
+        String query = buildUpdateQuery("user_", id, data);
+        try (Connection connection = DriverManager.getConnection(DatabaseConfiguration.getDatabaseURL(), DatabaseConfiguration.getDatabaseLogin(), DatabaseConfiguration.getDatabasePassword())) {
+            Statement statement = connection.createStatement();
+            System.out.println("Native SQL: " + query);
+            int result = statement.executeUpdate(query);
+            statement.close();
+            if (result == 1) {
+                return result;
+            } else {
+                throw new SQLException("Update failed. Bad query result.");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new Exception(e);
+        }
+    }
+
+    @Override
+    public Integer updateUsers(Map<String, Map<String, Object>> data) throws Exception {
+        Set<String> batchParts = new HashSet<>();
+        StringBuilder batchLog = new StringBuilder();
+        for (Map.Entry<String, Map<String, Object>> entry : data.entrySet()) {
+            String query = buildUpdateQuery("user_", entry.getKey(), entry.getValue());
+            batchParts.add(query);
+            batchLog.append(query);
+        }
+        System.out.println("************* BATCH UPDATE BEGIN ****************");
+        System.out.println(batchLog.toString());
+        System.out.println("************* BATCH UPDATE END ****************");
+        try (Connection connection = DriverManager.getConnection(DatabaseConfiguration.getDatabaseURL(), DatabaseConfiguration.getDatabaseLogin(), DatabaseConfiguration.getDatabasePassword())) {
+            Statement statement = connection.createStatement();
+            for (String part : batchParts) {
+                statement.addBatch(part);
+            }
+            int rows = statement.executeBatch().length;
+            statement.close();
+            if (rows != data.size()) {
+                throw new SQLException("Batch update failed. Bad query result.");
+            } else {
+                return rows;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new Exception(e);
+        }
+    }
+
+    private String buildUpdateQuery(String entity, String id, Map<String, Object> data) throws RuntimeException{
+        StringBuilder builder = new StringBuilder("UPDATE ").append(entity).append(" SET ");
+        for (Map.Entry<String, Object> entry : data.entrySet()) {
+            builder
+                    .append(entry.getKey())
+                    .append(" = '")
+                    .append(entry.getValue())
+                    .append("', ");
+        }
+        builder.deleteCharAt(builder.length() - 2).append("WHERE id = ").append(id).append(";\n");
+        return builder.toString();
     }
 }

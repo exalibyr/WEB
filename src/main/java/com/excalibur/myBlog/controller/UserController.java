@@ -23,6 +23,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
@@ -59,6 +60,7 @@ public class UserController {
             model.addAttribute("backURI", priorPath);
             model.addAttribute("avatarMethod", ApplicationUtils.getAvatarMethod(userWrapper.getUser()));
             model.addAttribute("callbackURI", ApplicationUtils.getCallbackURI(ApplicationUtils.Callback.createFile));
+            model.addAttribute("admin", ApplicationUtils.verifyAdminCredentials(userWrapper.getUser()));
             return "home";
         } catch (Exception e) {
             e.printStackTrace();
@@ -68,9 +70,11 @@ public class UserController {
 
     @GetMapping(value = "/home/findUsers")
     public String getFindUsersForm(@RequestParam(name = "prior", required = false, defaultValue = "") String priorPath,
-                                   Model model) {
+                                   Model model, HttpServletRequest request) {
+        User user = this.userService.getUser(request.getRemoteUser());
         model.addAttribute("userInfo", new User());
         model.addAttribute("backURI", priorPath);
+        model.addAttribute("admin", ApplicationUtils.verifyAdminCredentials(user));
         return "user_findUsers";
     }
 
@@ -85,9 +89,11 @@ public class UserController {
     public String showUsers(@RequestParam(name = "prior", required = false, defaultValue = "") String priorPath,
                             @RequestParam(name = "name", required = false, defaultValue = "") String name,
                             @RequestParam(name = "surname", required = false, defaultValue = "") String surname,
-                            Model model){
+                            Model model, HttpServletRequest request){
+        User user = this.userService.getUser(request.getRemoteUser());
         model.addAttribute("userWrappers", userService.getUserWrappers(name, surname));
         model.addAttribute("backURI", priorPath);
+        model.addAttribute("admin", ApplicationUtils.verifyAdminCredentials(user));
         return "user_showUsers";
     }
 
@@ -97,6 +103,8 @@ public class UserController {
                                HttpServletRequest request,
                                Model model){
         try {
+            User user = this.userService.getUser(request.getRemoteUser());
+            model.addAttribute("admin", ApplicationUtils.verifyAdminCredentials(user));
             UserWrapper wrapper = userService.getUserWrapper(id);
             if (wrapper.getUser().getUsername().equals(request.getRemoteUser())) {
                 return "redirect:/home";
@@ -122,6 +130,7 @@ public class UserController {
             model.addAttribute("avatarMethod", ApplicationUtils.getAvatarMethod(user));
             model.addAttribute("callbackURI", ApplicationUtils.getCallbackURI(ApplicationUtils.Callback.createFile));
             model.addAttribute("backURI", priorPath);
+            model.addAttribute("admin", ApplicationUtils.verifyAdminCredentials(user));
             return "editProfile";
         } catch (Exception e) {
             e.printStackTrace();
@@ -151,8 +160,10 @@ public class UserController {
     @GetMapping(value = "/home/publication/{pubId}/delete")
     public String deletePublication(@RequestParam(name = "prior", required = false, defaultValue = "") String priorPath,
                                     @PathVariable(name = "pubId") String pubId,
-                                    Model model) {
+                                    Model model, HttpServletRequest request) {
+        User user = this.userService.getUser(request.getRemoteUser());
         model.addAttribute("backURI", priorPath);
+        model.addAttribute("admin", ApplicationUtils.verifyAdminCredentials(user));
         publicationService.deletePublication(ApplicationUtils.getDecryptedID(pubId));
         return "redirect:/home";
     }
@@ -160,8 +171,10 @@ public class UserController {
     @GetMapping(value = "/home/publication/{pubId}/edit")
     public String getEditPublication(@RequestParam(name = "prior", required = false, defaultValue = "") String priorPath,
                                      @PathVariable(name = "pubId") String pubId,
-                                     Model model) {
+                                     Model model, HttpServletRequest request) {
         try {
+            User user = this.userService.getUser(request.getRemoteUser());
+            model.addAttribute("admin", ApplicationUtils.verifyAdminCredentials(user));
             model.addAttribute("publication", publicationService.getPublication(ApplicationUtils.getDecryptedID(pubId)).getPublication());
             model.addAttribute("backURI", priorPath);
             model.addAttribute("mode", ApplicationUtils.PageMode.edit.toString());
@@ -198,7 +211,9 @@ public class UserController {
     @GetMapping(value = "/home/publication/create")
     public String getCreatePublication(@RequestParam(name = "prior", required = false, defaultValue = "") String priorPath,
                                        PublicationForm publicationForm,
-                                       Model model) {
+                                       Model model, HttpServletRequest request) {
+        User user = this.userService.getUser(request.getRemoteUser());
+        model.addAttribute("admin", ApplicationUtils.verifyAdminCredentials(user));
         model.addAttribute("backURI", priorPath);
         model.addAttribute("mode", ApplicationUtils.PageMode.create.name());
         return "publication";
@@ -215,7 +230,7 @@ public class UserController {
         } else {
             try {
                 publicationForm.setUsername(request.getRemoteUser());
-                this.publicationService.createPublication(publicationForm, Arrays.asList(file));
+                this.publicationService.createPublication(publicationForm, Collections.singletonList(file));
                 return "redirect:/home?prior=" + priorPath;
             } catch (Exception e) {
                 e.printStackTrace();
@@ -227,8 +242,10 @@ public class UserController {
     @GetMapping(value = "/home/publication/{pubId}/view")
     public String getViewPublication(@RequestParam(name = "prior", required = false, defaultValue = "") String priorPath,
                                      @PathVariable(name = "pubId") String pubId,
-                                     Model model) {
+                                     Model model, HttpServletRequest request) {
         try {
+            User user = this.userService.getUser(request.getRemoteUser());
+            model.addAttribute("admin", ApplicationUtils.verifyAdminCredentials(user));
             model.addAttribute("publicationWrapper", publicationService.getPublication(ApplicationUtils.getDecryptedID(pubId)));
             model.addAttribute("backURI", priorPath);
             model.addAttribute("mode", ApplicationUtils.PageMode.view.toString());
@@ -245,14 +262,29 @@ public class UserController {
     public String getViewPublication(@RequestParam(name = "prior", required = false, defaultValue = "") String priorPath,
                                      @PathVariable(name = "pubId") String pubId,
                                      @PathVariable(name = "id") String id,
-                                     Model model) {
+                                     Model model, HttpServletRequest request) {
         try {
+            User user = this.userService.getUser(request.getRemoteUser());
+            model.addAttribute("admin", ApplicationUtils.verifyAdminCredentials(user));
             model.addAttribute("publicationWrapper", publicationService.getPublication(ApplicationUtils.getDecryptedID(pubId)));
             model.addAttribute("backURI", priorPath);
             model.addAttribute("mode", ApplicationUtils.PageMode.view.toString());
             model.addAttribute("pubId", pubId);
             model.addAttribute("ownerId", id);
             return "publication";
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ApplicationUtils.getErrorTemplate();
+        }
+    }
+
+    @GetMapping(value = "/feed")
+    public String feed(Model model, HttpServletRequest request) {
+        try {
+            User user = this.userService.getUser(request.getRemoteUser());
+            model.addAttribute("publicationWrappers", this.publicationService.getLastPublicationWrappers());
+            model.addAttribute("admin", ApplicationUtils.verifyAdminCredentials(user));
+            return "feed";
         } catch (Exception e) {
             e.printStackTrace();
             return ApplicationUtils.getErrorTemplate();

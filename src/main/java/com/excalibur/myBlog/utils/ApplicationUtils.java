@@ -2,6 +2,7 @@ package com.excalibur.myBlog.utils;
 
 import com.excalibur.myBlog.Application;
 import com.excalibur.myBlog.configuration.WebAppConfiguration;
+import com.excalibur.myBlog.dao.Role;
 import com.excalibur.myBlog.dao.User;
 import com.excalibur.myBlog.fileStorage.configuration.FileStorageConfiguration;
 import com.excalibur.myBlog.security.configuration.EncryptionConfiguration;
@@ -153,5 +154,15 @@ public class ApplicationUtils {
         if ( !supportedMediaTypes.contains(mediaType)) {
             throw new MediaTypeNotSupportedStatusException(mediaType + " is not supported");
         }
+    }
+
+    public static Boolean verifyAdminCredentials(User user) {
+        Set<Role> roles = user.getRoles();
+        for (Role role : roles) {
+            if (role.getAuthority().equals(UserRole.admin.name())) {
+                return true;
+            }
+        }
+        return false;
     }
 }

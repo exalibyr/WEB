@@ -4,6 +4,8 @@ import com.excalibur.myBlog.dao.Role;
 import com.excalibur.myBlog.dao.User;
 
 import java.sql.ResultSet;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
@@ -16,5 +18,9 @@ public interface ExtendedUserRepository {
     Integer saveUserRoles(User user);
 
     Integer updateUser(User user);
+
+    Integer updateUser(Map<String, Object> data, String id) throws Exception;
+
+    Integer updateUsers(Map<String, Map<String, Object>> data) throws Exception;
 
 }

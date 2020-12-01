@@ -9,32 +9,34 @@
         <script type="text/javascript" th:src = "@{/js/scripts.js}"></script>
     </head>
     <body>
-        <div th:replace="fragments::user_header (${#execInfo.templateName})"></div>
+        <div th:replace="fragments::user_header (${#execInfo.templateName}, ${admin})"></div>
         <div class="content_wrap">
             <h1 align="center" th:text="'Welcome to your home page, ' + ${userWrapper.user.name} + '!'"></h1>
-            <table>
-                <tr>
-                    <td>
-                        <div>
-                            <form id="upload-container" method="post" th:action="${avatarMethod}" enctype="multipart/form-data">
-                                <input id="callbackURI" type="hidden" th:value="${callbackURI}">
-                                <div>
-                                    <input id="file-input" type="file" name="file" accept="image/jpeg, image/png">
-                                    <label for="file-input">
-                                        <img class="avatar_img" th:src="${userWrapper.avatarURI}" alt="Image not found">
-                                    </label>
-                                </div>
-                            </form>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td><label th:text="${userWrapper.user.name} + ' ' + ${userWrapper.user.surname}"></label></td>
-                </tr>
-                <tr>
-                    <td>About: <label th:text="${userWrapper.user.about}"></label></td>
-                </tr>
-            </table>
+            <div class="user_info">
+                <table>
+                    <tr>
+                        <td>
+                            <div>
+                                <form id="upload-container" method="post" th:action="${avatarMethod}" enctype="multipart/form-data">
+                                    <input id="callbackURI" type="hidden" th:value="${callbackURI}">
+                                    <div>
+                                        <input id="file-input" type="file" name="file" accept="image/jpeg, image/png">
+                                        <label for="file-input">
+                                            <img class="avatar_img" th:src="${userWrapper.avatarURI}" alt="Image not found">
+                                        </label>
+                                    </div>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><label th:text="${userWrapper.user.name} + ' ' + ${userWrapper.user.surname}"></label></td>
+                    </tr>
+                    <tr>
+                        <td>About: <label th:text="${userWrapper.user.about}"></label></td>
+                    </tr>
+                </table>
+            </div>
             <h3 align="center">Your publications</h3>
             <div th:replace="fragments::publications (${publicationWrappers}, null)"></div>
         </div>

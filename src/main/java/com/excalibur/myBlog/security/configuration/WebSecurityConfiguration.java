@@ -29,6 +29,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                     .antMatchers("/", "/guest/**", ApplicationUtils.ERROR_URN, "/fileStorage/**").permitAll()
                     .antMatchers("/home/**").hasAuthority(ApplicationUtils.UserRole.user.name())
+                    .antMatchers("/admin/**").hasAuthority(ApplicationUtils.UserRole.admin.name())
                     .anyRequest().authenticated()
                 .and()
                     .formLogin().loginPage("/guest/login").loginProcessingUrl("/guest/login")

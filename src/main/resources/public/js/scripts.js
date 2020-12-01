@@ -18,7 +18,7 @@ $(document).ready(function() {
     if ($('img').is('.publication_img')) {
         var publicationImage = $(".publication_img");
         publicationImage.change(function() {
-            if (publicationImage.prop('src') != '#') {
+            if (publicationImage.prop('src')) {
                 console.log('visible');
                 publicationImage.removeClass('hidden');
             } else {
@@ -119,9 +119,11 @@ $(document).ready(function() {
             sendFiles(files);
         });
 
-
     }
 
+    if ($('#page').is('admin_showUsers')) {
+
+    }
 
 });
 
@@ -238,6 +240,74 @@ function validate(page) {
         }
         submitBtn.prop('disabled', invalid);
     }
+}
+
+function updateUserData() {
+    $('.update_status').html('Processing...');
+    var payload = [];
+    $('#data tr').each(function() {
+        if ($(this).is('.content')) {
+            var item = {};
+            var data = {};
+            data["username"] = $(this).find('input[class=username]').val();
+            data["name"] = $(this).find('input[class=name]').val();
+            data["surname"] = $(this).find('input[class=surname]').val();
+            data["avatar"] = $(this).find('input[class=avatar]').val();
+            item["id"] = $(this).find('input[class=id]').val();
+            item["data"] = data;
+            payload.push(item);
+        }
+    });
+    console.log(payload);
+    update(JSON.stringify(payload), $('#pageURI').val());
+}
+
+function update(requestBody, endpoint) {
+    console.log(endpoint);
+    console.log(requestBody);
+    $.ajax({
+        url: endpoint,
+        type: 'PATCH',
+        data: requestBody,
+        contentType: 'application/json',
+        beforeSend: function(request) {
+            request.setRequestHeader("X-CSRF-TOKEN", $('input[name=_csrf]').prop('value'));
+        },
+        processData: false,
+        crossDomain: true,
+        success: function(data, textStatus, jqXHR) {
+            console.log(data);
+            $('.update_status').html('Saved');
+        },
+        error: function(jqXHR, textStatus, errorThrown ) {
+            console.log(errorThrown);
+            $('.update_status').html('Failed');
+        },
+        timeout: 30000,
+        statusCode: {
+            404: function () {
+                console.log('resource not found 404');
+            },
+            500: function () {
+                console.log('internal server error 500');
+            },
+            201: function() {
+                console.log('Created 201');
+            },
+            200: function() {
+                console.log('status OK 200');
+            },
+            403: function() {
+                console.log('Forbidden 403');
+            },
+            401: function() {
+                console.log('Unauthorized 401');
+            },
+            400: function() {
+                console.log('Bad request 400');
+            }
+        }
+    });
 }
 
 function sendFiles(files) {
